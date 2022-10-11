@@ -1,0 +1,195 @@
+<!DOCTYPE html
+    PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="../favicon.ico" />
+
+    <title>Computer Graphics - PA1</title>
+
+    <link href="resources/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/offcanvas.css" rel="stylesheet">
+    <link href="resources/custom2014.css" rel="stylesheet">
+    <link href="resources/twentytwenty.css" rel="stylesheet" type="text/css" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <div class="container headerBar">
+        <h1>Programming Assignment 1 - François Costa (Legi: 19-931-989)</h1>
+    </div>
+
+    <div class="container contentWrapper">
+        <div class="pageContent">
+
+            <!-- ================================================================= -->
+
+            <h2>Part 1: Preliminaries</h2>
+
+            <p>This part of the project was a warm-up compared to other part. We learned how to use the framework and
+                implement the most trivial integrator for the ray tracer.
+                We had to check if there is an intersection and in this case get the normal value using some functions
+                inside of the nori framework.</p>
+
+            <p> There is no probabilistic part in this part of the project. This implies that the raytracer can launch a
+                single line and return the result quickly. Moreover the images are similar, this is not surprising and
+                is the expected result since the rendering is deterministic in this case.</p>
+
+            <p>Regarding the technical details of the implementation, it was necessary to create a NormalIntegrator. The
+                Li function is very simple. If there is an intersection, simply extract the normal vector to the surface
+                and convert this normal vector to color using r = x, g = y and b = z.</p>
+
+            <h3>Shading Normal Comparison</h3>
+            <div class="twentytwenty-container">
+                <img src="images/ref/ajax-normals.jpg" alt="Reference" class="img-responsive">
+                <img src="images/gen/ajax-normals.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Part 2: Average Visiblity Integrator</h2>
+
+            <p>After a gentle introduction to the nori framework through the NormalIntegrator, the second task is to
+                implement another integrator, namely the AverageVisibilityIntegrator. The purpose of this integrator is
+                to color the objects that are most exposed to the sky more in white and those that are hidden from the
+                sky more in
+                black. </p>
+
+            <p>The integrator is probabilistic, it does not return the same value at each ray launch.
+                By averaging the values of differents rays, we can consider that the integrator returns a realistic
+                approximation of the true value. </p>
+
+            <p>Regarding the technical details of the implementation, they are relatively similar to the normal
+                integrator. The difference is that once you hit an object, you have to sample another ray and retrace
+                it. If it hits an object, the value returned will be black. If the line goes into the sky, then
+                the value returned will be white. By launching several lines, we arrive at a realistic approximation
+                between 0 and 1 which represents the average visibility of the object. </p>
+
+            <h3>AV Comparison in the sponza scene</h3>
+            <div class="twentytwenty-container">
+                <img src="images/ref/sponza-av-1024spp.jpg" alt="Reference" class="img-responsive">
+                <img src="images/gen/sponza-av.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+
+            <h3>AV Comparison in the ajax scene</h3>
+            <div class="twentytwenty-container">
+                <img src="images/ref/ajax-av-1024spp.jpg" alt="Reference" class="img-responsive">
+                <img src="images/gen/ajax-av.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+            <!-- ================================================================= -->
+
+            <h2>Part 3: Analytic Sphere Shape</h2>
+
+            <p>For this section, I was strongly inspired by this tutorial to implement the part with the intersection.
+                <a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">Ray Tracing In One Weekend</a>
+            </p>
+
+            <p>To solve the problem of the intersection between a line and a circle we can derive the values in the
+                following way. Starting from the equation of the circle, we can substitute the values of the line for
+                the x,y,z values and then solve the second degree equation using the discriminant formula. The details
+                of the derivation are given below.</p>
+
+            <p> A little tricky part is the choice of the value of t. There can be two intersections, but the second one
+                can be behind and therefore not visible to the camera. That's why you should first check if the smallest
+                t is between the mint and maxt values. If this is not the case then we can test the second t. If this is
+                not the case again, then there is no intersection with the sphere.</p>
+
+            <p>Filling the Intersection data structure is ultimately more of an implementation problem than a geometry
+                problem. By using the few functions of nori, we can fill this data structure without too much
+                difficulty. We had to perform also a small rescaling.</p>
+
+            <h3>Sphere Analytic vs Mesh Comparison </h3>
+
+            <div class="twentytwenty-container">
+                <img src="images/ref/sphere-analytic.jpg" alt="Reference" class="img-responsive">
+                <img src="images/gen/sphere-analytic.jpg" alt="Mine" class="img-responsive">
+                <img src="images/ref/sphere-mesh.jpg" alt="Reference" class="img-responsive">
+                <img src="images/gen/sphere-mesh.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Part 4: Direct Illumination Integrator</h2>
+
+            <p> The fourth part of this project consists of the implementation of point lights and a direct integration
+                to these lights.</p>
+
+            <p> First, we had to implement a point light function that derives directly from the Emitter class. We had
+                to implement three functions, sample, eval and pdf. The pdf is constant everywhere, so we can return a
+                constant value. The function eval and sample must return an intensity that decreases with time. The
+                exact derivation of these values is given below.</p>
+
+            <p>Once the Emitter class was programmed, it was necessary to create an Integrator which is able to look
+                for each point if there is a light which is reachable from this point and if it is the case to take into
+                account this light in the calculation of the integral. We have access to the BRDF of the integrated
+                object and we can multiply the BRDF by cos(wi) as well as the color returned by the lamp.</p>
+
+            <p> To conclude this section, all the tests have been passed successfully, so we can conclude with the
+                images that the integrator works well,</p>
+
+            <h3>DI Comparison </h3>
+            <div class="twentytwenty-container">
+                <img src="images/ref/sponza-direct-4spp.jpg" alt="Reference" class="img-responsive">
+                <img src="images/gen/sponza-direct.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Part 5: Texture Mapping</h2>
+
+
+            <p>The last part was a problem of implementing a gridded texture. Two variables are given as inputs, the
+                size and a starting offset. The idea of the implementation is the following. U and V are mapped to
+                either the value 0 or 1. The formula is: abs(floor(x / scale - offset)) % 2. If both coordinates are mapped
+                to the same value, then one of the two colors is returned. If this is not the case, then we can simply
+                return the second color. The rendering is similar to a chess field. As you can see, the reference image
+                is similar to the image generated by the ray tracer.</p>
+
+
+            <h3>Checkerboard Comparison of the sphere </h3>
+            <div class="twentytwenty-container">
+                <img src="images/ref/mesh-texture.jpg" alt="Reference" class="img-responsive">
+                <img src="images/gen/mesh-texture.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+
+            <h3>Checkerboard Comparison of the mesh </h3>
+            <div class="twentytwenty-container">
+                <img src="images/ref/sphere-texture.jpg" alt="Reference" class="img-responsive">
+                <img src="images/gen/sphere-texture.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+
+
+            <!-- ================================================================= -->
+
+            <h2>Derivations of the formulas</h2>
+
+            <h3>The two derivations written by hand </h3>
+
+            <img src="images/derivation.jpg" alt="Mine" class="img-responsive">
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="resources/bootstrap.min.js"></script>
+    <script src="/js/offcanvas.js"></script>
+    <script src="resources/jquery.event.move.js"></script>
+    <script src="resources/jquery.twentytwenty.js"></script>
+
+
+    <script>
+        $(window).load(function () { $(".twentytwenty-container").twentytwenty({ default_offset_pct: 0.5 }); });
+    </script>
+
+</body>
+
+</html>
