@@ -81,6 +81,9 @@ public:
 
     static Vector3f squareToUniformTriangle(const Point2f &sample);
 
+    // Custom added functions
+    static Vector3f squareToUniformCylinder(const Point2f &sample);
+
 };
 
 NORI_NAMESPACE_END
