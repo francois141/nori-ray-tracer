@@ -59,7 +59,7 @@ Point2f Warp::squareToUniformDisk(const Point2f &sample)
 
 float Warp::squareToUniformDiskPdf(const Point2f &p)
 {
-    return p.squaredNorm() <= 1 ? 1.0f / M_PI : 0.0f;
+    return p.squaredNorm() <= 1 ? INV_PI : 0.0f;
 }
 
 Vector3f Warp::squareToUniformCylinder(const Point2f &sample)
@@ -79,7 +79,8 @@ Vector3f Warp::squareToUniformSphereCap(const Point2f &sample, float cosThetaMax
 
 float Warp::squareToUniformSphereCapPdf(const Vector3f &v, float cosThetaMax)
 {
-    return v.z() >= cosThetaMax ? 1 / (2 * M_PI * (1 - cosThetaMax)) : 0.0f;
+
+    return (v.z() >= cosThetaMax && abs(v.squaredNorm() - 1.0f) < Epsilon) ? 1 / (2 * M_PI * (1 - cosThetaMax)) : 0.0f;
 }
 
 Vector3f Warp::squareToUniformSphere(const Point2f &sample)
@@ -91,7 +92,7 @@ Vector3f Warp::squareToUniformSphere(const Point2f &sample)
 
 float Warp::squareToUniformSpherePdf(const Vector3f &v)
 {
-    return 1 / (4.0f * M_PI);
+    return abs(v.norm() - 1.0f) < Epsilon ? 0.25f * INV_PI : 0.0f;
 }
 
 Vector3f Warp::squareToUniformHemisphere(const Point2f &sample)
@@ -103,7 +104,7 @@ Vector3f Warp::squareToUniformHemisphere(const Point2f &sample)
 
 float Warp::squareToUniformHemispherePdf(const Vector3f &v)
 {
-    return v.z() >= 0 ? 1 / (2.0f * M_PI) : 0.0f;
+    return (v.z() >= 0 && abs(v.squaredNorm() - 1.0f) < Epsilon) ? 1 / (2.0f * M_PI) : 0.0f;
 }
 
 Vector3f Warp::squareToCosineHemisphere(const Point2f &sample)
@@ -115,7 +116,7 @@ Vector3f Warp::squareToCosineHemisphere(const Point2f &sample)
 
 float Warp::squareToCosineHemispherePdf(const Vector3f &v)
 {
-    return v.z() >= 0 ? INV_PI * v.z() : 0.0f;
+    return (v.z() >= 0 && abs(v.squaredNorm() - 1.0f) < 1.0f) ? INV_PI * v.z() : 0.0f;
 }
 
 Vector3f Warp::squareToBeckmann(const Point2f &sample, float alpha)
@@ -128,7 +129,7 @@ Vector3f Warp::squareToBeckmann(const Point2f &sample, float alpha)
 float Warp::squareToBeckmannPdf(const Vector3f &m, float alpha)
 {
     float theta = acos(m.z());
-    return m.z() >= 0 ? exp(-pow(tan(theta), 2) / pow(alpha, 2)) / (M_PI * pow(alpha, 2) * pow(cos(theta), 3)) : 0.0f;
+    return (m.z() >= 0 && abs(m.squaredNorm() - 1.0f) < 1.0f) ? exp(-pow(tan(theta), 2) / pow(alpha, 2)) / (M_PI * pow(alpha, 2) * pow(cos(theta), 3)) : 0.0f;
 }
 
 Vector3f Warp::squareToUniformTriangle(const Point2f &sample)

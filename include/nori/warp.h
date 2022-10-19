@@ -83,6 +83,7 @@ public:
 
     // Custom added functions
     static Vector3f squareToUniformCylinder(const Point2f &sample);
+    
 
 };
 
