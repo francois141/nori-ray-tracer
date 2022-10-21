@@ -85,9 +85,9 @@ float Warp::squareToUniformSphereCapPdf(const Vector3f &v, float cosThetaMax)
 
 Vector3f Warp::squareToUniformSphere(const Point2f &sample)
 {
-    Vector3f cylinder = squareToUniformCylinder(sample);
-    float r = sqrt(1 - pow(cylinder.z(), 2));
-    return Vector3f(r * cylinder.x(), r * cylinder.y(), cylinder.z());
+    float theta = acos(1 - 2 * (1 - sample.x()));
+    float phi = 2.f * M_PI * sample.y();
+    return Vector3f(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
 }
 
 float Warp::squareToUniformSpherePdf(const Vector3f &v)
@@ -97,9 +97,9 @@ float Warp::squareToUniformSpherePdf(const Vector3f &v)
 
 Vector3f Warp::squareToUniformHemisphere(const Point2f &sample)
 {
-    Vector3f cylinder = squareToUniformCylinder(sample);
-    float r = sqrt(1 - pow(cylinder.z(), 2));
-    return Vector3f(r * cylinder.x(), r * cylinder.y(), abs(cylinder.z()));
+    float theta = acos(1 - (1 - sample.x()));
+    float phi = 2.f * M_PI * sample.y();
+    return Vector3f(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
 }
 
 float Warp::squareToUniformHemispherePdf(const Vector3f &v)
@@ -109,7 +109,7 @@ float Warp::squareToUniformHemispherePdf(const Vector3f &v)
 
 Vector3f Warp::squareToCosineHemisphere(const Point2f &sample)
 {
-    float theta = acos(sqrt(1 - sample.x()));
+    float theta = acos(sqrt(1 - (1 - sample.x())));
     float phi = 2.f * M_PI * sample.y();
     return Vector3f(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
 }
