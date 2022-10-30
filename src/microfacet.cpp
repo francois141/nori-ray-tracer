@@ -82,17 +82,59 @@ public:
 
     /// Evaluate the BRDF for the given pair of directions
     virtual Color3f eval(const BSDFQueryRecord &bRec) const override {
-    	throw NoriException("MicrofacetBRDF::eval(): not implemented!");
+
+        Vector3f normal = (bRec.wi + bRec.wo).normalized();
+
+        float D = evalBeckmann(normal);
+        float F = fresnel(normal.dot(bRec.wi),this->m_extIOR,this->m_intIOR);
+        float G = smithBeckmannG1(bRec.wi,normal)*smithBeckmannG1(bRec.wo,normal);
+        float denominator = 4.0f*Frame::cosTheta(bRec.wi) * Frame::cosTheta(bRec.wo);
+
+        return this->m_kd * INV_PI + this->m_ks * D * F * G / denominator;
     }
 
     /// Evaluate the sampling density of \ref sample() wrt. solid angles
     virtual float pdf(const BSDFQueryRecord &bRec) const override {
-    	throw NoriException("MicrofacetBRDF::pdf(): not implemented!");
+
+    	float cosinus = Frame::cosTheta(bRec.wo);
+
+        if(cosinus <= 0.0f) {
+            return 0.0f;
+        }
+
+        Vector3f normal = (bRec.wi + bRec.wo).normalized();
+
+        float term1 = evalBeckmann(normal) * Frame::cosTheta(normal) / (4.0f*abs(normal.dot(bRec.wo)));
+        float term2 = cosinus*INV_PI;
+
+        return m_ks * term1 + (1 - m_ks) * term2;
     }
 
     /// Sample the BRDF
     virtual Color3f sample(BSDFQueryRecord &bRec, const Point2f &_sample) const override {
-    	throw NoriException("MicrofacetBRDF::sample(): not implemented!");
+    	if(Frame::cosTheta(bRec.wi) <= 0.0f) {
+            return 0; 
+        }
+
+        Point2f newSample;
+        
+        if(_sample.x() < m_ks)
+        {
+            newSample = Point2f(_sample.x() / m_ks,_sample.y());
+            Vector3f normal = Warp::squareToBeckmann(newSample,m_alpha);
+            bRec.wo = ((2.0f * bRec.wi.dot(normal) * normal) - bRec.wi).normalized();
+        }
+        else 
+        {
+            newSample = Point2f((_sample.x() - m_ks)/ (1.f - m_ks), _sample.y());
+            bRec.wo = Warp::squareToCosineHemisphere(newSample);
+        }
+
+        float cosTheta = Frame::cosTheta(bRec.wo);
+    	if (cosTheta <= 0.f)
+    	    return 0;
+
+    	return eval(bRec) * cosTheta / pdf(bRec);
     }
 
     virtual std::string toString() const override {
