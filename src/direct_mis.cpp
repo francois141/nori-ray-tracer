@@ -53,9 +53,9 @@ public:
 
                 float pdf_mat = its.mesh->getBSDF()->pdf(bRec);
 
-                float weight = pdf_mat + pdf_em > 0.f ? pdf_em / (pdf_mat + pdf_em) : pdf_em;
+                float w_em = pdf_mat + pdf_em > 0.f ? pdf_em / (pdf_mat + pdf_em) : pdf_em;
 
-                color += weight * new_color * tracedColor * cosTheta;
+                color += w_em * new_color * tracedColor * cosTheta;
             }
         }
 
@@ -75,9 +75,9 @@ public:
 
                 float pdf_em = newIntersection.mesh->getEmitter()->pdf(eRec);
 
-                float weight = pdf_mat + pdf_em > 0.f ? pdf_mat / (pdf_mat + pdf_em) : 0.0f;
+                float w_mat = pdf_mat + pdf_em > 0.f ? pdf_mat / (pdf_mat + pdf_em) : 0.0f;
 
-                color += weight * sensibility * emmitedColor;
+                color += w_mat * sensibility * emmitedColor;
             }
         }
 

@@ -31,14 +31,14 @@ public:
 
         // Step 1) Sample the BSDF
         BSDFQueryRecord bRec(its.shFrame.toLocal(-ray.d));
-        Color3f sensibility = its.mesh->getBSDF()->sample(bRec,sampler->next2D());
+        Color3f brdf = its.mesh->getBSDF()->sample(bRec,sampler->next2D());
 
         // Step 2) Check if we hit a Emitter 
         Ray3f newRay = Ray3f(its.p,its.shFrame.toWorld(bRec.wo));
         Intersection newIntersection;
         if(scene->rayIntersect(newRay,newIntersection) && newIntersection.mesh->isEmitter()) {
             EmitterQueryRecord eRec(its.p,newIntersection.p,newIntersection.shFrame.n);
-            color += sensibility * newIntersection.mesh->getEmitter()->eval(eRec);
+            color += brdf * newIntersection.mesh->getEmitter()->eval(eRec);
         }
 
         return color;

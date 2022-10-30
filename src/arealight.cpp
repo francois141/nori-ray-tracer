@@ -65,11 +65,11 @@ public:
         if(!m_shape)
             throw NoriException("There is no shape attached to this Area light!");
 
-        float angle = lRec.n.dot(-lRec.wi);
+        float theta = lRec.n.dot(-lRec.wi);
 
-        if(angle > 0.0f) {
+        if(theta > 0.0f) {
             ShapeQueryRecord rec(lRec.ref,lRec.p);
-            return m_shape->pdfSurface(rec) * (rec.p - rec.ref).squaredNorm() / angle;
+            return m_shape->pdfSurface(rec) * (rec.p - rec.ref).squaredNorm() / theta;
         }
 
         return 0.0f;

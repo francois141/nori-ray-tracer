@@ -1,0 +1,147 @@
+<!DOCTYPE html
+    PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="../favicon.ico" /> -->
+
+    <title>Computer Graphics - PA1</title>
+
+    <link href="resources/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/offcanvas.css" rel="stylesheet">
+    <link href="resources/custom2014.css" rel="stylesheet">
+    <link href="resources/twentytwenty.css" rel="stylesheet" type="text/css" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <div class="container headerBar">
+        <h1>Programming Assignment 3 - François Costa (19-931-989)</h1>
+    </div>
+
+    <div class="container contentWrapper">
+        <div class="pageContent">
+
+            <!-- ================================================================= -->
+
+            <h2>Part 1: Light Sampling</h2>
+
+            <p>The implementation of the integrator was fast. Shape area light took a bit more time. I created the file
+                direct_ems.cpp.</p>
+
+            <h3>Integrator Implementation</h3>
+
+            <p>The implementation of the integrator is a bit different from the first integrator. This time the surface
+                is not a single point, but an area. The difference is that we need to sample one point and then check if
+                this point is visible. In the direct integrator for the point light, we only need to check if the point
+                is visible.</p>
+
+            <h3>Shape Area Light</h3>
+
+            <p>The implementation of the eval function was straightforward. We simply need to check if the ray is coming
+                from the "correct" direction and then we can return the radiance associated to this point.</p>
+
+            <p>The implementation of the pdf function was also straightforward. We first compute the cosinus using the
+                dot function. If we reach the emitter from the correct side, we can sample the pdf of the surface and
+                adjust with the distance of the sampling point.</p>
+
+            <p>The implementation of the sample function was a bit different. First we sample the surface, then we fill
+                the record data structure with all relevant stuff. At the end, we return eval(lRec) / pdf(lRec). </p>
+
+            <h3>Validation</h3>
+
+            <p>TODO: report test results (screenshot), and compare your rendering to reference images...</p>
+
+            <img src="images/mine.jpg" alt="Test results" /> <br> <br> <br> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Part 2: BRDF Sampling</h2>
+
+            <p> The implementation of the integrator was a bit harder than expected. The BRDF was really
+                straightforward. I created the file direct_mats.cpp.</p>
+
+            <h3>Integrator Implementation</h3>
+
+            <p>I created the file direct_mats.cpp. The logic is almost the same as direct_ems. First we check if the
+                mesh is an emitter. If it is the case we add the radiance to the output. Then we sample the BRDF. Once
+                the sampling process is done, we trace a new ray and check if the new intersected point is an emitter.
+                If it's the case, then we multiply the incoming radiance with the bdrf. </p>
+
+            <h3>Microfacet BRDF</h3>
+
+            <p>The eval and pdf functions were very straightforward. We had to translate the mathematical formula into a
+                cpp code.</p>
+
+            <p>The sample function was definively the hardest part of the program. In this case we first check if we
+                sample the first or second part of the pdf. Then we rescale to a uniform square and sample the correct
+                distribution. In the first case, we sample the microface distribution and reflect to the normal. In the
+                second case, we simply use a cosigned-weighted direction using the sampler we worked on last week.
+            </p>
+
+            <h3>Validation</h3>
+
+            <p>TODO: report test results (screenshot), and compare your rendering to reference images...</p>
+
+            <img src="images/mine.jpg" alt="Test results" /> <br> <br> <br> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Part 3: Multiple Importance Sampling</h2>
+
+            <p>This part was clearly the hardest for me. I faced a lot of bug and it took some time until all tests were
+                green :) I created the file direc_mis.cpp.</p>
+
+            <h3>Integrator Implementation</h3>
+
+            <p> Altought I had a lot of bugs, the implementation from this part was almost a copy-paste of the first two
+                integrators. Instead of just adding the variance of both integrator, we had to set a weight for each
+                radiance (w_em & w_mat). The difficulty of this part was to find the correct weights. Once you have the
+                weights, the implementation is really not a technical difficulty. Computing the weights, was a bit
+                confusing. After some trials and error, I managed to find how to retrieve the pdf from the nori data
+                structures and I passed the last tests.</p>
+
+            <h3>Validation</h3>
+
+            <p>TODO: report test results (screenshot), and compare your rendering to reference images...</p>
+
+            <img src="images/mine.jpg" alt="Test results" /> <br> <br> <br> <br>
+
+            <h3>Image Validation</h3>
+
+            <p>TODO: Show a 4-way comparison for each of the 2 scenes in your report. For each scene compare your 3
+                integrators (direct_ems, direct_mats, direct_mis) with the reference MIS rendering.</p>
+
+            <div class="twentytwenty-container">
+                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="resources/bootstrap.min.js"></script>
+    <!-- <script src="/js/offcanvas.js"></script> -->
+    <script src="resources/jquery.event.move.js"></script>
+    <script src="resources/jquery.twentytwenty.js"></script>
+
+
+    <script>
+        $(window).load(function () { $(".twentytwenty-container").twentytwenty({ default_offset_pct: 0.5 }); });
+    </script>
+
+</body>
+
+</html>
