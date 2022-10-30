@@ -38,45 +38,57 @@
 
             <h3>Uniform disk</h3>
 
-            <p>The derivation is below.</p>
+            <p>For the derivation of the disk, I used the slides from the exercice session.</p>
 
             <img src="images/disk_points.png" alt="Uniform disk" width=1100 />
 
             <h3>Uniform sphere</h3>
 
             <p>The derivation is below. <a href="http://corysimon.github.io/articles/uniformdistn-on-sphere/">I also
-                    took inspiration from this link</a> </p>
+                    took inspiration from this link. </a> Altough I could sample a cylinder and apply the hat box
+                theorem for
+                the sphere and the hemisphere, I decided to derive the full equations. The goal was to learn how to
+                manipulate the pdfs and cdfs. </p>
 
             <img src="images/sphere_points.png" alt="Uniform sphere" width=1100 />
 
             <h3>Uniform hemisphere</h3>
 
-            <p>The derivation is below.</p>
+            <p>The derivation is similar to the derivation of the sphere. However the pdfs and cdfs are a bit
+                differents. </p>
 
             <img src="images/uniform_hemisphere_points.png" alt="Uniform hemisphere" width=1100 />
 
             <h3>Uniform sphere cap</h3>
 
             <p>I approached the problem in a much different way. Instead of sampling directly with the integrals, I
-                sample a cylinder and use the Hat-Box theorem.
-                I rescale the points on the cylinder such that we pick a subset, where theta is smaller than theta max.
-                Using the Hat Box theorem, we know the the size of the surface is the same. </p>
+                sample a cylinder and use the Hat-Box theorem. Once we have the points uniformly sampled, we can use the
+                equations given in the slide 22 of the exercice session.
+                Since we want the points only where the angle is smaller than cosTethaMax, we need to rescale the points
+                on the cylinder such that we pick a subset, where theta is smaller than theta max.
+            </p>
 
             <img src="images/spherical_cap_points.png" alt="Uniform sphere cap" width=1100 />
 
             <h3>Cosine hemisphere</h3>
 
-            <p>The derivation is below.</p>
+            <p>The derivation is similar to the derivation of the sphere. However the pdfs and cdfs are a bit
+                differents. </p>
 
             <img src="images/hemisphere_cos_points.png" alt="Cosine hemisphere" width=1100 />
 
             <h3>Beckmann distribution</h3>
 
-            <p>The derivation is below.</p>
+            <p>The derivation is below. The derivation of this integral was a bit more complicated and took more time.
+                However the results is almost similar to the other parts of the assignment. </p>
 
             <img src="images/beckmann_points.png" alt="Beckmann distribution" width=1100 /> <br> <br> <br> <br>
 
-            <img src="images/derivation.jpg" width=1100 /> <br>
+            <h2>Part 1b: Derivations </h2>
+
+            <p>I wrote here all derivations I used to solve the assignments. </p>
+
+            <img src="images/derivation1.jpg" width=1100 /> <br>
             <img src="images/derivation2.jpg" width=1100 /> <br>
 
             <!-- ================================================================= -->
@@ -84,7 +96,8 @@
             <h2>Part 2: Validation</h2>
 
             <p>For this part of the assignment, I had no particular problems. We had to implement the pdf and check if
-                the tests were valid.</p>
+                the tests were valid. Of course it was important to make sure that the PDF is valid. Otherwise the test
+                is useless and can lead to wrong answers.</p>
 
             <h3>Uniform disk</h3>
             <img src="images/test_disk.png" alt="Uniform disk test" width=1100 />
