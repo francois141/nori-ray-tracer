@@ -55,10 +55,10 @@ public:
         lRec.wi = (lRec.p - lRec.ref).normalized();
         lRec.shadowRay = Ray3f(lRec.ref,lRec.wi,Epsilon,(lRec.p - lRec.ref).norm() - Epsilon);
         lRec.pdf = pdf(lRec);
-        
-        Color3f evaluation = eval(lRec) / pdf(lRec);
 
-        return lRec.pdf > 0.0f ? evaluation : BLACK;
+        float attenuation = lRec.n.dot(-lRec.wi) / (lRec.p - lRec.ref).squaredNorm();
+        
+        return lRec.pdf > 0.0f ? eval(lRec) * attenuation / pdf(lRec) : BLACK;
     }
 
     virtual float pdf(const EmitterQueryRecord &lRec) const override {
@@ -69,7 +69,7 @@ public:
 
         if(theta > 0.0f) {
             ShapeQueryRecord rec(lRec.ref,lRec.p);
-            return m_shape->pdfSurface(rec) * (rec.p - rec.ref).squaredNorm() / theta;
+            return m_shape->pdfSurface(rec);
         }
 
         return 0.0f;

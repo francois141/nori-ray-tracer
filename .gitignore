@@ -8,3 +8,5 @@ Makefile
 *.cmake
 .idea
 .vscode
+build
+*.exr
