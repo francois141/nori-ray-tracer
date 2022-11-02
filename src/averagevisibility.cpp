@@ -19,8 +19,7 @@ public:
         if (!scene->rayIntersect(ray, its))
             return WHITE;
 
-        Normal3f intersectionNormal = its.shFrame.n;
-        Ray3f newRay = Ray3f(its.p, Warp::sampleUniformHemisphere(sampler, intersectionNormal), Epsilon, ray_length);
+        Ray3f newRay = Ray3f(its.p, Warp::sampleUniformHemisphere(sampler, its.shFrame.n), Epsilon, ray_length);
 
         return scene->rayIntersect(newRay) ? BLACK : WHITE;
     }
