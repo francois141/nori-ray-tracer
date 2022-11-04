@@ -50,11 +50,10 @@
                 from the "correct" direction and then we can return the radiance associated to this point.</p>
 
             <p>The implementation of the pdf function was also straightforward. We first compute the cosinus using the
-                dot function. If we reach the emitter from the correct side, we can sample the pdf of the surface and
-                adjust with the distance of the sampling point.</p>
+                dot function. If we reach the emitter from the correct side, we can sample the pdf of the surface. </p>
 
             <p>The implementation of the sample function was a bit different. First we sample the surface, then we fill
-                the record data structure with all relevant stuff. At the end, we return eval(lRec) / pdf(lRec). </p>
+                the record data structure with all relevant stuff. At the end, we return eval(lRec) / pdf(lRec). We need to adjust with the intersection angle and the distance between the starting point and the intersection point. </p>
 
             <h3>Validation</h3>
 
