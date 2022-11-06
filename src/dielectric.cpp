@@ -43,7 +43,33 @@ public:
     }
 
     virtual Color3f sample(BSDFQueryRecord &bRec, const Point2f &sample) const override {
-        throw NoriException("Unimplemented!");
+
+        float theta = Frame::cosTheta(bRec.wi);
+        Vector3f normalVector = Vector3f(0,0,1.0f);
+        // Reflected
+        if(fresnel(theta,m_extIOR,m_intIOR) > sample.x()) {
+            bRec.eta = 1.0f;
+            bRec.wo = Vector3f(-bRec.wi.x(),-bRec.wi.y(),bRec.wi.z());
+        } 
+        // Refracted
+        else {
+            float factor = m_extIOR / m_intIOR;
+
+            if(theta < 0.0f) {
+                factor = 1 / factor;
+                normalVector.z() *= -1;   
+            }
+
+            Vector3f part1 = -factor*(bRec.wi - bRec.wi.dot(normalVector)*normalVector);
+            Vector3f part2 = -normalVector*sqrt(1 - pow(factor,2)*(1 - pow(bRec.wi.dot(normalVector),2)));
+            Vector3f wo = (part1 + part2).normalized();
+
+            bRec.wo = wo;
+            bRec.eta = m_extIOR / m_intIOR;
+        }
+        bRec.measure = EDiscrete;
+
+        return 1.0f;
     }
 
     virtual std::string toString() const override {
@@ -56,6 +82,7 @@ public:
     }
 private:
     float m_intIOR, m_extIOR;
+   
 };
 
 NORI_REGISTER_CLASS(Dielectric, "dielectric");
