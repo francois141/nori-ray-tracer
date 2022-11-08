@@ -76,7 +76,21 @@ public:
     }
 
     virtual Color3f samplePhoton(Ray3f &ray, const Point2f &sample1, const Point2f &sample2) const override {
-        throw NoriException("To implement...");
+        
+        // Sample the surface
+        ShapeQueryRecord sRec(Point3f(0.0f));
+        m_shape->sampleSurface(sRec, sample1);
+
+        if(sRec.pdf <= 0)
+            return BLACK;
+
+        // Throw a ray from the sampled point
+        Vector3f cosine_sample = Frame(sRec.n).toWorld(Warp::squareToCosineHemisphere(sample2));
+        ray = Ray3f(sRec.p,cosine_sample); 
+
+        // Return the evaluated point
+        EmitterQueryRecord eRec(sRec.p + cosine_sample, sRec.p, sRec.n);
+        return eval(eRec) * M_PI / sRec.pdf;
     }
 
 
