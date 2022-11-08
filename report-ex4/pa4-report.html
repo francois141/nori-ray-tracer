@@ -1,5 +1,7 @@
-<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<!DOCTYPE html
+    PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,103 +22,144 @@
 
 <body>
 
-<div class="container headerBar">
-		<h1>Programming Assignment 4 - Name Here</h1>
-</div>
+    <div class="container headerBar">
+        <h1>Programming Assignment 4 - François Costa (19-931-989)</h1>
+    </div>
 
-<div class="container contentWrapper">
-<div class="pageContent">
+    <div class="container contentWrapper">
+        <div class="pageContent">
 
-	<!-- ================================================================= -->
+            <!-- ================================================================= -->
 
-	<h2>Part 1: Dielectric BSDF</h2>
+            <h2>Part 1: Dielectric BSDF</h2>
 
-	<p>TODO: report problems, comments, files modified, and time spent... </p>
+            <p> We had to implement an idea dieletric brdf. The implementation was not that hard. The first step is to
+                check if the ray is going to be reflected or refracted. How can we do this? The answer the fresnel
+                equations.
 
-	<!-- ================================================================= -->
+                In the case the ray is reflected, we return the reflection of the ray. In the case the ray is refracted,
+                we can compute the new vector using the Snell's equations. Of course for both cases, we need to fill the
+                data structure BSDFQueryRecord.
+            </p>
 
-	<h2>Part 2: Path Tracing</h2>
+            <!-- ================================================================= -->
 
-    <p>TODO: report problems, comments, files modified, and time spent... </p>
+            <h2>Part 2: Path Tracing</h2>
 
-    <h3>path_mats Implementation</h3>
+            <p>For this part of the assignement, I created two new files, namely path_mats.cpp & path_mis.cpp </p>
 
-    <p>TODO: report implementation</p>
+            <h3>path_mats Implementation</h3>
 
-    <h3>path_mis</h3>
+            <p>The pats_mats integrator is very similar to the direct_mats one. The only difference is that we project
+                the ray until the russian roulette says stop. In the direct one, we trace the ray and project only a
+                second ray and then we stop. The tricky part of the implementation is that we need to create a Color3f
+                data structure with some attenuation.
 
-    <p>TODO: report implementation</p>
+                The methods work as follow.
+                while [TRUE]
+            <ul>
+                <li>trace a ray</li>
+                <li>check if we intersect a mesh</li>
+                <li>add Le if the intersected mesh is an emitter</li>
+                <li>update russian roulette -> stop if roulette says stop</li>
+                <li>sample the BDRF</li>
+                <li>trace a new ray</li>
+            </ul>
+            </p>
 
-    <h3>Validation</h3>
+            <h3>path_mis</h3>
 
-    <p>TODO: report test results (screenshot), and compare your rendering to reference images...</p>
-    
-    <img src="images/mine.jpg" alt="Test results"/> <br> <br> <br> <br>
+            <p>This integrator was harder for me to implement. The general idea is similar to the direct_mis one. The
+                difference is that we want to trace the ray recursively and stop when the russian roulette takes the
+                decision to stop. The integrator first sample a light source. Then perform russian roulette and then
+                samples the brdf. Of course we always need to ajust the weights w_ems and w_mats. This is
+                straightforward with the available data structures in nori.
 
-    <p>Cornell box scene</p>
+                The methods work as follow.
+                while [TRUE]
+            <ul>
+                <li>trace a ray</li>
+                <li>add Le if the intersected mesh is an emitter</li>
+                <li>sample ems part</li>
+                <li>update russian roulette -> stop if roulette says stop</li>
+                <li>sample mats part</li>
+                <li>check if the ray intersect a surface</li>
+                <li>trace a new ray</li>
+            </ul>
 
-    <div class="twentytwenty-container">
-        <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-        <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-        <img src="images/reference.jpg" alt="Reference" class="img-responsive">
-    </div> <br>
+            </p>
 
-    <p>Table scene</p>
+            <h3>Validation</h3>
 
-    <div class="twentytwenty-container">
-        <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-        <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-        <img src="images/reference.jpg" alt="Reference" class="img-responsive">
-    </div> <br>
+            <p></p>
 
-	<!-- ================================================================= -->
+            <img src="images/mine.jpg" alt="Test results" /> <br> <br> <br> <br>
 
-    <h2>Part 3: Photon Mapping</h2>
+            <p>Cornell box scene</p>
 
-    <p>TODO: report problems, comments, files modified, and time spent... </p>
+            <div class="twentytwenty-container">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
+            </div> <br>
 
-    <h3>Implementation</h3>
+            <p>Table scene</p>
 
-    <p>TODO: report implementation</p>
+            <div class="twentytwenty-container">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
+            </div> <br>
 
-    <h3>Validation</h3>
+            <!-- ================================================================= -->
 
-    <p>TODO: Show a 2-way comparison for each of the scenes...</p>
+            <h2>Part 3: Photon Mapping</h2>
 
-    <p>Cornell box scene</p>
+            <p>For this part of the assignment, I extened arealight.cpp & photonmapper.cpp/p>
 
-    <div class="twentytwenty-container">
-        <img src="images/reference.jpg" alt="Reference" class="img-responsive">
-        <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-    </div> <br>
+            <h3>Implementation</h3>
 
-    <p>Table scene</p>
+            <p>TODO: report implementation</p>
 
-    <div class="twentytwenty-container">
-        <img src="images/reference.jpg" alt="Reference" class="img-responsive">
-        <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-    </div> <br>
+            <h3>Validation</h3>
 
-    <p>Clocks scene</p>
+            <p>TODO: Show a 2-way comparison for each of the scenes...</p>
 
-    <div class="twentytwenty-container">
-        <img src="images/reference.jpg" alt="Reference" class="img-responsive">
-        <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-    </div> <br>
-</div>
-</div>
+            <p>Cornell box scene</p>
+
+            <div class="twentytwenty-container">
+                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+
+            <p>Table scene</p>
+
+            <div class="twentytwenty-container">
+                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+
+            <p>Clocks scene</p>
+
+            <div class="twentytwenty-container">
+                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
+                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+            </div> <br>
+        </div>
+    </div>
 
 
-<!-- Bootstrap core JavaScript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="resources/bootstrap.min.js"></script>
-<script src="resources/jquery.event.move.js"></script>
-<script src="resources/jquery.twentytwenty.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="resources/bootstrap.min.js"></script>
+    <script src="resources/jquery.event.move.js"></script>
+    <script src="resources/jquery.twentytwenty.js"></script>
 
 
-<script>
-$(window).load(function(){$(".twentytwenty-container").twentytwenty({default_offset_pct: 0.5});});
-</script>
+    <script>
+        $(window).load(function () { $(".twentytwenty-container").twentytwenty({ default_offset_pct: 0.5 }); });
+    </script>
 
 </body>
+
 </html>
