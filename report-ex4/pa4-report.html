@@ -93,22 +93,23 @@
 
             <p></p>
 
-            <img src="images/mine.jpg" alt="Test results" /> <br> <br> <br> <br>
+            <img src="images/test1.png" alt="Test results" />
+            <img src="images/test2.png" alt="Test results" />
 
             <p>Cornell box scene</p>
 
             <div class="twentytwenty-container">
-                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
+                <img src="images/cbox_path_mats.png" alt="Mats" class="img-responsive">
+                <img src="images/cbox_path_mis.png" alt="Mis" class="img-responsive">
+                <img src="images/cbox_path_mis_512spp.png" alt="Reference" class="img-responsive">
             </div> <br>
 
             <p>Table scene</p>
 
             <div class="twentytwenty-container">
-                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
-                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
+                <img src="images/table_path_mats.png" alt="Mats" class="img-responsive">
+                <img src="images/table_path_mis.png" alt="Mis" class="img-responsive">
+                <img src="images/table_path_mis_512spp.png" alt="Reference" class="img-responsive">
             </div> <br>
 
             <!-- ================================================================= -->
@@ -119,31 +120,44 @@
 
             <h3>Implementation</h3>
 
-            <p>TODO: report implementation</p>
+            <p>The first function I extended is samplePhoton. First we sample the surface. Then we sample a ray from the
+                surface and we evaluate the point. This function was straightforward.</p>
+
+            <p>The next function is the function preprocess. It is important to distinguish the number of emitted
+                photons and m_photonCount. My implementation works as follow. For each emitted photon, we choose a
+                randomEmitter and start tracing from this emitter. We trace the photon until the russian roulette says
+                stop. The tracing process is not very complicated. The first step is to check if we intersects
+                something. Then if the intersected mesh has a diffuse BSDF, we can store the photon. We choose the next
+                ray using BRDF sampling.</p>
+
+            <p>The last function is the LI function. We create a ray and trace it recursively until we don't get any
+                intersection, the russian roulette says stop or the BRDF is a diffuse surface. When we intersect a
+                diffuse surface, we search the photons, add the value of each photons and then return the attenuated
+                result.If we intersect an
+                emitter, of course we add the radiance to the final result. The process is almost the same as the mats
+                integrator. </p>
 
             <h3>Validation</h3>
-
-            <p>TODO: Show a 2-way comparison for each of the scenes...</p>
 
             <p>Cornell box scene</p>
 
             <div class="twentytwenty-container">
-                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
-                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/cbox_pmap_32spp_10Mp.png" alt="Reference" class="img-responsive">
+                <img src="images/cbox_pmap.png" alt="Mine" class="img-responsive">
             </div> <br>
 
             <p>Table scene</p>
 
             <div class="twentytwenty-container">
-                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
-                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/table_pmap_256spp_5Mp.png" alt="Reference" class="img-responsive">
+                <img src="images/table_pmap.png" alt="Mine" class="img-responsive">
             </div> <br>
 
             <p>Clocks scene</p>
 
             <div class="twentytwenty-container">
-                <img src="images/reference.jpg" alt="Reference" class="img-responsive">
-                <img src="images/mine.jpg" alt="Mine" class="img-responsive">
+                <img src="images/clocks_64spp_10Mp.png" alt="Reference" class="img-responsive">
+                <img src="images/clocks.png" alt="Mine" class="img-responsive">
             </div> <br>
         </div>
     </div>
