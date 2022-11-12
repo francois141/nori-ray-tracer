@@ -34,7 +34,7 @@
             <h2>Part 1: Dielectric BSDF</h2>
 
             <p> We had to implement an idea dieletric brdf. The implementation was not that hard. The first step is to
-                check if the ray is going to be reflected or refracted. How can we do this? The answer the fresnel
+                check if the ray is going to be reflected or refracted. How can we do this? The answer is the fresnel
                 equations.
 
                 In the case the ray is reflected, we return the reflection of the ray. In the case the ray is refracted,
@@ -55,7 +55,7 @@
                 second ray and then we stop. The tricky part of the implementation is that we need to create a Color3f
                 data structure with some attenuation.
 
-                The methods work as follow.
+                The function works as follow. <br /><br />
                 while [TRUE]
             <ul>
                 <li>trace a ray</li>
@@ -75,7 +75,7 @@
                 samples the brdf. Of course we always need to ajust the weights w_ems and w_mats. This is
                 straightforward with the available data structures in nori.
 
-                The methods work as follow.
+                The function works as follow. <br /><br />
                 while [TRUE]
             <ul>
                 <li>trace a ray</li>
@@ -116,7 +116,7 @@
 
             <h2>Part 3: Photon Mapping</h2>
 
-            <p>For this part of the assignment, I extened arealight.cpp & photonmapper.cpp/p>
+            <p>For this part of the assignment, I extended arealight.cpp & photonmapper.cpp/p>
 
             <h3>Implementation</h3>
 
@@ -127,15 +127,14 @@
                 photons and m_photonCount. My implementation works as follow. For each emitted photon, we choose a
                 randomEmitter and start tracing from this emitter. We trace the photon until the russian roulette says
                 stop. The tracing process is not very complicated. The first step is to check if we intersects
-                something. Then if the intersected mesh has a diffuse BSDF, we can store the photon. We choose the next
-                ray using BRDF sampling.</p>
+                something. If the intersected mesh has a diffuse BSDF, we can store the photon. We choose the next
+                ray by sampling the BRDF.</p>
 
             <p>The last function is the LI function. We create a ray and trace it recursively until we don't get any
                 intersection, the russian roulette says stop or the BRDF is a diffuse surface. When we intersect a
-                diffuse surface, we search the photons, add the value of each photons and then return the attenuated
-                result.If we intersect an
-                emitter, of course we add the radiance to the final result. The process is almost the same as the mats
-                integrator. </p>
+                diffuse surface, we search the photons, add the value of each photons and then return the
+                result using the equation. If we intersect an emitter, of course we add the radiance to the final
+                result. At the end, the process is very similar to the mats integrator. </p>
 
             <h3>Validation</h3>
 
