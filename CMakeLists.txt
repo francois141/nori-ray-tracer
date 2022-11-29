@@ -10,7 +10,8 @@ include_directories(ext)
 
 # The following lines build the main executable. If you add a source
 # code file to Nori, be sure to include it in this list.
-add_executable(nori
+
+SET(SOURCES_FILES
 
   # Header files
   include/nori/bbox.h
@@ -55,7 +56,6 @@ add_executable(nori
   src/diffuse.cpp
   src/gui.cpp
   src/independent.cpp
-  src/main.cpp
   src/mesh.cpp
   src/obj.cpp
   src/object.cpp
@@ -87,6 +87,9 @@ add_executable(nori
   src/spotlight.cpp
 )
 
+add_executable(nori "${SOURCES_FILES}" src/main.cpp)
+add_executable(nori_euler "${SOURCES_FILES}" src/main_euler.cpp)
+
 # The following lines build the warping test application
 add_executable(warptest
   include/nori/warp.h
@@ -110,11 +113,14 @@ add_dependencies(nori OpenEXR_p)
 add_dependencies(nori nanogui_p)
 add_dependencies(nori tbb_p)
 add_dependencies(nori pugixml)
+add_dependencies(nori_euler tbb_p)
+add_dependencies(nori_euler pugixml)
 add_dependencies(warptest nori)
 add_dependencies(tonemapper nori)
 
 # Link to dependency libraries
 target_link_libraries(nori ${extra_libs})
+target_link_libraries(nori_euler ${extra_libs})
 target_link_libraries(warptest ${extra_libs})
 target_link_libraries(tonemapper ${extra_libs})
 
