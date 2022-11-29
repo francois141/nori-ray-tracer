@@ -1,0 +1,252 @@
+<!DOCTYPE html
+    PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="../favicon.ico" />
+
+    <title>Computer Graphics - PA1</title>
+
+    <link href="resources/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/offcanvas.css" rel="stylesheet">
+    <link href="resources/custom2014.css" rel="stylesheet">
+    <link href="resources/twentytwenty.css" rel="stylesheet" type="text/css" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <style>
+        #francois {
+            color: rgb(0, 60, 128);
+            font-weight: bold;
+        }
+
+        #andrew {
+            color: rgb(189, 0, 0);
+            font-weight: bold;
+        }
+
+        img {
+            margin-top: 10px;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+
+    <div class="container headerBar">
+        <h1>Project proposal | Andrew Edward Richard Dobis (16-834-657) - François Costa (19-989-931) </h1>
+    </div>
+
+    <div class="container contentWrapper">
+        <div class="pageContent">
+
+            <!-- ================================================================= -->
+
+            <h2>Proposal</h2>
+
+            <h3>Project goal</h3>
+
+            <p> For our project, our goal is to create an artistic interpretation of the different continents. To fit
+                the “out of place” theme, our world will be placed inside of a zoo-like aquarium, reminding us
+                how small our world truly is in the grand scheme of things by placing it in an environment that
+                is usually used to contain and showcase captured animals, making it feel off-putting and out
+                of place. In our image, we want each sphere inside of the aquarium to represent a continent,
+                and to contain a typical biome of said continent. That's why there are also 5 images that serve
+                as inspiration, one for each continent. </p>
+
+            <h3>Feature breakdown - <span id="andrew">Andrew</span> | <span id="francois">François</span></h3>
+
+            <p>
+                One of the main goals for our image is to give it a sort of surreal eerie feeling. To do so, we
+                will implement an <span id="andrew">Advanced Camera Model</span>, which will enable certain analog
+                aberrations
+                (our goal is to be able to simulate the use of an anamorphic lens to give it that extra surreal
+                feeling that we get from ultra-cinematic movies).
+
+                As our inspiration aquarium image shows us, in order to achieve the true cheap-old zoo vibe,
+                we will want to render out this sort of slightly gucky water. To do this, we will implement
+                <span id="francois">homogeneous participating media</span> to capture the semi-opaque water, as well as
+                <span id="andrew">Perlin
+                    Noise </span> to procedurally model the disturbed surface of said water. We also want the interior
+                of
+                our aquarium to be lit by a dramatic spotlight. To do so, we will implement an additional <span
+                    id="francois">simple
+                    spotlight emitter</span>.
+
+                To add additional immersion to our scene, we will want to simulate a realistic environment for
+                the area surrounding our aquarium. This will be done using <span id="andrew">image textures</span> and
+                <span id="andrew">normal maps</span>, to add character to the surrounding world, similarly to the wall
+                in our aquarium image.
+                We will also be using <span id="andrew">custom meshes </span> to achieve this goal. Additionally, to
+                create a realistic
+                lighting environment for our micro-scenes, we will implement an <span id="andrew">environment map
+                    emitter </span>.
+
+                In one of our biomes, we want to represent a land devastated by forest fires (Oceania or north
+                America). To do so, we will implement <span id="andrew">Emissive Participating Media</span> in order to
+                render such
+                fires.
+
+                We will also be implementing the <span id="francois">Disney BSDF</span> to be able to represent a
+                variety of materials
+                within our scene. Additionally, given that our scene will be quite compute-intensive, we will
+                implement several features that will allow us to improve the quality of our final render and
+                reduce the total render-time, such as <span id="francois">Moderate Denoising</span>, <span
+                    id="francois">an extra reconstruction filter</span>,
+                and <span id="francois">rendering on the Euler Cluster</span>.
+
+            </p>
+
+            <h3>Images used as inspiration</h3>
+
+            <div id="img-container">
+                <img src="images/image.jpg" height="200">
+                <img src="images/image2.jpeg" height="200">
+                <img src="images/africa.jpg" height="200">
+                <img src="images/asia.jpg" height="200">
+                <img src="images/europe.jpeg" height="200">
+                <img src="images/southamerica.jpeg" height="200">
+                <img src="images/us.jpg" height="200">
+            </div>
+
+            <h3>Features per person</h3>
+
+            <h4 id="andrew">Andrew</h4>
+
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Points</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Modeling meshes</td>
+                    <td>5</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Procedural volumes</td>
+                    <td>5</td>
+                    <td>Perlin noise</td>
+                </tr>
+
+                <tr>
+                    <td>Normal mapping</td>
+                    <td>5</td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>Images as textures</td>
+                    <td>5</td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>Emissive participating media</td>
+                    <td>10</td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>Environment map emitter</td>
+                    <td>15</td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>Advanced camera model</td>
+                    <td>15</td>
+                    <td></td>
+                </tr>
+
+
+            </table>
+
+
+            <h4 id="francois">François</h4>
+
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Points</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Simple extra emitter</td>
+                    <td>5</td>
+                    <td>Spotlight</td>
+                </tr>
+                <tr>
+                    <td>Extra reconstruction filter</td>
+                    <td>5</td>
+                    <td>Windowed Sinc</td>
+                </tr>
+                <tr>
+                    <td>Rendering on the euler cluster</td>
+                    <td>5</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Moderate denoising</td>
+                    <td>15</td>
+                    <td>NL-means using Pixel Variance Estimates</td>
+                </tr>
+                <tr>
+                    <td>Disney BSDF</td>
+                    <td>15</td>
+                    <td>baseColor, metallic, specular, roughness, sheen</td>
+                </tr>
+                <tr>
+                    <td>Homogeneous participating media</td>
+                    <td>15</td>
+                    <td></td>
+                </tr>
+
+
+            </table>
+
+
+
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="resources/bootstrap.min.js"></script>
+    <script src="/js/offcanvas.js"></script>
+    <script src="resources/jquery.event.move.js"></script>
+    <script src="resources/jquery.twentytwenty.js"></script>
+
+
+    <script>
+        $(window).load(function () { $(".twentytwenty-container").twentytwenty({ default_offset_pct: 0.5 }); });
+    </script>
+
+</body>
+
+</html>
