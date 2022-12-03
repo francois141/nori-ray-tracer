@@ -127,9 +127,16 @@ void RenderThread::renderScene(const std::string & filename) {
             outputName.erase(lastdot, std::string::npos);
         outputName += ".exr";
 
+        /* Determine the filename of the output variance bitmap*/
+        std::string outputNameVariance = filename;
+        lastdot = outputNameVariance.find_last_of(".");
+        if (lastdot != std::string::npos)
+            outputNameVariance.erase(lastdot, std::string::npos);
+        outputNameVariance += "_variance.exr";
+
         /* Do the following in parallel and asynchronously */
         m_render_status = 1;
-        m_render_thread = std::thread([this,outputName] {
+        m_render_thread = std::thread([this,outputName,outputNameVariance] {
             const Camera *camera = m_scene->getCamera();
             Vector2i outputSize = camera->getOutputSize();
 
@@ -145,6 +152,10 @@ void RenderThread::renderScene(const std::string & filename) {
 
             tbb::concurrent_vector< std::unique_ptr<Sampler> > samplers;
             samplers.resize(numBlocks);
+
+            ImageBlock varianceBlock(camera->getOutputSize(),camera->getReconstructionFilter());
+            Bitmap sumBitmap(camera->getOutputSize());
+            Bitmap sum2Bitmap(camera->getOutputSize());
 
             for (uint32_t k = 0; k < numSamples ; ++k) {
                 m_progress = k/float(numSamples);
@@ -175,6 +186,9 @@ void RenderThread::renderScene(const std::string & filename) {
 
                         // The image block has been processed. Now add it to the "big" block that represents the entire image
                         m_block.put(block);
+
+                        // We also add this to a variance block
+                        varianceBlock.put(block);
                     }
                 };
 
@@ -183,6 +197,20 @@ void RenderThread::renderScene(const std::string & filename) {
 
                 /// Default: parallel rendering
                 tbb::parallel_for(range, map);
+
+                const int sizeX = sumBitmap.rows();
+                const int sizeY = sumBitmap.cols();
+
+                varianceBlock.lock();
+                Bitmap varianceBitmap(*varianceBlock.toBitmap());
+                varianceBlock.unlock();
+
+                for(int i = 0; i < sizeX;i++) {
+                    for(int j = 0; j < sizeY;j++) {
+                        sumBitmap(i,j) += varianceBitmap(i,j);
+                        sum2Bitmap(i,j) += pow(varianceBitmap(i,j),2);
+                    }
+                }
 
                 blockGenerator.reset();
             }
@@ -197,6 +225,23 @@ void RenderThread::renderScene(const std::string & filename) {
 
             /* Save using the OpenEXR format */
             bitmap->save(outputName);
+
+            /* Return also the pixel variance estimate */
+            const int sizeX = sumBitmap.rows();
+            const int sizeY = sumBitmap.cols();
+
+            Bitmap pixelVarianceEstimates(camera->getOutputSize());
+
+            // V(X) = E(X2) − (E(X))2 
+            for(int i = 0; i < sizeX;i++) {
+                for(int j = 0; j < sizeY;j++) {
+                    sumBitmap(i,j) /= numSamples;
+                    sum2Bitmap(i,j) /= numSamples;
+                    pixelVarianceEstimates(i,j) = sum2Bitmap(i,j) - pow(sumBitmap(i,j),2);
+                }
+            }
+
+            pixelVarianceEstimates.save(outputNameVariance);
 
             delete m_scene;
             m_scene = nullptr;
