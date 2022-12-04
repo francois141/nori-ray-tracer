@@ -52,6 +52,10 @@ bool RenderThread::isBusy() {
     return m_render_status != 0;
 }
 
+bool RenderThread::isRenderingDone() {
+    return m_render_status == 3;
+}
+
 void RenderThread::stopRendering() {
     if(isBusy()) {
         cout << "Requesting interruption of the current rendering" << endl;
@@ -203,7 +207,6 @@ void RenderThread::renderScene(const std::string & filename) {
 
             m_render_status = 3;
         });
-
     }
     else {
         delete root;
