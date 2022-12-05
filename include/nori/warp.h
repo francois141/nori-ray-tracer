@@ -83,6 +83,9 @@ public:
 
     // Custom added functions
     static Vector3f squareToUniformCylinder(const Point2f &sample);
+
+    // For thin lens model sampling
+    static Point2f squareToConcentricDisk(const Point2f& sample);
     
 
 };

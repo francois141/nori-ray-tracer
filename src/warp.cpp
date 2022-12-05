@@ -139,4 +139,26 @@ Vector3f Warp::squareToUniformTriangle(const Point2f &sample)
     return Vector3f(u, v, 1.f - u - v);
 }
 
+// Based on PBRT code for thin lens model sampling
+Point2f Warp::squareToConcentricDisk(const Point2f& sample) {
+    // Map to ([-1, 1], [-1, 1])
+    Point2f offset = 2.f * sample - Point2f(1.f);
+
+    // Handle degeneracy at origin
+    if(offset.isZero()) {
+        return Point2f(0.0f);
+    }
+
+    // Apply concentric mapping to point
+    float theta, r;
+    if(std::abs(offset.x()) > std::abs(offset.y())) {
+        r = offset.x();
+        theta = M_PI * 0.25f * (offset.y() / offset.x());
+    } else {
+        r = offset.y();
+        theta = M_PI * 0.5f - M_PI * 0.25f * (offset.x() / offset.y());
+    }
+    return r * Point2f(cos(theta), sin(theta));
+}
+
 NORI_NAMESPACE_END
