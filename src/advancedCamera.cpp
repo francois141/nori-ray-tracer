@@ -31,21 +31,15 @@ NORI_NAMESPACE_BEGIN
  */
 class AdvancedCamera : public Camera {
 public:
-    AdvancedCamera(const PropertyList &propList) {
+    AdvancedCamera(const PropertyList &propList) : 
+        simpleWeighting(propList.getBoolean("simpleWeighting", true)) {
+
         /* Width and height in pixels. Default: 720p */
         m_outputSize.x() = propList.getInteger("width", 1280);
         m_outputSize.y() = propList.getInteger("height", 720);
-        m_invOutputSize = m_outputSize.cast<float>().cwiseInverse();
 
         /* Specifies an optional camera-to-world transformation. Default: none */
         m_cameraToWorld = propList.getTransform("toWorld", Transform());
-
-        /* Horizontal field of view in degrees */
-        m_fov = propList.getFloat("fov", 30.0f);
-
-        /* Near and far clipping planes in world-space units */
-        m_nearClip = propList.getFloat("nearClip", 1e-4f);
-        m_farClip = propList.getFloat("farClip", 1e4f);
 
         m_rfilter = NULL;
     }
@@ -63,32 +57,6 @@ public:
     virtual void activate() override {
         float aspect = m_outputSize.x() / (float) m_outputSize.y();
 
-        /* Project vectors in camera space onto a plane at z=1:
-         *
-         *  xProj = cot * x / z
-         *  yProj = cot * y / z
-         *  zProj = (far * (z - near)) / (z * (far-near))
-         *  The cotangent factor ensures that the field of view is 
-         *  mapped to the interval [-1, 1].
-         */
-        float recip = 1.0f / (m_farClip - m_nearClip),
-              cot = 1.0f / std::tan(degToRad(m_fov / 2.0f));
-
-        Eigen::Matrix4f perspective;
-        perspective <<
-            cot, 0,   0,   0,
-            0, cot,   0,   0,
-            0,   0,   m_farClip * recip, -m_nearClip * m_farClip * recip,
-            0,   0,   1,   0;
-
-        /**
-         * Translation and scaling to shift the clip coordinates into the
-         * range from zero to one. Also takes the aspect ratio into account.
-         */
-        m_sampleToCamera = Transform( 
-            Eigen::DiagonalMatrix<float, 3>(Vector3f(0.5f, -0.5f * aspect, 1.0f)) *
-            Eigen::Translation<float, 3>(1.0f, -1.0f/aspect, 0.0f) * perspective).inverse();
-
         /* If no reconstruction filter was assigned, instantiate a Gaussian filter */
         if (!m_rfilter) {
             m_rfilter = static_cast<ReconstructionFilter *>(
@@ -97,25 +65,29 @@ public:
         }
     }
 
+    /**
+     * \brief Importance sample a ray according to the camera's response function
+     *
+     * \param ray
+     *    A ray data structure to be filled with a position 
+     *    and direction value
+     *
+     * \param samplePosition (pFilm)
+     *    Denotes the desired sample position on the film
+     *    expressed in fractional pixel coordinates
+     *
+     * \param apertureSample (pLens)
+     *    A uniformly distributed 2D vector that is used to sample
+     *    a position on the aperture of the sensor if necessary.
+     *
+     * \return
+     *    An importance weight associated with the sampled ray.
+     *    This accounts for the difference in the camera response
+     *    function and the sampling density.
+     */
     Color3f sampleRay(Ray3f &ray,
             const Point2f &samplePosition,
             const Point2f &apertureSample) const {
-        /* Compute the corresponding position on the 
-           near plane (in local camera space) */
-        Point3f nearP = m_sampleToCamera * Point3f(
-            samplePosition.x() * m_invOutputSize.x(),
-            samplePosition.y() * m_invOutputSize.y(), 0.0f);
-
-        /* Turn into a normalized ray direction, and
-           adjust the ray interval accordingly */
-        Vector3f d = nearP.normalized();
-        float invZ = 1.0f / d.z();
-
-        ray.o = m_cameraToWorld * Point3f(0, 0, 0);
-        ray.d = m_cameraToWorld * d;
-        ray.mint = m_nearClip * invZ;
-        ray.maxt = m_farClip * invZ;
-        ray.update();
 
         return Color3f(1.0f);
     }
@@ -138,27 +110,76 @@ public:
     virtual std::string toString() const override {
         return tfm::format(
             "AdvancedCamera[\n"
-            "  cameraToWorld = %s,\n"
-            "  outputSize = %s,\n"
-            "  fov = %f,\n"
-            "  clip = [%f, %f],\n"
-            "  rfilter = %s\n"
+            "  Element Interfaces = %s,\n"
+            "  Exit Pupil Bounds = %s,\n"
             "]",
-            indent(m_cameraToWorld.toString(), 18),
-            m_outputSize.toString(),
-            m_fov,
-            m_nearClip,
-            m_farClip,
-            indent(m_rfilter->toString())
+            indent(std::string(m_elementInterfaces.begin(), m_elementInterfaces.end()), 18),
+            std::string(m_exitPupilBounds.begin(), m_exitPupilBounds.end())
         );
     }
 private:
-    Vector2f m_invOutputSize;
-    Transform m_sampleToCamera;
+    // Define a lens element structure (based on PBRT)
+    struct LensElementInterface {
+        float curvatureRadius;
+        float thickness;
+        float eta;
+        float apertureRadius;
+    };
+
+    //====================== ADVANCED CAMERA FIELDS ===================
+    const bool simpleWeighting;
+    std::vector<LensElementInterface> m_elementInterfaces;
+    std::vector<BoundingBox2f> m_exitPupilBounds;
     Transform m_cameraToWorld;
-    float m_fov;
-    float m_nearClip;
-    float m_farClip;
+    //=================================================================
+
+    //=============== ADVANCED CAMERA PRIVATE METHODS =================
+    // Z-coordinate of the rear lens in our system
+    float LensRearZ() const { 
+        return m_elementInterfaces.back().thickness; 
+    }
+
+    // Z-coordinate of the front lens in our system
+    float LensFrontZ() const {
+        float zSum = 0;
+        for (const LensElementInterface &element : m_elementInterfaces)
+            zSum += element.thickness;
+        return zSum;
+    }
+
+    // The aperture radius of the rear lens in our system
+    float RearElementRadius() const {
+        return m_elementInterfaces.back().apertureRadius;
+    }
+
+    bool TraceLensesFromFilm(const Ray3f &ray, Ray3f *rOut) const {
+       
+    }
+
+    static bool IntersectSphericalElement(float radius, float zCenter, const Ray3f &ray, float *t, Normal3f *n) {
+        //TODO: Compute Intersection with spherical element
+    }
+    bool TraceLensesFromScene(const Ray3f &rCamera, Ray3f *rOut) const {
+        //TODO:
+    }
+    void DrawLensSystem() const;
+    void DrawRayPathFromFilm(const Ray3f &r, bool arrow,
+                            bool toOpticalIntercept) const;
+    void DrawRayPathFromScene(const Ray3f &r, bool arrow,
+                            bool toOpticalIntercept) const;
+    static void ComputeCardinalPoints(const Ray3f &rIn, const Ray3f &rOut, float *p,
+                                    float *f);
+    void ComputeThickLensApproximation(float pz[2], float f[2]) const;
+    float FocusThickLens(float focusDistance);
+    float FocusBinarySearch(float focusDistance);
+    float FocusDistance(float filmDist);
+    BoundingBox2f BoundExitPupil(float pFilmX0, float pFilmX1) const;
+    void RenderExitPupil(float sx, float sy, const char *filename) const;
+    Point3f SampleExitPupil(const Point2f &pFilm, const Point2f &lensSample,
+                            float *sampleBoundsArea) const;
+    void TestExitPupilBounds() const;
+    //========================================================================
+
 };
 
 NORI_REGISTER_CLASS(AdvancedCamera, "advancedCamera");
