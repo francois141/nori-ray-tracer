@@ -44,6 +44,8 @@ SET(SOURCES_FILES
   include/nori/transform.h
   include/nori/vector.h
   include/nori/warp.h
+  include/nori/blockedarray.h
+  include/nori/texturemapping.h
 
   # Source code files
   src/bitmap.cpp
@@ -86,6 +88,8 @@ SET(SOURCES_FILES
   src/path_mis.cpp
   src/spotlight.cpp
   src/imagetexture.cpp
+  src/colortexture.cpp
+  src/uvmapping.cpp
 )
 
 add_executable(nori "${SOURCES_FILES}" src/main.cpp)

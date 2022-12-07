@@ -16,14 +16,42 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 #include <nori/texture.h>
+#include <nori/blockedarray.h>
 
 NORI_NAMESPACE_BEGIN
 
 /**
- * \brief Superclass of all texture
+ * @brief Enum to define how textures are repeated when mapped
+ * to a specific geometry
+ */
+enum class ImageWrap { Repeat, Black, Clamp };
+
+/**
+ * @brief Defines a mipmap, used to improve the filtering of a texture
+ * 
+ * @tparam T the return type of said texture's eval method
+ */
+/*template<typename T>
+class MipMap {
+public:
+    MipMap(const Point2i &resolution, const T* data,
+            bool doTri = false, float maxAniso = 8.f, 
+            ImageWrap wrapMode = ImageWrap::Repeat) : 
+        
+private:
+    const bool m_doTri;
+    const float m_maxAniso;
+    const ImageWrap m_wrapMode;
+    Point2i m_resolution;
+    std::vector<std::unique_ptr<BlockedArray<T>>> pyramid;
+    
+};*/
+
+/**
+ * \brief Image texture
  */
 template <typename Tmemory, typename Treturn>
-class ImageTexture : public Texture {
+class ImageTexture : public Texture<Treturn> {
 public:
 
     ImageTexture(const PropertyList &props) {
