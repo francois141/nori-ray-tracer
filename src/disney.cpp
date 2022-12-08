@@ -36,8 +36,8 @@ inline float GGX(const float NdotV, const float alphaG)
     return 1 / (NdotV + sqrt(a + b - a*b));
 }
 
-template <typename T> 
-inline T lerp(const T &a,const T &b, cons T& t) {
+template <typename T1,typename T2> 
+inline T1 lerp(const T1 &a,const T1 &b, const T2 &t) {
     return t*a + (1.0-t)*b;
 }
 
@@ -53,6 +53,8 @@ public:
 
         this->m_baseColor = propList.getColor("baseColor",Color3f(0.0f));
         this->m_sheenTint = propList.getColor("sheenTint",Color3f(0.0f));
+
+        this->m_alpha = std::max(1e-5, std::pow(m_roughness,2));
     }
 
     /// Evaluate the BRDF for the given pair of directions
@@ -82,7 +84,7 @@ public:
         Color3f diffuse = m_baseColor * INV_PI * (1.f + (fd90 - 1.f) * fl) * (1.f + (fd90 - 1.f) * fv);
 
         // Specular part
-        float Ds = Warp::squareToBeckmannPdf(wh,pow(m_roughness,2));
+        float Ds = Warp::squareToGTR2Pdf(wh,pow(m_roughness,2));
         float FH = SchlickFresnel(LdotH);
         Color3f Fs = lerp(Color3f(0.0f),Color3f(1.0f),FH);
         float Gs = GGX(NdotL,FIXED_ROUGHNESS);
@@ -90,21 +92,49 @@ public:
         Color3f specular = Gs*Fs*Ds;
 
         // Sheen part
-        float luminance = 0.3 * m_baseColor.x() + 0.6f * m_baseColor.y() + 1.0f * m_baseColor.z();
-        Color3f tint = (luminance > 0.0f) ? (1.0f / luminance) * m_baseColor : Color3f(1.0f);
-        Color3f Fsheen = FH * m_sheen * lerp(tint,m_sheenTint,1.0f);
+        Color3f Fsheen = FH * m_sheen * lerp(Ctint,m_sheenTint,1.0f);
         
         return (1 - m_metallic) * (diffuse + Fsheen) +  specular;
     }
 
     /// Evaluate the sampling density of \ref sample() wrt. solid angles
     virtual float pdf(const BSDFQueryRecord &bRec) const override {
-        return 1.0f;
+
+    	float cosinus = Frame::cosTheta(bRec.wo);
+        if(cosinus <= 0.0f) {
+            return 0.0f;
+        }
+
+        Vector3f normal = (bRec.wi + bRec.wo).normalized();
+        
+
+        float metallicTerm = Warp::squareToGTR2Pdf(normal, m_alpha) * Frame::cosTheta(normal) / (4.0f*abs(normal.dot(bRec.wo)));
+        float diffuseTerm = cosinus*INV_PI;
+
+        return (1-m_metallic) * metallicTerm + m_metallic * diffuseTerm; 
     }
 
     /// Sample the BRDF
     virtual Color3f sample(BSDFQueryRecord &bRec, const Point2f &_sample) const override {
-        return Color3f(0.0f);
+        
+        if(Frame::cosTheta(bRec.wi) <= 0.0f)
+            return Color3f(0.0f);
+
+        if(_sample.x() <= m_metallic) {
+            // Not diffuse part
+            Point2f rescaledSample = Point2f(_sample.x() / m_metallic,_sample.y());
+            bRec.wo = Warp::squareToGTR2(rescaledSample,m_alpha);
+        } else {
+            // Diffuse part
+            Point2f rescaledSample = Point2f((_sample.x()-m_metallic) / (1 - m_metallic),_sample.y());
+            bRec.wo = Warp::squareToCosineHemisphere(rescaledSample);
+        }
+        
+        float cosTheta = Frame::cosTheta(bRec.wo);
+        if(cosTheta <= 0.0f)
+            return Color3f(0.0f);
+
+        return eval(bRec) * cosTheta / pdf(bRec);
     }
 
     virtual std::string toString() const override {
@@ -132,6 +162,7 @@ private:
     float m_specular;
     float m_roughness;
     float m_sheen;
+    float m_alpha;
 
     Color3f m_baseColor;
     Color3f m_specularTint;
