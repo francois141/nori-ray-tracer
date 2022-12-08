@@ -48,7 +48,33 @@ private:
     
 };*/
 
-ImageTexture::ImageTexture(const PropertyList &props) : m_filename(props.getString("fileName", "")) {
+/**
+ * \brief Image texture
+ */
+class ImageTexture : public Texture<Color3f> {
+public:
+
+    ImageTexture(const PropertyList &props);
+
+    Color3f eval(const Point2f & uv) const override;
+
+    std::string toString() const override;
+
+private:
+    std::string m_filename;
+    uint8_t* m_data;
+    int m_width;
+    int m_height;
+    int m_channels; // RGB or RGBA
+
+    Color3f getData(const Point2f & uv) const;
+};
+
+NORI_REGISTER_CLASS(ImageTexture, "ImageTexture");
+
+ImageTexture::ImageTexture(const PropertyList &props) {
+    m_filename = props.getString("fileName", "");
+    
     // Load in image
     m_data = stbi_load(
         m_filename.c_str(), 
@@ -71,14 +97,14 @@ Color3f ImageTexture::getData(const Point2f & xy) const  {
     int y = clamp(static_cast<int>(xy.y()), 0, m_height - 1);
 
     // Retrieve the data for the individual color channels
-    float redData = static_cast<float>(m_data[(x + m_width * y) * STBI_rgb + RED_CHANNEL]) / UCHAR_MAX;
-    float greenData = static_cast<float>(m_data[(x + m_width * y) * STBI_rgb + GREEN_CHANNEL]) / UCHAR_MAX;
-    float blueData = static_cast<float>(m_data[(x + m_width * y) * STBI_rgb + BLUE_CHANNEL]) / UCHAR_MAX;
+    float redData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + RED_CHANNEL)]) / UCHAR_MAX; // SEGV
+    float greenData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + GREEN_CHANNEL)]) / UCHAR_MAX;
+    float blueData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + BLUE_CHANNEL)]) / UCHAR_MAX;
 
     return Color3f(redData, greenData, blueData);
 }
 
-Color3f ImageTexture::eval(const Point2f & uv) {
+Color3f ImageTexture::eval(const Point2f & uv) const {
     // Retrieve texel coordinates from uv coordinates
     float x(1.0f - uv.x() * m_width), y(uv.y() * m_height);
 

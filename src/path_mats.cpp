@@ -2,6 +2,7 @@
 #include <nori/scene.h>
 #include <nori/warp.h>
 #include <nori/bsdf.h>
+#include <nori/texture.h>
 
 NORI_NAMESPACE_BEGIN
 

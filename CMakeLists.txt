@@ -88,7 +88,6 @@ SET(SOURCES_FILES
   src/path_mis.cpp
   src/spotlight.cpp
   src/imagetexture.cpp
-  src/colortexture.cpp
   src/uvmapping.cpp
 )
 
@@ -122,6 +121,9 @@ add_dependencies(nori_euler tbb_p)
 add_dependencies(nori_euler pugixml)
 add_dependencies(warptest nori)
 add_dependencies(tonemapper nori)
+
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 # Link to dependency libraries
 target_link_libraries(nori ${extra_libs})
