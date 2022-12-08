@@ -20,6 +20,7 @@
 #define __NORI_MESH_H
 
 #include <nori/shape.h>
+#include <nori/texture.h>
 #include <nori/dpdf.h>
 
 NORI_NAMESPACE_BEGIN
@@ -111,6 +112,10 @@ public:
     /// Return a human-readable summary of this instance
     virtual std::string toString() const override;
 
+    const ImageTexture* getTexture() const {
+        return m_texture;
+    }
+
 protected:
     /// Create an empty mesh
     Mesh();
@@ -123,6 +128,8 @@ protected:
     MatrixXu      m_F;                   ///< Faces
 
     DiscretePDF m_pdf;
+
+    ImageTexture* m_texture;
 };
 
 NORI_NAMESPACE_END

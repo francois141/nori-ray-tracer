@@ -41,6 +41,30 @@ public:
     virtual T eval(const Point2f & uv) = 0;
 };
 
+/**
+ * \brief Image texture
+ */
+class ImageTexture : public Texture<Color3f> {
+public:
+
+    ImageTexture(const PropertyList &props) : m_filename(props.getString("fileName", "")) { }
+
+    Color3f eval(const Point2f & uv) override;
+
+    std::string toString() const override;
+
+private:
+    const std::string & m_filename;
+    uint8_t* m_data;
+    int m_width;
+    int m_height;
+    int m_channels; // RGB or RGBA
+
+    Color3f getData(const Point2f & uv) const;
+};
+
+NORI_REGISTER_CLASS(ImageTexture, "ImageTexture");
+
 NORI_NAMESPACE_END
 
 #endif /* __NORI_TEXTURE_H */
