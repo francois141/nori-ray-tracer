@@ -20,6 +20,8 @@
 #include <nori/rfilter.h>
 #include <nori/warp.h>
 #include <Eigen/Geometry>
+#include <nori/common.h>
+#include <nori/transform.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -152,16 +154,183 @@ private:
         return m_elementInterfaces.back().apertureRadius;
     }
 
+    // Given a ray starting from the sensor, compute the intersection
+    // with each element one by one.
     bool TraceLensesFromFilm(const Ray3f &ray, Ray3f *rOut) const {
-       
+        float elementZ = 0.0f;
+        Matrix4f tf(1.0f, 0.0f, 0.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f, 0.0f,
+                    0.0f, 0.0f, -1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
+        // Transform the ray form the camera space to the lens space
+        static const Transform cameraToLens = Transform(tf, tf);
+        Ray3f rayL = cameraToLens(ray);
+
+        // Pass ray through each lens in the system
+        for(int i = m_elementInterfaces.size() - 1; i >= 0; --i) {
+            const LensElementInterface &elem = m_elementInterfaces[i];
+
+            // Account for the interaction with the lens element
+            elementZ -= elem.thickness;
+
+            // Compute intersection of ray with element
+            float t;
+            Normal3f n;
+            bool isStop = (elem.curvatureRadius == 0);
+
+            if(isStop) {
+                t = (elementZ - rayL.o.z()) / rayL.d.z();
+            } else {
+                float radius = elem.curvatureRadius;
+                float zC = elementZ + elem.curvatureRadius;
+
+                // Check for an intersection with the element
+                if(!IntersectSphericalElement(radius, zC, rayL, &t, &n)) {
+                    return false;
+                }
+            }
+
+            // Test the intersection point against the element aperture
+            Point3f pHit = rayL(t);
+            float r2 = pHit.x() * pHit.x() + pHit.y() * pHit.y();
+            if(r2 > elem.apertureRadius * elem.apertureRadius) {
+                return false;
+            }
+            rayL.o = pHit;
+
+            // Update the ray path to take into account the element interaction
+            if(!isStop) {
+                Vector3f w;
+                float etaI = elem.eta;
+                float etaT = (i > 0 && elementInterfaces[i - 1].eta != 0) ?
+                    elementInterfaces[i - 1].eta : 1.0f;
+
+                if(!refract((-rayL.d).normalized(), n, etaI / etaT, &w)) {
+                    return false;
+                }
+                rayL.d = w;
+            }
+        }
+        // Transform rayL from the lens space back into the camera space
+        if(rOut) {
+            Matrix4f tf(1.0f, 0.0f, 0.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f, 0.0f,
+                        0.0f, 0.0f, -1.0f, 0.0f,
+                        0.0f, 0.0f, 0.0f, 1.0f);
+            // Transform the ray form the camera space to the lens space
+            static const Transform lensToCamera = Transform(tf, tf);
+            *rOut = lensToCamera(rayL);
+        }
+        return true;
     }
 
+    // Computes the Intersection with a spherical element
     static bool IntersectSphericalElement(float radius, float zCenter, const Ray3f &ray, float *t, Normal3f *n) {
-        //TODO: Compute Intersection with spherical element
+        // Compute the two t values for both entry and exit intersection points
+        Point3f o = ray.o - Vector3f(0.0f, 0.0f, zCenter);
+        // Compute the 3 variables of our implicit equation
+        float A = ray.d.x() * ray.d.x() + ray.d.y() * ray.d.y() + ray.d.z() * ray.d.z(); 
+        float B = 2.0f * (ray.d.x() * o.x() + ray.d.y() * o.y() + ray.d.z() * o.z());
+        float C = o.x() * o.x() + o.y() * o.y() + o.z() * o.z() - radius * radius;
+        
+        // Solve the implicit equation
+        float t0, t1;
+        size_t nSol = solve_quadratic(A, B, C, &t0, &t1);
+        if(nSol == 0) {
+            return false; // If no solution was found then there is no intersection
+        }
+        
+        // Select which intersection t we must use
+        // based on the ray dir and elem curvature
+        bool useCloserT = (ray.d.z() > 0) ^ (radius < 0);
+        // Check that more than one solution exists
+        if(nSol == 1) {
+            *t = t0;
+        } else {
+            *t = useCloserT ? std::min(t0, t1) : std::max(t0, t1);
+        }
+        if(*t < 0) { // is intersection behind the camera
+            return false;
+        }
+
+        // Compute the surface normal of the element at the intersection point
+        Vector3f its = Vector3f(o + *t * ray.d);
+        *n = Normal3f(its);
+        *n = Faceforward((*n).normalized(), -ray.d);
+
+        // At this point we are sure that an intersection has been found
+        return true;
     }
-    bool TraceLensesFromScene(const Ray3f &rCamera, Ray3f *rOut) const {
-        //TODO:
+
+    // Same idea as LensesFromFilm but the other way through the lens system
+    bool TraceLensesFromScene(const Ray3f &ray, Ray3f *rOut) const {
+        float elementZ = -LensFrontZ();
+        Matrix4f tf(1.0f, 0.0f, 0.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f, 0.0f,
+                    0.0f, 0.0f, -1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
+        // Transform the ray form the camera space to the lens space
+        static const Transform cameraToLens = Transform(tf, tf);
+        Ray3f rayL = cameraToLens(ray);
+
+        // Pass ray through each lens in the system
+        for(int i = 0; i < m_elementInterfaces.size(); ++i) {
+            const LensElementInterface &elem = m_elementInterfaces[i];
+
+            // Compute intersection of ray with element
+            float t;
+            Normal3f n;
+            bool isStop = (elem.curvatureRadius == 0);
+
+            if(isStop) {
+                t = (elementZ - rayL.o.z()) / rayL.d.z();
+            } else {
+                float radius = elem.curvatureRadius;
+                float zC = elementZ + elem.curvatureRadius;
+
+                // Check for an intersection with the element
+                if(!IntersectSphericalElement(radius, zC, rayL, &t, &n)) {
+                    return false;
+                }
+            }
+
+            // Test the intersection point against the element aperture
+            Point3f pHit = rayL(t);
+            float r2 = pHit.x() * pHit.x() + pHit.y() * pHit.y();
+            if(r2 > elem.apertureRadius * elem.apertureRadius) {
+                return false;
+            }
+            rayL.o = pHit;
+
+            // Update the ray path to take into account the element interaction
+            if(!isStop) {
+                Vector3f w;
+                float etaI = (i == 0 || elementInterfaces[i - 1].eta == 0) ? 
+                            1 : elementInterfaces[i - 1].eta;
+                float etaT = (elementInterfaces[i].eta != 0) ?
+                             elementInterfaces[i].eta : 1;
+
+                if(!refract((-rayL.d).normalized(), n, etaI / etaT, &w)) {
+                    return false;
+                }
+                rayL.d = w;
+            }
+            elementZ += elem.thickness;
+        }
+
+        // Transform rayL from the lens space back into the camera space
+        if(rOut) {
+            Matrix4f tf(1.0f, 0.0f, 0.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f, 0.0f,
+                        0.0f, 0.0f, -1.0f, 0.0f,
+                        0.0f, 0.0f, 0.0f, 1.0f);
+            // Transform the ray form the camera space to the lens space
+            static const Transform lensToCamera = Transform(tf, tf);
+            *rOut = lensToCamera(rayL);
+        }
+        return true;
     }
+
     void DrawLensSystem() const;
     void DrawRayPathFromFilm(const Ray3f &r, bool arrow,
                             bool toOpticalIntercept) const;

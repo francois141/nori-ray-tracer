@@ -34,6 +34,7 @@
 #include <stdint.h>
 #include <ImathPlatform.h>
 #include <tinyformat.h>
+#include <math.h>
 
 /* Convenience definitions */
 #define NORI_NAMESPACE_BEGIN namespace nori {
@@ -241,6 +242,48 @@ inline float lerp(float t, float v1, float v2) {
 inline int mod(int a, int b) {
     int r = a % b;
     return (r < 0) ? r+b : r;
+}
+
+#define NO_SOLUTION std::numeric_limits<float>::min()
+
+inline Normal3f Faceforward(const Normal3f &n, const Vector3f &v) {
+    return (n.dot(v) < 0.f) ? -n : n;
+}
+
+inline bool refract(const Vector3f &wi, const Normal3f &n, Float eta, Vector3f *wt) {
+    // Snell computation
+    float cosThetaI = Dot(n, wi);
+    float sin2ThetaI = std::max(0.f, 1.f - cosThetaI * cosThetaI);
+    float sin2ThetaT = eta * eta * sin2ThetaI;
+
+    // Handle total internal reflection for transmission
+    if (sin2ThetaT >= 1) {
+        return false;
+    }
+
+    float cosThetaT = std::sqrt(1 - sin2ThetaT);
+
+    *wt = eta * -wi + (eta * cosThetaI - cosThetaT) * Vector3f(n);
+    return true;
+}
+
+size_t solve_quadratic(float a, float b, float c, float* t0, float* t1) {
+    float delta((b * b) - (4 * a * c));
+
+    if(delta < 0) {
+        return 0;
+    } else if(delta == 0) {
+        t0 = (-b) / (2 * a);
+        return 1;
+    } else {
+        float sol_1(((-b) + sqrt(delta)) / (2 * a));
+        float sol_2(((-b) - sqrt(delta)) / (2 * a));
+
+        t0 = sol_1;
+        t1 = sol_2;
+
+        return 2;
+    }
 }
 
 /// Compute a direction for the given coordinates in spherical coordinates
