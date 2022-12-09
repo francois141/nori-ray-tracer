@@ -31,8 +31,8 @@
 
 		<bsdf type="diffuse">
 			<texture type="ImageTexture" name="albedo">
-				<string name="fileName" value="textures/hmm.png"/>
-		</texture>
+				<string name="fileName" value="textures/default1.jpg"/>
+			</texture>
 		</bsdf>
 	</mesh>
 

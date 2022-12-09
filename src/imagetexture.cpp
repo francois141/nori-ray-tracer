@@ -73,9 +73,11 @@ private:
 NORI_REGISTER_CLASS(ImageTexture, "ImageTexture");
 
 ImageTexture::ImageTexture(const PropertyList &props) {
-    m_filename = props.getString("fileName", "");
+    m_filename = props.getString("fileName", "textures/default.png");
+
+    printf("%s\n", m_filename.c_str());
     
-    // Load in image
+    // Load in image: For some reason this doesn't load in anything...
     m_data = stbi_load(
         m_filename.c_str(), 
         &m_width, 
@@ -83,6 +85,10 @@ ImageTexture::ImageTexture(const PropertyList &props) {
         &m_channels, 
         STBI_rgb
     );
+
+    if(m_data == nullptr) {
+        throw NoriException("No image data was loaded!");
+    }
 }
 
 #define RED_CHANNEL 0
@@ -97,7 +103,7 @@ Color3f ImageTexture::getData(const Point2f & xy) const  {
     int y = clamp(static_cast<int>(xy.y()), 0, m_height - 1);
 
     // Retrieve the data for the individual color channels
-    float redData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + RED_CHANNEL)]) / UCHAR_MAX; // SEGV
+    float redData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + RED_CHANNEL)]) / UCHAR_MAX;
     float greenData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + GREEN_CHANNEL)]) / UCHAR_MAX;
     float blueData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + BLUE_CHANNEL)]) / UCHAR_MAX;
 
