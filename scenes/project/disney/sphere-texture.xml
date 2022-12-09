@@ -1,0 +1,63 @@
+<scene>
+	<!-- Independent sample generator, user-selected samples per pixel -->
+	<sampler type="independent">
+		<integer name="sampleCount" value="1024"/>
+	</sampler>
+
+	<!-- Use a direct illumination integrator -->
+	<integrator type="path_mis"/>
+
+	<!-- Render the scene as viewed by a perspective camera -->
+	<camera type="perspective">
+		<transform name="toWorld">
+			<lookat target="0,0,3" origin="20,20,20" up="0,0,1"/>
+		</transform>
+
+		<!-- Field of view: 40 degrees -->
+		<float name="fov" value="40"/>
+
+		<!-- 512 x 512 pixels -->
+		<integer name="width" value="720"/>
+		<integer name="height" value="720"/>
+	</camera>
+
+	<!-- Load a sphere shape -->
+    <mesh type="sphere">
+        <point name="center" value="0,0,3"/>
+        <float name="radius" value="3"/>
+        <bsdf type="disney">
+           	<color name="baseColor" value="0,0.5,0.3"/>
+		   	<float name="metallic" value="0.5"/>
+		   	<float name="specular" value="0.90"/>
+		   	<float name="roughness" value="0.25"/>
+			<float name="sheen" value="0.5"/>
+			<float name="sheenTint" value="0.5"/>
+        </bsdf>
+    </mesh>
+
+	<!-- Ground plane -->
+	<mesh type="obj">
+		<string name="filename" value="plane.obj"/>
+
+        <bsdf type="diffuse">
+            <texture type="checkerboard_color" name="albedo">
+								<vector name="scale" value="0.1,0.2"/>
+                <color name="value1" value="0.8,0.8,0.8"/>
+                <color name="value2" value="0.2,0.2,0.2"/>
+            </texture>
+		</bsdf>
+
+		<transform name="toWorld">
+			<scale value="100,1,100"/>
+			<rotate axis="1,0,0" angle="90"/>
+			<translate value="0,0,-1"/>
+		</transform>
+
+	</mesh>
+
+	<!-- Illuminate using a point light -->
+	<emitter type="point">
+		<point name="position" value="3,7,10"/>
+		<color name="power" value="4000,4000,4000"/>
+	</emitter>
+</scene>

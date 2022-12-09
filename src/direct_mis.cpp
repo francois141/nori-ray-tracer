@@ -48,6 +48,7 @@ public:
                 float cosTheta = Frame::cosTheta(wi);
 
                 BSDFQueryRecord bRec(d, wi, ESolidAngle);
+                bRec.uv = its.uv;
 
                 Color3f new_color = its.mesh->getBSDF()->eval(bRec);
 
@@ -61,6 +62,7 @@ public:
 
         // Step 1) Sample the BSDF
         BSDFQueryRecord bRec(its.shFrame.toLocal(-ray.d));
+        bRec.uv = its.uv;
         Color3f sensibility = its.mesh->getBSDF()->sample(bRec,sampler->next2D());
         float pdf_mat = its.mesh->getBSDF()->pdf(bRec);
 

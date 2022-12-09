@@ -47,6 +47,7 @@ public:
             // Sample the BRDF 
             BSDFQueryRecord bRec(its.shFrame.toLocal(-currentRay.d));
             Color3f brdf = its.mesh->getBSDF()->sample(bRec, sampler->next2D());
+            bRec.uv = its.uv;
             attenuation *= brdf;
 
             // Continue the recursion
