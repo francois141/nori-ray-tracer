@@ -267,6 +267,7 @@ inline bool refract(const Vector3f &wi, const Normal3f &n, Float eta, Vector3f *
     return true;
 }
 
+// Quadratic solver (taken from koyamaki https://github.com/Dobios/Koyamaki/blob/master/src/solver.cpp)
 size_t solve_quadratic(float a, float b, float c, float* t0, float* t1) {
     float delta((b * b) - (4 * a * c));
 
