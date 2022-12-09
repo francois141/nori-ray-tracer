@@ -85,6 +85,7 @@ SET(SOURCES_FILES
   src/path_mats.cpp
   src/path_mis.cpp
   src/spotlight.cpp
+  src/disney.cpp
 )
 
 add_executable(nori "${SOURCES_FILES}" src/main.cpp)
