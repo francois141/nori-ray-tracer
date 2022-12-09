@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <scene>
-	<integrator type="path_mats"/>
+	<integrator type="path_mis"/>
 
 	<camera type="perspective">
 		<float name="fov" value="27.7856"/>
@@ -28,11 +28,8 @@
 
 	<mesh type="obj">
 		<string name="filename" value="meshes/rightwall.obj"/>
-
 		<bsdf type="diffuse">
-			<texture type="ImageTexture" name="albedo">
-				<string name="fileName" value="textures/default1.jpg"/>
-			</texture>
+			<color name="albedo" value="0.5 0.71 0.75"/>
 		</bsdf>
 	</mesh>
 
@@ -55,7 +52,11 @@
 		<point name="center" value="0.445800 0.332100 0.376700" />
 		<float name="radius" value="0.3263" />
 
-		<bsdf type="dielectric"/>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="textures/texture.jpg"/>
+			</texture>
+		</bsdf>
 	</mesh>
 
 	<mesh type="obj">

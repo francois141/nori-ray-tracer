@@ -18,6 +18,7 @@
 #include <nori/texture.h>
 #include <nori/common.h>
 #include <stb_image.h>
+#include <filesystem/resolver.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -75,18 +76,19 @@ NORI_REGISTER_CLASS(ImageTexture, "ImageTexture");
 ImageTexture::ImageTexture(const PropertyList &props) {
     m_filename = props.getString("fileName", "textures/default.png");
 
-    printf("%s\n", m_filename.c_str());
-    
-    // Load in image: For some reason this doesn't load in anything...
-    m_data = stbi_load(
-        m_filename.c_str(), 
-        &m_width, 
-        &m_height, 
-        &m_channels, 
-        STBI_rgb
-    );
+    if(!m_filename.empty()) {
+        filesystem::path file_path = getFileResolver()->resolve(m_filename);
+         // Load in image: For some reason this doesn't load in anything...
+        m_data = stbi_load(
+            file_path.str().c_str(), 
+            &m_width, 
+            &m_height, 
+            &m_channels, 
+            STBI_rgb
+        );
+    }
 
-    if(m_data == nullptr) {
+    if(!m_data) {
         throw NoriException("No image data was loaded!");
     }
 }
