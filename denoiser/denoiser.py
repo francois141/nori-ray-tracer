@@ -20,7 +20,7 @@ import argparse
 #print(args.path)
 
 PATH_TO_IMAGE:str = "image.exr"
-PATH_TO_IMAGE_VAR:str = "image_var.jpg"
+PATH_TO_IMAGE_VAR:str = "image_var.png"
 
 img = cv2.imread(PATH_TO_IMAGE, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -32,18 +32,18 @@ x = img.shape[0]
 y = img.shape[1]
 
 epsilon = 1e-6
-k = 100
+k = 0.01
 
 r = 5
 flt = 0
 wgtsum = 0
-f = 20
+f = 5
 
 def d2(ngb,img,img_variance,k):
     v1 = img_variance + np.minimum(img_variance,ngb_variance)
     v2 = img_variance + ngb_variance
     sum = np.sum(np.power(ngb-img,2),axis=2) - v1
-    sum /= epsilon + 2*pow(k,2)*v2
+    sum /= epsilon + k*k*v2
     return sum
 
 def boxFilter(size):
