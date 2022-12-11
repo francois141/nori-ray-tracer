@@ -21,6 +21,7 @@
 
 #include <nori/bvh.h>
 #include <nori/emitter.h>
+#include <nori/medium.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -71,6 +72,9 @@ public:
                 n-1);
         return m_emitters[index];
     }
+
+    /// Return the medium in the scene
+    Medium* getMedium() const {return m_medium;}
 
     /**
      * \brief Intersect a ray against all triangles stored in the scene
@@ -134,6 +138,7 @@ public:
     virtual EClassType getClassType() const override { return EScene; }
 private:
     std::vector<Shape *> m_shapes;
+    Medium* m_medium;
     Integrator *m_integrator = nullptr;
     Sampler *m_sampler = nullptr;
     Camera *m_camera = nullptr;
