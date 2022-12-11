@@ -7,18 +7,6 @@ import numpy as np
 from scipy import signal
 import argparse
 
-# TODO
-# 1) Debug
-# 2) Argument parsing
-# 3) Clean code
-# 4) Refaire le code bien en c++
-
-#parser = argparse.ArgumentParser(description='Get the paths for the images')
-#parser.add_argument('path', metavar='path', type=str,help='Path of the noisy image')
-
-#args = parser.parse_args()
-#print(args.path)
-
 PATH_TO_IMAGE:str = "image.exr"
 PATH_TO_IMAGE_VAR:str = "image_var.png"
 
