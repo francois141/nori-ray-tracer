@@ -36,23 +36,24 @@ inline float GGX(const float NdotV, const float alphaG)
     return 1 / (NdotV + sqrt(a + b - a*b));
 }
 
+// Implementation from : https://thebookofshaders.com/glossary/?search=mix
 template <typename T1,typename T2> 
 inline T1 lerp(const T2 &t,const T1 &a,const T1 &b) {
     return (1.0f-t)*a + t*b;
 }
 
-
 class Disney : public BSDF {
 public:
     Disney(const PropertyList &propList) {
 
+        // Retrieve the differents parameters
         this->m_metallic = propList.getFloat("metallic", 0.0f);
         this->m_specular = propList.getFloat("specular", 0.0f);
         this->m_roughness = propList.getFloat("roughness", 0.0f);
         this->m_sheen = propList.getFloat("sheen", 0.0f);
+        this->m_sheenTint = propList.getFloat("sheenTint",0.0f);
 
         this->m_baseColor = propList.getColor("baseColor",Color3f(0.0f));
-        this->m_sheenTint = propList.getFloat("sheenTint",0.0f);
 
         this->m_alpha = std::max(1e-5, std::pow(m_roughness,2));
     }
@@ -60,6 +61,7 @@ public:
     /// Evaluate the BRDF for the given pair of directions
     virtual Color3f eval(const BSDFQueryRecord &bRec) const override {
 
+        // Basic vector computations
         float NdotV = Frame::cosTheta(bRec.wi);
         float NdotL = Frame::cosTheta(bRec.wo);
 
@@ -78,7 +80,7 @@ public:
         Color3f Csheen = lerp(m_sheenTint, WHITE , Ctint);
 
         // Diffuse part
-        float fd90 = 0.5 + 2 * m_roughness * pow(bRec.wi.dot(wh),2);
+        float fd90 = 0.5 + 2 * m_roughness * pow(VdotH,2);
         float fl = SchlickFresnel(NdotL);
         float fv = SchlickFresnel(NdotV);
         Color3f diffuse = m_baseColor * INV_PI * (1.f + (fd90 - 1.f) * fl) * (1.f + (fd90 - 1.f) * fv);
@@ -88,7 +90,7 @@ public:
         float Ds = Warp::squareToGTR2Pdf(wh,alpha);
         float FH = SchlickFresnel(LdotH);
         Color3f Fs = lerp(FH,Cspec, WHITE);
-        float Gs = GGX(NdotL,alpha) * GGX(NdotV, alpha);;
+        float Gs = GGX(NdotL,alpha) * GGX(NdotV, alpha);
 
         Color3f specular = Gs*Fs*Ds;
 
@@ -123,7 +125,7 @@ public:
         if(_sample.x() <= m_metallic) {
             // Not diffuse part
             Point2f rescaledSample = Point2f(_sample.x() / m_metallic,_sample.y());
-            Vector3f normal = Warp::squareToBeckmann(rescaledSample,m_alpha);
+            Vector3f normal = Warp::squareToGTR2(rescaledSample,m_alpha);
             bRec.wo = ((2.0f * bRec.wi.dot(normal) * normal) - bRec.wi).normalized();
         } else {
             // Diffuse part
@@ -136,14 +138,13 @@ public:
             return BLACK;
         }
             
-
         return eval(bRec) * cosTheta / pdf(bRec);
     }
 
     virtual std::string toString() const override {
         return tfm::format(
             "Disney[\n"
-            "  baseColor = %f,\n"
+            "  baseColor = %s,\n"
             "  metallic = %f,\n"
             "  specular = %f,\n"
             "  specularTint = %f,\n"
