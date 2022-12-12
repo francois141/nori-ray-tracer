@@ -85,11 +85,14 @@ SET(SOURCES_FILES
   src/path_mats.cpp
   src/path_mis.cpp
   src/spotlight.cpp
+  src/phasefunction.cpp
+  src/volumetric.cpp
+  src/medium.cpp
   src/disney.cpp
 )
 
 add_executable(nori "${SOURCES_FILES}" src/main.cpp)
-add_executable(nori_euler "${SOURCES_FILES}" src/main_euler.cpp)
+#add_executable(nori_euler "${SOURCES_FILES}" src/main_euler.cpp)
 
 # The following lines build the warping test application
 add_executable(warptest
@@ -123,7 +126,7 @@ add_dependencies(tonemapper nori)
 
 # Link to dependency libraries
 target_link_libraries(nori ${extra_libs})
-target_link_libraries(nori_euler ${extra_libs})
+#target_link_libraries(nori_euler ${extra_libs})
 target_link_libraries(warptest ${extra_libs})
 target_link_libraries(tonemapper ${extra_libs})
 

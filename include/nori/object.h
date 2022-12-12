@@ -44,7 +44,7 @@ public:
         ESampler,
         ETest,
         EReconstructionFilter,
-        EClassTypeCount
+        EClassTypeCount,
     };
 
     /// Turn a class type into a human-readable string
@@ -59,6 +59,8 @@ public:
             case EIntegrator: return "integrator";
             case ESampler:    return "sampler";
             case ETest:       return "test";
+            case EPhaseFunction: return "phase function";
+            case EMedium:     return "medium";
             default:          return "<unknown>";
         }
     }
