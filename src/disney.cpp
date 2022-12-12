@@ -52,10 +52,11 @@ public:
         this->m_roughness = propList.getFloat("roughness", 0.0f);
         this->m_sheen = propList.getFloat("sheen", 0.0f);
         this->m_sheenTint = propList.getFloat("sheenTint",0.0f);
+        this->m_specularTint = propList.getFloat("specularTint",0.0f);
 
         this->m_baseColor = propList.getColor("baseColor",Color3f(0.0f));
 
-        this->m_alpha = std::max(1e-5, std::pow(m_roughness,2));
+        this->m_alpha = std::max(1e-3, std::pow(m_roughness,2));
     }
 
     /// Evaluate the BRDF for the given pair of directions
@@ -172,13 +173,11 @@ private:
     float m_alpha;
 
     Color3f m_baseColor;
-    Color3f m_specularTint;
+    float m_specularTint;
     float m_sheenTint;
 
     const Color3f BLACK = Color3f(0.0f);
     const Color3f WHITE = Color3f(1.0f);
-
-    const float FIXED_ROUGHNESS = 0.25f;
 };
 
 NORI_REGISTER_CLASS(Disney, "disney");
