@@ -8,23 +8,23 @@ class SpotLight : public Emitter
 public:
     SpotLight(const PropertyList &props)
     {
-        this->position = props.getPoint3("position", Point3f());
-        this->power = props.getColor("power", Color3f());
-        this->direction = props.getVector3("direction");
+        this->position = props.getPoint3("position");
+        this->power = props.getColor("color");
+        this->direction = props.getVector3("direction").normalized();
         
-        this->cosFalloffStart = std::cos(M_PI / 180 * props.getFloat("falloffStart", 45));
-        this->cosTotalWidth = std::cos(M_PI / 180 * props.getFloat("totalWidth", 90));
+        this->cosFalloffStart = std::cos(M_PI / 180 * props.getFloat("falloffStart"));
+        this->cosTotalWidth = std::cos(M_PI / 180 * props.getFloat("totalWidth"));
     }
 
     Color3f sample(EmitterQueryRecord &lRec, const Point2f &sample) const
     {
         lRec.wi = (this->position - lRec.ref).normalized();
         lRec.p = this->position;
-        lRec.pdf = lRec.pdf;
-        lRec.n = direction.normalized();
+        lRec.pdf = 1.0f;
+        lRec.n = this->direction;
         lRec.shadowRay = Ray3f(lRec.ref, lRec.wi, Epsilon, (this->position - lRec.ref).norm() - Epsilon);
 
-        return this->power * falloff(-lRec.wi) / (4.f * M_PI * (this->position - lRec.ref).squaredNorm());
+        return this->power * falloff(-lRec.wi) / (4.f * M_PI * (lRec.ref - lRec.p).squaredNorm());
     }
 
     float falloff(const Vector3f &w) const {
@@ -32,8 +32,7 @@ public:
         if(cosTheta < cosTotalWidth) return 0;
         if(cosTheta > cosFalloffStart) return 1;
 
-        float delta = (cosTheta - cosTotalWidth) / (cosFalloffStart - cosTotalWidth);
-        return pow(delta,4);   
+        return (std::acos(cosTotalWidth) - std::acos(cosTheta))/ (std::acos(cosTotalWidth) - std::acos(cosFalloffStart));
     }
 
     Color3f eval(const EmitterQueryRecord &lRec) const
