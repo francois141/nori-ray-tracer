@@ -29,7 +29,10 @@
 	<mesh type="obj">
 		<string name="filename" value="meshes/rightwall.obj"/>
 		<bsdf type="diffuse">
-			<color name="albedo" value="0.5 0.71 0.75"/>
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="textures/texture.jpg"/>
+				<string name="wrap" value="repeat" />
+			</texture>
 		</bsdf>
 	</mesh>
 
@@ -55,6 +58,7 @@
 		<bsdf type="diffuse">
 			<texture type="ImageTexture" name="albedo">
 				<string name="fileName" value="textures/texture.jpg"/>
+				<string name="wrap" value="repeat" />
 			</texture>
 		</bsdf>
 	</mesh>

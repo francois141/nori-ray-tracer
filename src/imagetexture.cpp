@@ -26,7 +26,28 @@ NORI_NAMESPACE_BEGIN
  * @brief Enum to define how textures are repeated when mapped
  * to a specific geometry
  */
-enum class ImageWrap { Repeat, Black, Clamp };
+enum class ImageWrap { Repeat, Clamp };
+ImageWrap wrapTypeFromString(std::string type_name) {
+    if(type_name == "repeat") {
+        return ImageWrap::Repeat;
+    }
+    if(type_name == "clamp") {
+        return ImageWrap::Clamp;
+    }
+    // Invalid name was given
+    throw NoriException("Invalid wrap type name %s", type_name);
+}
+std::string wrapToString(ImageWrap iw) {
+    switch (iw) {
+    case ImageWrap::Repeat:
+        return "repeat";
+    case ImageWrap::Clamp:
+        return "clamp";
+    
+    default:
+        return "no wrap";
+    }
+}
 
 /**
  * @brief Defines a mipmap, used to improve the filtering of a texture
@@ -63,6 +84,7 @@ public:
 
 private:
     std::string m_filename;
+    ImageWrap m_wrap; // How is the texture treated at image edge
     uint8_t* m_data;
     int m_width;
     int m_height;
@@ -75,6 +97,7 @@ NORI_REGISTER_CLASS(ImageTexture, "ImageTexture");
 
 ImageTexture::ImageTexture(const PropertyList &props) {
     m_filename = props.getString("fileName", "textures/default.png");
+    m_wrap = wrapTypeFromString(props.getString("wrap", "repeat"));
 
     if(!m_filename.empty()) {
         filesystem::path file_path = getFileResolver()->resolve(m_filename);
@@ -100,9 +123,15 @@ ImageTexture::ImageTexture(const PropertyList &props) {
 
 // Get data from texel coordinates
 Color3f ImageTexture::getData(const Point2f & xy) const  {
-    // Clamp the texel coordinates to be within the texture's range
-    int x = clamp(static_cast<int>(xy.x()), 0, m_width - 1);
-    int y = clamp(static_cast<int>(xy.y()), 0, m_height - 1);
+    // Clamp or mod the texel coordinates to be within the texture's range
+    int x, y;
+    if(m_wrap == ImageWrap::Repeat) {
+        x = (static_cast<int>(xy.x()) % m_width);
+        y = (static_cast<int>(xy.y()) % m_height);
+    } else {
+        x = clamp(static_cast<int>(xy.x()), 0, m_width - 1);
+        y = clamp(static_cast<int>(xy.y()), 0, m_height - 1);
+    }
 
     // Retrieve the data for the individual color channels
     float redData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + RED_CHANNEL)]) / UCHAR_MAX;
@@ -114,7 +143,7 @@ Color3f ImageTexture::getData(const Point2f & xy) const  {
 
 Color3f ImageTexture::eval(const Point2f & uv) const {
     // Retrieve texel coordinates from uv coordinates
-    float x(1.0f - uv.x() * m_width), y(uv.y() * m_height);
+    float x(uv.x() * m_width), y(uv.y() * m_height);
 
     // Retrieve data values of neighboring pixels for bilinear interpolation
     Color3f v00(getData(Point2f(x, y))),
@@ -123,7 +152,7 @@ Color3f ImageTexture::eval(const Point2f & uv) const {
             v11(getData(Point2f(x + 1.0f, y + 1.0f)));
 
     // Compute bilinear interpolation (as done in PBRT)
-    float dstdx = (1.0f - uv.x()) * m_width - x;
+    float dstdx = uv.x() * m_width - x;
     float dstdy = uv.y() * m_height - y;
 
     return (1.0f - dstdx) * (1.0f - dstdy) * v00 +
@@ -136,8 +165,10 @@ std::string ImageTexture::toString() const {
     return tfm::format(
         "ImageTexture[\n"
                 "  filename = %s,\n"
+                "  wrap = %s\n"
                 "]",
-        m_filename
+        m_filename, 
+        wrapToString(m_wrap)
     );
 }
 NORI_NAMESPACE_END
