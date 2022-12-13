@@ -20,28 +20,40 @@
 #include <nori/rfilter.h>
 #include <nori/warp.h>
 #include <Eigen/Geometry>
-#include <nori/common.h>
-#include <nori/transform.h>
 
 NORI_NAMESPACE_BEGIN
 
 /**
- * \brief Perspective camera with depth of field
- *
- * This class implements a simple perspective camera model. It uses an
- * infinitesimally small aperture, creating an infinite depth of field.
+ * \brief Perspective camera augmented with the thin lens model for depth of field
+ * as well as barrel distortion and chromatic abberation to simulate a more realistic camera
+ * This class implements a simple perspective camera using the thin lens model. It uses an
+ * user defined aperture, creating a finite depth of field.
  */
 class AdvancedCamera : public Camera {
 public:
-    AdvancedCamera(const PropertyList &propList) : 
-        simpleWeighting(propList.getBoolean("simpleWeighting", true)) {
-
+    AdvancedCamera(const PropertyList &propList) {
         /* Width and height in pixels. Default: 720p */
         m_outputSize.x() = propList.getInteger("width", 1280);
         m_outputSize.y() = propList.getInteger("height", 720);
+        m_invOutputSize = m_outputSize.cast<float>().cwiseInverse();
 
         /* Specifies an optional camera-to-world transformation. Default: none */
         m_cameraToWorld = propList.getTransform("toWorld", Transform());
+
+        /* Horizontal field of view in degrees */
+        m_fov = propList.getFloat("fov", 30.0f);
+
+        /* Near and far clipping planes in world-space units */
+        m_nearClip = propList.getFloat("nearClip", 1e-4f);
+        m_farClip = propList.getFloat("farClip", 1e4f);
+
+        /* Get thin lens parameters: lens radius and focal distance */
+        m_focalDistance = propList.getFloat("focalDist", 1.0f);
+        m_lensRadius = propList.getFloat("lensRadius", 0.0f);
+
+        /* Get lens distortion and chromatic aberration parameters */
+        m_distortion = propList.getVector2("distortion", Vector2f::Zero());
+        m_chromaticStrength = propList.getVector3("chromaticAberation", Vector3f::Zero());
 
         m_rfilter = NULL;
     }
@@ -58,6 +70,32 @@ public:
      */
     virtual void activate() override {
         float aspect = m_outputSize.x() / (float) m_outputSize.y();
+
+        /* Project vectors in camera space onto a plane at z=1:
+         *
+         *  xProj = cot * x / z
+         *  yProj = cot * y / z
+         *  zProj = (far * (z - near)) / (z * (far-near))
+         *  The cotangent factor ensures that the field of view is 
+         *  mapped to the interval [-1, 1].
+         */
+        float recip = 1.0f / (m_farClip - m_nearClip),
+              cot = 1.0f / std::tan(degToRad(m_fov / 2.0f));
+
+        Eigen::Matrix4f perspective;
+        perspective <<
+            cot, 0,   0,   0,
+            0, cot,   0,   0,
+            0,   0,   m_farClip * recip, -m_nearClip * m_farClip * recip,
+            0,   0,   1,   0;
+
+        /**
+         * Translation and scaling to shift the clip coordinates into the
+         * range from zero to one. Also takes the aspect ratio into account.
+         */
+        m_sampleToCamera = Transform( 
+            Eigen::DiagonalMatrix<float, 3>(Vector3f(0.5f, -0.5f * aspect, 1.0f)) *
+            Eigen::Translation<float, 3>(1.0f, -1.0f/aspect, 0.0f) * perspective).inverse();
 
         /* If no reconstruction filter was assigned, instantiate a Gaussian filter */
         if (!m_rfilter) {
@@ -89,9 +127,106 @@ public:
      */
     Color3f sampleRay(Ray3f &ray,
             const Point2f &samplePosition,
-            const Point2f &apertureSample) const {
+            const Point2f &apertureSample,
+            int channel) const {
 
-        return Color3f(1.0f);
+        /* Compute the corresponding position on the 
+            near plane (in local camera space) */
+        Point3f nearP = m_sampleToCamera * Point3f(
+        samplePosition.x() * m_invOutputSize.x(),
+        samplePosition.y() * m_invOutputSize.y(), 0.0f);
+
+        // Check for lens distortion
+        if(!m_distortion.isZero()) {
+            #define F_EPSILON 1e-6
+            // Compute the distortion using the same method as in Mitsuba
+            // i.e. Update the position of the ray on the near plane using 
+            // using the given distortion components
+            float y = Vector2f(nearP.x() / nearP.z(), nearP.y() / nearP.z()).norm();
+            float r = y;
+            float r2, f, df;
+            int i = 0;
+            // Solve for distortion
+            while(true) {
+                r2 = r * r;
+                f = r * (1 + (m_distortion.x() * r2) + m_distortion.y() * (r2 * r2)) - y;
+                df = 1 + (3 * m_distortion.x() * r2) + (5 * m_distortion.y() * r2 * r2);
+
+                r = r - f / df;
+                if(std::abs(f) < F_EPSILON || i++ > 4) {
+                    break;
+                }
+            } 
+
+            float distortionFactor = r/y;
+
+            // Update the near plane position
+            nearP.x() *= distortionFactor;
+            nearP.y() *= distortionFactor;
+        }
+
+        float w = 0.0f; // Weight of the current channel
+        Color3f color(1.0f); // Output color
+        #define N_CHANNELS 3 // Red(0), Green(1), Blue(2)
+
+        // Check for chromatic aberration
+        if(!m_chromaticStrength.isZero()) { 
+            // Sanity check
+            assert(0 <= channel && channel < N_CHANNELS);
+            w = m_chromaticStrength[channel];
+            color = Color3f(0.0f); // Reset color channels
+            color[channel] = 1.0f; // Only activate currently sampled channel
+        }
+
+        /* Turn into a normalized ray direction, and
+            adjust the ray interval accordingly */
+        Vector3f d = nearP.normalized();
+        float invZ = 1.0f / d.z();
+
+        ray.o = m_cameraToWorld * Point3f();
+        ray.d = m_cameraToWorld * d;
+        
+        // Take into account DOF if needed with aberration sampling offset
+        if(m_lensRadius > 0.0f || !m_chromaticStrength.isZero()) {
+            // Sample point on lens
+            Point2f pLens = m_lensRadius * 
+                Warp::squareToConcentricDisk(apertureSample);
+
+            // Compute point on plance of focus
+            float ft = m_focalDistance / ray.d.z();
+            Point3f pFocus = ray(ft);
+
+            // Update the sample position for chromatic aberration
+            Point2f sp(
+                samplePosition.x() - (0.5f * m_outputSize.x()),
+                samplePosition.y() - (0.5f * m_outputSize.y())
+            );
+            sp /= m_outputSize.maxCoeff();
+
+            Point2f deltaSP = sp * sp.squaredNorm() * w;
+            pFocus = pFocus + Point3f(-deltaSP.x(), deltaSP.y(), 0.0f);
+
+            // Update ray for DOF effect given by the thin lens model
+            ray.o = Point3f(pLens.x(), pLens.y(), 0.0f);
+            ray.o = m_cameraToWorld * ray.o;
+            
+            d = (pFocus - ray.o).normalized();
+            ray.d = m_cameraToWorld * d;
+        } else {
+            ray.o = m_cameraToWorld * Point3f(0, 0, 0);
+            ray.d = m_cameraToWorld * d;
+        }
+        
+        // Update mint and maxt
+        ray.mint = m_nearClip * invZ;
+        ray.maxt = m_farClip * invZ;
+        ray.update();
+
+        return color;
+    }
+
+    bool hasChromaticAberrations() const {
+        return !m_chromaticStrength.isZero();
     }
 
     virtual void addChild(NoriObject *obj) override {
@@ -112,242 +247,33 @@ public:
     virtual std::string toString() const override {
         return tfm::format(
             "AdvancedCamera[\n"
-            "  Element Interfaces = %s,\n"
-            "  Exit Pupil Bounds = %s,\n"
+            "  cameraToWorld = %s,\n"
+            "  outputSize = %s,\n"
+            "  fov = %f,\n"
+            "  clip = [%f, %f],\n"
+            "  rfilter = %s\n"
             "]",
-            indent(std::string(m_elementInterfaces.begin(), m_elementInterfaces.end()), 18),
-            std::string(m_exitPupilBounds.begin(), m_exitPupilBounds.end())
+            indent(m_cameraToWorld.toString(), 18),
+            m_outputSize.toString(),
+            m_fov,
+            m_nearClip,
+            m_farClip,
+            indent(m_rfilter->toString())
         );
     }
 private:
-    // Define a lens element structure (based on PBRT)
-    struct LensElementInterface {
-        float curvatureRadius;
-        float thickness;
-        float eta;
-        float apertureRadius;
-    };
-
-    //====================== ADVANCED CAMERA FIELDS ===================
-    const bool simpleWeighting;
-    std::vector<LensElementInterface> m_elementInterfaces;
-    std::vector<BoundingBox2f> m_exitPupilBounds;
+    Vector2f m_invOutputSize;
+    Transform m_sampleToCamera;
     Transform m_cameraToWorld;
-    //=================================================================
+    float m_fov;
+    float m_nearClip;
+    float m_farClip;
 
-    //=============== ADVANCED CAMERA PRIVATE METHODS =================
-    // Z-coordinate of the rear lens in our system
-    float LensRearZ() const { 
-        return m_elementInterfaces.back().thickness; 
-    }
-
-    // Z-coordinate of the front lens in our system
-    float LensFrontZ() const {
-        float zSum = 0;
-        for (const LensElementInterface &element : m_elementInterfaces)
-            zSum += element.thickness;
-        return zSum;
-    }
-
-    // The aperture radius of the rear lens in our system
-    float RearElementRadius() const {
-        return m_elementInterfaces.back().apertureRadius;
-    }
-
-    // Given a ray starting from the sensor, compute the intersection
-    // with each element one by one.
-    bool TraceLensesFromFilm(const Ray3f &ray, Ray3f *rOut) const {
-        float elementZ = 0.0f;
-        Matrix4f tf(1.0f, 0.0f, 0.0f, 0.0f,
-                    0.0f, 1.0f, 0.0f, 0.0f,
-                    0.0f, 0.0f, -1.0f, 0.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f);
-        // Transform the ray form the camera space to the lens space
-        static const Transform cameraToLens = Transform(tf, tf);
-        Ray3f rayL = cameraToLens(ray);
-
-        // Pass ray through each lens in the system
-        for(int i = m_elementInterfaces.size() - 1; i >= 0; --i) {
-            const LensElementInterface &elem = m_elementInterfaces[i];
-
-            // Account for the interaction with the lens element
-            elementZ -= elem.thickness;
-
-            // Compute intersection of ray with element
-            float t;
-            Normal3f n;
-            bool isStop = (elem.curvatureRadius == 0);
-
-            if(isStop) {
-                t = (elementZ - rayL.o.z()) / rayL.d.z();
-            } else {
-                float radius = elem.curvatureRadius;
-                float zC = elementZ + elem.curvatureRadius;
-
-                // Check for an intersection with the element
-                if(!IntersectSphericalElement(radius, zC, rayL, &t, &n)) {
-                    return false;
-                }
-            }
-
-            // Test the intersection point against the element aperture
-            Point3f pHit = rayL(t);
-            float r2 = pHit.x() * pHit.x() + pHit.y() * pHit.y();
-            if(r2 > elem.apertureRadius * elem.apertureRadius) {
-                return false;
-            }
-            rayL.o = pHit;
-
-            // Update the ray path to take into account the element interaction
-            if(!isStop) {
-                Vector3f w;
-                float etaI = elem.eta;
-                float etaT = (i > 0 && elementInterfaces[i - 1].eta != 0) ?
-                    elementInterfaces[i - 1].eta : 1.0f;
-
-                if(!refract((-rayL.d).normalized(), n, etaI / etaT, &w)) {
-                    return false;
-                }
-                rayL.d = w;
-            }
-        }
-        // Transform rayL from the lens space back into the camera space
-        if(rOut) {
-            Matrix4f tf(1.0f, 0.0f, 0.0f, 0.0f,
-                        0.0f, 1.0f, 0.0f, 0.0f,
-                        0.0f, 0.0f, -1.0f, 0.0f,
-                        0.0f, 0.0f, 0.0f, 1.0f);
-            // Transform the ray form the camera space to the lens space
-            static const Transform lensToCamera = Transform(tf, tf);
-            *rOut = lensToCamera(rayL);
-        }
-        return true;
-    }
-
-    // Computes the Intersection with a spherical element
-    static bool IntersectSphericalElement(float radius, float zCenter, const Ray3f &ray, float *t, Normal3f *n) {
-        // Compute the two t values for both entry and exit intersection points
-        Point3f o = ray.o - Vector3f(0.0f, 0.0f, zCenter);
-        // Compute the 3 variables of our implicit equation
-        float A = ray.d.x() * ray.d.x() + ray.d.y() * ray.d.y() + ray.d.z() * ray.d.z(); 
-        float B = 2.0f * (ray.d.x() * o.x() + ray.d.y() * o.y() + ray.d.z() * o.z());
-        float C = o.x() * o.x() + o.y() * o.y() + o.z() * o.z() - radius * radius;
-        
-        // Solve the implicit equation
-        float t0, t1;
-        size_t nSol = solve_quadratic(A, B, C, &t0, &t1);
-        if(nSol == 0) {
-            return false; // If no solution was found then there is no intersection
-        }
-        
-        // Select which intersection t we must use
-        // based on the ray dir and elem curvature
-        bool useCloserT = (ray.d.z() > 0) ^ (radius < 0);
-        // Check that more than one solution exists
-        if(nSol == 1) {
-            *t = t0;
-        } else {
-            *t = useCloserT ? std::min(t0, t1) : std::max(t0, t1);
-        }
-        if(*t < 0) { // is intersection behind the camera
-            return false;
-        }
-
-        // Compute the surface normal of the element at the intersection point
-        Vector3f its = Vector3f(o + *t * ray.d);
-        *n = Normal3f(its);
-        *n = Faceforward((*n).normalized(), -ray.d);
-
-        // At this point we are sure that an intersection has been found
-        return true;
-    }
-
-    // Same idea as LensesFromFilm but the other way through the lens system
-    bool TraceLensesFromScene(const Ray3f &ray, Ray3f *rOut) const {
-        float elementZ = -LensFrontZ();
-        Matrix4f tf(1.0f, 0.0f, 0.0f, 0.0f,
-                    0.0f, 1.0f, 0.0f, 0.0f,
-                    0.0f, 0.0f, -1.0f, 0.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f);
-        // Transform the ray form the camera space to the lens space
-        static const Transform cameraToLens = Transform(tf, tf);
-        Ray3f rayL = cameraToLens(ray);
-
-        // Pass ray through each lens in the system
-        for(int i = 0; i < m_elementInterfaces.size(); ++i) {
-            const LensElementInterface &elem = m_elementInterfaces[i];
-
-            // Compute intersection of ray with element
-            float t;
-            Normal3f n;
-            bool isStop = (elem.curvatureRadius == 0);
-
-            if(isStop) {
-                t = (elementZ - rayL.o.z()) / rayL.d.z();
-            } else {
-                float radius = elem.curvatureRadius;
-                float zC = elementZ + elem.curvatureRadius;
-
-                // Check for an intersection with the element
-                if(!IntersectSphericalElement(radius, zC, rayL, &t, &n)) {
-                    return false;
-                }
-            }
-
-            // Test the intersection point against the element aperture
-            Point3f pHit = rayL(t);
-            float r2 = pHit.x() * pHit.x() + pHit.y() * pHit.y();
-            if(r2 > elem.apertureRadius * elem.apertureRadius) {
-                return false;
-            }
-            rayL.o = pHit;
-
-            // Update the ray path to take into account the element interaction
-            if(!isStop) {
-                Vector3f w;
-                float etaI = (i == 0 || elementInterfaces[i - 1].eta == 0) ? 
-                            1 : elementInterfaces[i - 1].eta;
-                float etaT = (elementInterfaces[i].eta != 0) ?
-                             elementInterfaces[i].eta : 1;
-
-                if(!refract((-rayL.d).normalized(), n, etaI / etaT, &w)) {
-                    return false;
-                }
-                rayL.d = w;
-            }
-            elementZ += elem.thickness;
-        }
-
-        // Transform rayL from the lens space back into the camera space
-        if(rOut) {
-            Matrix4f tf(1.0f, 0.0f, 0.0f, 0.0f,
-                        0.0f, 1.0f, 0.0f, 0.0f,
-                        0.0f, 0.0f, -1.0f, 0.0f,
-                        0.0f, 0.0f, 0.0f, 1.0f);
-            // Transform the ray form the camera space to the lens space
-            static const Transform lensToCamera = Transform(tf, tf);
-            *rOut = lensToCamera(rayL);
-        }
-        return true;
-    }
-
-    void DrawLensSystem() const;
-    void DrawRayPathFromFilm(const Ray3f &r, bool arrow,
-                            bool toOpticalIntercept) const;
-    void DrawRayPathFromScene(const Ray3f &r, bool arrow,
-                            bool toOpticalIntercept) const;
-    static void ComputeCardinalPoints(const Ray3f &rIn, const Ray3f &rOut, float *p,
-                                    float *f);
-    void ComputeThickLensApproximation(float pz[2], float f[2]) const;
-    float FocusThickLens(float focusDistance);
-    float FocusBinarySearch(float focusDistance);
-    float FocusDistance(float filmDist);
-    BoundingBox2f BoundExitPupil(float pFilmX0, float pFilmX1) const;
-    void RenderExitPupil(float sx, float sy, const char *filename) const;
-    Point3f SampleExitPupil(const Point2f &pFilm, const Point2f &lensSample,
-                            float *sampleBoundsArea) const;
-    void TestExitPupilBounds() const;
-    //========================================================================
+protected:
+    float m_lensRadius;
+    float m_focalDistance;
+    Vector2f m_distortion;        //Parameters for barrel distortion (as in mitsuba)
+    Vector3f m_chromaticStrength; //Strength of chromatic aberration along each color component
 
 };
 
