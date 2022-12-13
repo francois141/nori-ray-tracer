@@ -17,13 +17,12 @@ public:
     /// Compute the radiance value for a given ray. Just return green here
     Color3f Li(const Scene *scene, Sampler *sampler, const Ray3f &ray) const
     {
+        Medium *medium = scene->getMedium();
+
         Color3f color = BLACK;
         Color3f attenuation = WHITE;
 
-        Medium *medium = scene->getMedium();
-
         Ray3f currentRay = ray;
-
         float w_mats = 1.0f;
 
         Intersection its;
@@ -49,15 +48,18 @@ public:
             // First case, we hit the medium
             if (!mQuery.hitObject)
             {
+                // Sample the phase function
                 Vector3f wo;
                 float pdf_mat = medium->getPhaseFunction()->sample(currentRay.d, wo, sampler->next2D());
+                
 
+                // Sample an emitter
                 const Emitter *light = scene->getRandomEmitter(sampler->next1D());
                 EmitterQueryRecord eRec(mQuery.p);
 
+                // Evaluate emitter
                 Color3f Li = light->sample(eRec, sampler->next2D()) * scene->getLights().size();
                 attenuation *= sampledColor;
-
                 if (!scene->rayIntersect(eRec.shadowRay, its))
                 {
                     mQuery.tMax = eRec.shadowRay.maxt;
@@ -83,13 +85,8 @@ public:
                     }
                 }
             }
-            // Case 2, we have value > tmax && no intersection ==> return the color;
-            else if (!intersection)
-            {
-                return color;
-            }
-            // Case 3, we hit an object
-            else
+            // Case 2, we hit an object
+            else if(intersection)
             {
                 // We add the Le part to the record if the mesh is an emitter
                 if (its.mesh->isEmitter())
@@ -98,15 +95,15 @@ public:
                     color += attenuation * w_mats * its.mesh->getEmitter()->eval(eRec) *  medium->Tr(its.p, eRec.p);
                 }
 
-                // Sample EMS
+                // Sample emitter
                 const Emitter *light = scene->getRandomEmitter(sampler->next1D());
                 EmitterQueryRecord eRec(its.p);
                 Color3f Li = light->sample(eRec, sampler->next2D()) * scene->getLights().size();
-
-                float pdf_em = light->pdf(eRec);
-
+                
+                // Evaluate emitter
                 if (!scene->rayIntersect(eRec.shadowRay))
                 {
+                    float pdf_em = light->pdf(eRec);
                     float theta = std::max(0.0f, Frame::cosTheta(its.shFrame.toLocal(eRec.wi)));
 
                     BSDFQueryRecord bRec(its.toLocal(-currentRay.d), its.toLocal(eRec.wi), ESolidAngle);
@@ -131,8 +128,6 @@ public:
                 BSDFQueryRecord bRec(its.shFrame.toLocal(-currentRay.d));
                 Color3f brdf = its.mesh->getBSDF()->sample(bRec, sampler->next2D());
                 attenuation *= brdf;
-
-                // Sample MATS
                 float pdf_mat = its.mesh->getBSDF()->pdf(bRec);
 
                 // Continue the recursion
@@ -140,16 +135,20 @@ public:
                 intersection = scene->rayIntersect(currentRay, its);
 
                 if (intersection) {
-
                     if (its.mesh->isEmitter()) {
                         EmitterQueryRecord lRec = EmitterQueryRecord(currentRay.o, its.p, its.shFrame.n);
                         float pdf_em = its.mesh->getEmitter()->pdf(lRec);
                         w_mats = pdf_mat + pdf_em > 0.f ? pdf_mat / (pdf_mat + pdf_em) : pdf_mat;
                     }
-
                     if (bRec.measure == EDiscrete)
                         w_mats = 1.0f;
                 }
+            }
+            // Case 3, we hit tmax without intersections
+            else 
+            {
+                // In this case we can break and return the color
+                break;
             }
         }
 
