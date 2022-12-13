@@ -19,6 +19,7 @@
 #include <nori/shape.h>
 #include <nori/bsdf.h>
 #include <nori/emitter.h>
+#include <nori/texture.h>
 //#include <nori/warp.h>
 //#include <Eigen/Geometry>
 
@@ -53,6 +54,14 @@ void Shape::addChild(NoriObject *obj) {
                     "Shape: tried to register multiple Emitter instances!");
             m_emitter = static_cast<Emitter *>(obj);
             m_emitter->setShape(static_cast<Shape*>(this));
+            break;
+
+        case ETexture:
+            /*if (m_normalMap) {
+                throw NoriException(
+                    "Shape: tried to register multiple Normal map instances!");
+            }*/
+            m_normalMap = static_cast<Texture<Normal3f>*>(obj);
             break;
 
         default:

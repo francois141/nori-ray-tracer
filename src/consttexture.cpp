@@ -27,7 +27,7 @@ public:
 
     virtual std::string toString() const override;
 
-    virtual T eval(const Point2f & uv) override {
+    virtual T eval(const Point2f & uv) const override {
         return m_value;
     }
 

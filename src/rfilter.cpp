@@ -106,7 +106,7 @@ public:
 /// Box filter -- fastest, but prone to aliasing
 class BoxFilter : public ReconstructionFilter {
 public:
-    BoxFilter(const PropertyList &) {
+    BoxFilter(const PropertyList &propList) {
         m_radius = 0.5f;
     }
 
@@ -119,9 +119,40 @@ public:
     }
 };
 
+/// WindowedSyncFilter 
+class WindowedSyncFilter : public ReconstructionFilter {
+public:
+
+    WindowedSyncFilter(const PropertyList &propList) {
+        m_radius = propList.getFloat("radius", 2.0f);
+        m_tau = propList.getFloat("tau", 1.0f);
+    }
+
+    float eval(float x) const {
+        x = std::abs(x);
+        return this->sinc(x) * this->sinc(x / m_tau);
+    }
+    
+    virtual std::string toString() const override {
+        return "WindowedSyncFilter[]";
+    }
+
+    float sinc(float x) const {
+        if (x < this->EPS) return 1.0f;
+        float pi_x = M_PI * x;
+        return std::sin(pi_x) / pi_x;
+    }
+
+private:
+    const float EPS = 1e-5;
+    float m_tau;
+};
+
+
 NORI_REGISTER_CLASS(GaussianFilter, "gaussian");
 NORI_REGISTER_CLASS(MitchellNetravaliFilter, "mitchell");
 NORI_REGISTER_CLASS(TentFilter, "tent");
 NORI_REGISTER_CLASS(BoxFilter, "box");
+NORI_REGISTER_CLASS(WindowedSyncFilter,"windowed");
 
 NORI_NAMESPACE_END
