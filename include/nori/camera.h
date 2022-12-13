@@ -56,7 +56,8 @@ public:
      */
     virtual Color3f sampleRay(Ray3f &ray,
         const Point2f &samplePosition,
-        const Point2f &apertureSample) const = 0;
+        const Point2f &apertureSample,
+        int channel=-1) const = 0;
 
     /// Return the size of the output image in pixels
     const Vector2i &getOutputSize() const { return m_outputSize; }
@@ -64,6 +65,7 @@ public:
     /// Return the camera's reconstruction filter in image space
     const ReconstructionFilter *getReconstructionFilter() const { return m_rfilter; }
 
+    virtual bool hasChromaticAberrations() const { return false; }
     /**
      * \brief Return the type of object (i.e. Mesh/Camera/etc.) 
      * provided by this instance

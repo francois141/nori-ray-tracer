@@ -116,6 +116,8 @@ public:
      *    A uniformly distributed 2D vector that is used to sample
      *    a position on the aperture of the sensor if necessary.
      *
+     * \param channel
+     *     The color channel currently being sampled (for chromatic aberation effects)
      * \return
      *    An importance weight associated with the sampled ray.
      *    This accounts for the difference in the camera response
@@ -123,7 +125,8 @@ public:
      */
     Color3f sampleRay(Ray3f &ray,
             const Point2f &samplePosition,
-            const Point2f &apertureSample) const {
+            const Point2f &apertureSample,
+            int channel=-1) const {
 
         /* Compute the corresponding position on the 
             near plane (in local camera space) */

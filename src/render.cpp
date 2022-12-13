@@ -76,6 +76,11 @@ static void renderBlock(const Scene *scene, Sampler *sampler, ImageBlock &block)
     Point2i offset = block.getOffset();
     Vector2i size  = block.getSize();
 
+    // Color Channels
+    #define RED 0
+    #define GREEN 1
+    #define BLUE 2
+
     /* Clear the block contents */
     block.clear();
 
@@ -87,10 +92,31 @@ static void renderBlock(const Scene *scene, Sampler *sampler, ImageBlock &block)
 
             /* Sample a ray from the camera */
             Ray3f ray;
-            Color3f value = camera->sampleRay(ray, pixelSample, apertureSample);
+            Color3f value;
+            
+            // Check for chromatic aberrations
+            if(camera->hasChromaticAberrations()) {
+                Ray3f ray0, ray1, ray2;
+                Color3f value0, value1, value2;
 
-            /* Compute the incident radiance */
-            value *= integrator->Li(scene, sampler, ray);
+                // Sample each color channel separately
+                value0 = camera->sampleRay(ray0, pixelSample, apertureSample, RED);
+                value1 = camera->sampleRay(ray1, pixelSample, apertureSample, GREEN);
+                value2 = camera->sampleRay(ray2, pixelSample, apertureSample, BLUE);
+
+                // Compute incident radience for each channel
+                value0 *= integrator->Li(scene, sampler, ray0);
+                value1 *= integrator->Li(scene, sampler, ray1);
+                value2 *= integrator->Li(scene, sampler, ray2);
+
+                // Sum all of the color channels
+                value = value0 + value1 + value2;
+            } else {
+                // Sample all color channels together
+                value = camera->sampleRay(ray, pixelSample, apertureSample);
+                /* Compute the incident radiance */
+                value *= integrator->Li(scene, sampler, ray);
+            }
 
             /* Store in the image block */
             block.put(pixelSample, value);

@@ -3,7 +3,7 @@
 <scene>
 	<integrator type="path_mis"/>
 
-	<camera type="thinlens">
+	<camera type="advancedCamera">
 		<float name="fov" value="27"/>
 		<transform name="toWorld">
 			<scale value="-1,1,1"/>
@@ -14,6 +14,8 @@
 		<integer name="width" value="800"/>
 		<float name="focalDist" value="5.7"/>
 		<float name="lensRadius" value="0.35"/>
+		<vector name="chromaticAberation" value="4, 2, 3.3" />
+		<vector name="distortion" value="3, 3"/>
 	</camera>
 
 	<sampler type="independent">
