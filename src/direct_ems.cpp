@@ -44,6 +44,7 @@ public:
                 Vector3f d = its.shFrame.toLocal(-ray.d);
 
                 BSDFQueryRecord bRec(d, wi, ESolidAngle);
+                bRec.uv = its.uv;
 
                 color += its.mesh->getBSDF()->eval(bRec) * Frame::cosTheta(wi) * tracedColor;
             }
