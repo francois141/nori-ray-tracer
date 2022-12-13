@@ -161,4 +161,35 @@ Point2f Warp::squareToConcentricDisk(const Point2f& sample) {
     return r * Point2f(cos(theta), sin(theta));
 }
 
+Vector3f Warp::squareToGTR1(const Point2f &sample, float alpha) {
+    float a2 = pow(alpha,2);
+    float theta = acos(sqrt((1 - pow(a2,sample.x())) / (1-a2)));
+    float phi = 2 * M_PI * sample.y();
+    return Vector3f(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
+}
+
+float Warp::squareToGTR1Pdf(const Vector3f &m, float alpha)
+{
+    float cosTheta = m.z();
+    float a2 = pow(alpha,2);
+    float cosTheta2 = pow(cosTheta,2);
+    float pdf = cosTheta*(a2-1.0f) * INV_PI / (2*log(alpha)*(1+(a2-1)*cosTheta2));
+    return (cosTheta >= 0 && abs(m.squaredNorm() - 1.0f) < 1.0f) ? pdf : 0.0f;
+}
+
+Vector3f Warp::squareToGTR2(const Point2f &sample, float alpha) {
+    float a2 = pow(alpha,2);
+    float theta = acos(sqrt((1.0f - sample.x()) / (1.0f + (a2 - 1.0f) * sample.x())));
+    float phi = 2 * M_PI * sample.y();
+    return Vector3f(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
+}
+
+float Warp::squareToGTR2Pdf(const Vector3f &m, float alpha)
+{
+    float a2 = pow(alpha,2);
+    float cosTheta = m.z();
+    float pdf = a2 * cosTheta * INV_PI / pow(1 + (a2 - 1.0f) * pow(cosTheta,2),2);
+    return (cosTheta >= 0 && abs(m.squaredNorm() - 1.0f) < 1.0f) ? pdf : 0.0f;
+}
+
 NORI_NAMESPACE_END

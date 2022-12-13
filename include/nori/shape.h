@@ -22,6 +22,7 @@
 #include <nori/object.h>
 #include <nori/frame.h>
 #include <nori/bbox.h>
+#include <nori/texture.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -157,6 +158,8 @@ protected:
     BSDF *m_bsdf = nullptr;      ///< BSDF of the surface
     Emitter *m_emitter = nullptr;     ///< Associated emitter, if any
     BoundingBox3f m_bbox;                ///< Bounding box of the mesh
+
+    Texture<Normal3f>* m_normalMap;        ///< Optional normal map
 
 };
 

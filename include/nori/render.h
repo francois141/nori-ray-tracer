@@ -38,6 +38,7 @@ public:
     void stopRendering();
 
     float getProgress();
+    bool isRenderingDone();
 
 protected:
     Scene* m_scene = nullptr;

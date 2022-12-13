@@ -1,0 +1,281 @@
+<!DOCTYPE html
+    PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computer Graphics - Report of the project</title>
+
+    <link href="resources/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/offcanvas.css" rel="stylesheet">
+    <link href="resources/custom2014.css" rel="stylesheet">
+    <link href="resources/twentytwenty.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+    <div class="container headerBar">
+        <h1>Report project computer graphics</h1>
+    </div>
+
+    <div class="container contentWrapper">
+        <div class="pageContent">
+            <!-- ================================================================= -->
+
+            <h2>Denoiser</h2>
+
+            <h3>Description</h3>
+
+            <p>The denoiser is clearly a very cool feature to program. At first, we had to
+                modify the raytracer so that it also returns the variance per pixel. Indeed at the time of the
+                generation of the scene, some pixels are much more "uniform" than others. The generation of
+                image with the variance per pixel required a small adjustment in the ray tracer, but nothing very
+                complicated. We simply had to add a second bitmap object and calculate the
+                variance formula.</p>
+            <p>
+                The second part is to implement a denoiser that reads first the noisy output image
+                and the variance per pixel. The implementation of this algorithm is in python and is located in a
+                separate folder folder that I named denoiser. The choice was made for the fast version with
+                convolutions. The
+                librairies numpy, scipy and opencv helped me to realize this denoiser. Some functions like
+                circular shift and d2 had to be written by hand. OpenCV is mainly used for the I/O part of the
+                part of the program. The program takes two mandatory arguments as input and displays three images,
+                before save the denoised image for comparison.
+            </p>
+
+            <h3> Technical details : </h3>
+
+            <p> </p>
+
+
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/denoiser/Base_Output_Image.png" alt="Noisy image" class="img-responsive">
+                <img src="../scenes/project/denoiser/Base_Denoised_Image.png" alt="Denoised image"
+                    class="img-responsive">
+            </div> <br>
+            <!-- ================================================================= -->
+
+            <h2>Disney BRDF</h2>
+
+            <h3>Description</h3>
+
+            <p>When I told my cousin what I was doing, she had stars in her eyes. When I first read the
+                When I first read the Disney BRDF paper, I had a few tears instead. Joking aside, this
+                function was a real challenge to implement even though the final code looks very much like an
+                microfacet function. For my part I implemented almost all the parameters except clearcoat and
+                anisotropic. The implementation of the disney BRDF function is similar to the microfacet function, a
+                implementation in three parts. For the implementation, I took inspiration from the following resources
+            </p>
+
+            <ul>
+                <li>https://media.disneyanimation.com/uploads/production/publication_asset/48/asset/s2012_pbs_disney_brdf_notes_v3.pdf
+                </li>
+                <li>https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf</li>
+                <li>https://schuttejoe.github.io/post/disneybsdf/</li>
+            </ul>
+
+            <p>
+                The first function I implemented is the evaluate function. Given a BSDFQueryRecord, the function returns
+                a Color3f object. The first part of the function is a simple list of multiple easy dot computations to
+                retrive different values for the next parts. Then we need to evaluate different Colors, namely
+                Ctint,CtintMix, Cspec, Csheen. After we compute all values, we can compute the diffuse, specular and
+                sheen part. At the end, we combine every parts together and it returns the color.</p>
+
+            <p>
+                The second function implemented is the sample function. The objective of this sample is to return a
+                the value evaluated by the eval function, divided by the pdf and the cosine and return a new line
+                in order to continue the recursive evaluation by means of this famous Russian roulette. In theory a
+                uniform sampling would work without too much trouble with enough samples because it is not biased. In
+                order
+                to make the rendering more realistic, we have to sample proportionally to the size of the BRDF.
+                In my implementation I decided to divide the sampling in two parts. In the first part,
+                we look if sample.x() is smaller than the metal factor or if it is not the case. In the first
+                first case we do a CosineHemisphere sampling. In the second case, we sample the function
+                squareToGTR2. The returned vector is considered as the normal vector and we make a reflection of the
+                incoming vector on this new "normal" vector. I decided in this case not to take into account the sheen
+                the sheen parameter in the sampling. Indeed this parameter has a relatively low value and
+                I have seen several articles / implementations leaving it out. This allows to have a code base
+                easier to read and debugging is also simplified.</p>
+
+            <p>
+                The last function to implement is the pdf. This function was not very difficult to
+                to implement. The implementation of the pdf can be done exactly as in the case of the
+                microfacet model. </p>
+
+            <h3> Technical details : </h3>
+
+            <p> </p>
+
+            <img src="../scenes/project/disney/test_gtr1.png" alt="Test results" /> <br> <br> <br> <br>
+            <img src="../scenes/project/disney/test_gtr2.png" alt="Test results" /> <br> <br> <br> <br>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/disney/cbox_path_mis.png" alt="Disney BRDF" class="img-responsive">
+
+            </div> <br>
+            <!-- ================================================================= -->
+
+            <h2>Spotlight</h2>
+
+            <h3>Description</h3>
+
+            <p>The third and last 5-point feature from me is a light relatively similar to the point
+                light. The difference between a pointlight and a spotlight is that the second one does not illuminate
+                "all" the
+                sphere but only a specific part of it.
+
+                The starting code is the one of my point light. For the implementation of a spotlight, there are 3
+                additional parameters. First of all, a spotlight has a vector which serves as the main direction, i.e.
+                direction, which is the center of the spotlight. The next two parameters
+                determine in a way the "size of the spolight". The first parameter " DONNER NAME " is used
+                to determine the size of the first cone where the lighting is almost complete. The second
+                parameter, draws a second cone that starts from the angle of the first parameter and ends at the angle
+                of the second
+                second parameter and the brightness will decrease linearly.
+
+                The details of the implementation are again strongly inspired by the PBR book. The code is
+                similar to that of the pointlight.
+            </p>
+
+            <h3> Technical details : </h3>
+
+            <p> </p>
+
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/spotlight/sphere-texture.png" alt="Spotlight" class="img-responsive">
+            </div> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Volumetric path tracing</h2>
+
+            <h3>Description</h3>
+
+            <p>
+                This feature is probably one of the most satisfying of the project to see once it works.
+                The implementation was particularly difficult, especially the part with the integrator which took me a
+                lot of time and energy.
+                a lot of time and energy. To implement a volumetric path tracer, I had to implement
+                three main components. In the first step, we have a medium. In a second step, there is a
+                a phase function. Once these two functions are implemented, we can move to the last function which is
+                the
+                function which is the integrator and therefore the main part of the subject. The integrator works
+                according to the
+                free-path sampling method.
+
+                In a first step, I started by implementing the phasefunction. Since I already had 60
+                pts of features, I implemented the isotropic phase function. It was in the end nothing really
+                complicated.
+                complicated. A toString function and a sample function that returns a pdf while filling a data structure
+                a data structure for rendering.
+
+                The second part implemented is the medium part. In my case I implement a homogeneous medium. The
+                homogeneous part is easier than the hereditary part. This has greatly facilitated the programming of
+                the sample, tr and inv_tr methods. No need to use complicated methods. Just some
+                calculations with exponentials and logarithms. The equations are a reproduction of the
+                slides of the course.
+
+                The implementation of the integrator is quite similar to path mis. The difference is that you have to
+                attenuate the ray by the medium and on the other hand break the path of the ray in the middle of the
+                ray in order to give this scattering effect. For this we use the helpers functions of the medium and
+                phase function within the integrator. The rest of the logic is otherwise similar to the
+                path_mis.
+            </p>
+
+            <h3> Technical details : </h3>
+
+            <p> </p>
+
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/pa4/cbox_disney/cbox_path_mis.png" alt="Basic reconstruction filter"
+                    class="img-responsive">
+                <img src="../scenes/project/volumetric/cbox_path_mis.png" alt="Windowed reconstruction filter"
+                    class="img-responsive">
+            </div> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Windowed sync filter</h2>
+
+            <h3>Description</h3>
+
+            <p>
+                The part with the reconstruction filter does not imply big modifications in the raytracer
+                nori. There is a file rfilter.cpp with different reconstruction filters. We see for example that
+                for example that there is an implementation of the box filter or the gaussian filter. In my case I have
+                decided to implement a windowed sync filter.</p>
+            <p>
+                As for the implementation itself, I chose to use the code given in PBR books.
+                The implementation is not very difficult. You just have to extend the reconstruction class filter
+                class and then add the corresponding code.
+            </p>
+
+            <h3> Technical details : </h3>
+
+            <p> </p>
+
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Basic reconstruction filter"
+                    class="img-responsive">
+                <img src="../scenes/project/windowed sync filter/cbox_path_mis.png" alt="Windowed reconstruction filter"
+                    class="img-responsive">
+            </div> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Rendering on the euler cluster</h2>
+
+            <h3>Description</h3>
+
+            <p>
+                To render on the euler cluster, the first step is to connect to the cluster, clone the project code and
+                compile it normally with cmake.
+                compile it normally with cmake. This is where the only difficulty of this part comes in. Nori is
+                compiled with a
+                graphical interface, namely the nanogui library. In order to be able to generate images on euler, you
+                have to compile nori without this library.
+                You have to compile nori without this graphical interface. </p>
+            <p>
+                To do this, I have generated a second program nori_euler which works without the graphical library.
+                There are
+                some difficulties though. The rendering is multi-threaded. The main thread does not wait for the
+                the end of the other threads. This implies that we had to find a mechanism to synchronize the threads
+                between them. My solution works as follows. In the main loop, we have a while loop that tests every
+                second and exits once the rendering is complete.
+                In the main loop, we have a while loop that tests every second and exits when the rendering is finished.
+                It is very important to use the sleep function.
+                Otherwise, the program will just loop and lose a lot of computing power to the other threads, which
+                really need it.
+                that really need computing power.
+            </p>
+
+            <h3> Technical details : </h3>
+
+            <p> </p>
+
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="resources/bootstrap.min.js"></script>
+    <!-- <script src="/js/offcanvas.js"></script> -->
+    <script src="resources/jquery.event.move.js"></script>
+    <script src="resources/jquery.twentytwenty.js"></script>
+
+
+    <script>
+        $(window).load(function () { $(".twentytwenty-container").twentytwenty({ default_offset_pct: 0.5 }); });
+    </script>
+
+</body>
+
+</html>

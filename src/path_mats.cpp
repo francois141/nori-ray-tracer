@@ -2,6 +2,7 @@
 #include <nori/scene.h>
 #include <nori/warp.h>
 #include <nori/bsdf.h>
+#include <nori/texture.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -46,7 +47,9 @@ public:
 
             // Sample the BRDF 
             BSDFQueryRecord bRec(its.shFrame.toLocal(-currentRay.d));
+            bRec.uv = its.uv;
             Color3f brdf = its.mesh->getBSDF()->sample(bRec, sampler->next2D());
+            bRec.uv = its.uv;
             attenuation *= brdf;
 
             // Continue the recursion

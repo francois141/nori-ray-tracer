@@ -31,6 +31,7 @@ public:
 
         // Step 1) Sample the BSDF
         BSDFQueryRecord bRec(its.shFrame.toLocal(-ray.d));
+        bRec.uv = its.uv;
         Color3f brdf = its.mesh->getBSDF()->sample(bRec,sampler->next2D());
 
         // Step 2) Check if we hit a Emitter 

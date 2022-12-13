@@ -50,6 +50,7 @@ public:
                 float theta = std::max(0.0f, Frame::cosTheta(its.shFrame.toLocal(eRec.wi)));
 
                 BSDFQueryRecord bRec(its.toLocal(-currentRay.d), its.toLocal(eRec.wi), ESolidAngle);
+                bRec.uv = its.uv;
 
                 Color3f brdf = its.mesh->getBSDF()->eval(bRec);
                 float pdf_mat = its.mesh->getBSDF()->pdf(bRec);
@@ -69,6 +70,7 @@ public:
 
             // Sample the BRDF
             BSDFQueryRecord bRec(its.shFrame.toLocal(-currentRay.d));
+            bRec.uv = its.uv;
             Color3f brdf = its.mesh->getBSDF()->sample(bRec, sampler->next2D());
             attenuation *= brdf;
 
