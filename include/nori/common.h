@@ -263,8 +263,8 @@ inline size_t solve_quadratic(float a, float b, float c, float* t0, float* t1) {
         *t1 = sol_2;
 
         return 2;
+    }
 }
-
 /**
  * @brief Enum to define how textures are repeated when mapped
  * to a specific geometry
