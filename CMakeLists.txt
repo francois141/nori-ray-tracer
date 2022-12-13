@@ -89,6 +89,7 @@ SET(SOURCES_FILES
   src/spotlight.cpp
   src/imagetexture.cpp
   src/uvmapping.cpp
+  src/normalmap.cpp
   src/phasefunction.cpp
   src/volumetric.cpp
   src/medium.cpp
