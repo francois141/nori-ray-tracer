@@ -89,6 +89,7 @@ SET(SOURCES_FILES
   src/spotlight.cpp
   src/imagetexture.cpp
   src/uvmapping.cpp
+  src/normalmap.cpp
 )
 
 add_executable(nori "${SOURCES_FILES}" src/main.cpp)

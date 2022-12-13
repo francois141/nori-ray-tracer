@@ -28,6 +28,10 @@
 
 	<mesh type="obj">
 		<string name="filename" value="meshes/rightwall.obj"/>
+		<!-- <texture type="NormalMap" name="normal">
+			<string name="fileName" value="textures/textureNormals.jpg"/>
+			<string name="wrap" value="repeat" />
+		</texture> -->
 		<bsdf type="diffuse">
 			<texture type="ImageTexture" name="albedo">
 				<string name="fileName" value="textures/texture.jpg"/>
@@ -54,6 +58,7 @@
 	<mesh type="sphere">
 		<point name="center" value="0.445800 0.332100 0.376700" />
 		<float name="radius" value="0.3263" />
+
 
 		<bsdf type="diffuse">
 			<texture type="ImageTexture" name="albedo">

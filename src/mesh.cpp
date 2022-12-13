@@ -134,25 +134,36 @@ void Mesh::setHitInformation(uint32_t index, const Ray3f &ray, Intersection & it
     its.p = bary.x() * p0 + bary.y() * p1 + bary.z() * p2;
 
     /* Compute proper texture coordinates if provided by the mesh */
-    if (m_UV.size() > 0)
+    if (m_UV.size() > 0) {
         its.uv = bary.x() * m_UV.col(idx0) +
                  bary.y() * m_UV.col(idx1) +
                  bary.z() * m_UV.col(idx2);
-
+       
+    }
     /* Compute the geometry frame */
     its.geoFrame = Frame((p1-p0).cross(p2-p0).normalized());
+    
 
     if (m_N.size() > 0) {
-        /* Compute the shading frame. Note that for simplicity,
-           the current implementation doesn't attempt to provide
-           tangents that are continuous across the surface. That
-           means that this code will need to be modified to be able
-           use anisotropic BRDFs, which need tangent continuity */
+        // Check for normal maps
+        if(m_normalMap) {
+            its.shFrame = Frame(
+                    (bary.x() * m_N.col(idx0) +
+                    bary.y() * m_N.col(idx1) +
+                    bary.z() * m_N.col(idx2)).normalized());
+            its.shFrame = Frame(its.shFrame.toWorld(m_normalMap->eval(its.uv).normalized()));
+        } else {
+            /* Compute the shading frame. Note that for simplicity,
+            the current implementation doesn't attempt to provide
+            tangents that are continuous across the surface. That
+            means that this code will need to be modified to be able
+            use anisotropic BRDFs, which need tangent continuity */
+            its.shFrame = Frame(
+                    (bary.x() * m_N.col(idx0) +
+                    bary.y() * m_N.col(idx1) +
+                    bary.z() * m_N.col(idx2)).normalized());
+        }
 
-        its.shFrame = Frame(
-                (bary.x() * m_N.col(idx0) +
-                 bary.y() * m_N.col(idx1) +
-                 bary.z() * m_N.col(idx2)).normalized());
     } else {
         its.shFrame = its.geoFrame;
     }

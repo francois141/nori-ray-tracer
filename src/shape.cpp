@@ -56,6 +56,14 @@ void Shape::addChild(NoriObject *obj) {
             m_emitter->setShape(static_cast<Shape*>(this));
             break;
 
+        case ETexture:
+            /*if (m_normalMap) {
+                throw NoriException(
+                    "Shape: tried to register multiple Normal map instances!");
+            }*/
+            m_normalMap = static_cast<Texture<Normal3f>*>(obj);
+            break;
+
         default:
             throw NoriException("Shape::addChild(<%s>) is not supported!",
                                 classTypeName(obj->getClassType()));
