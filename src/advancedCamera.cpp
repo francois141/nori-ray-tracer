@@ -136,6 +136,8 @@ public:
         samplePosition.x() * m_invOutputSize.x(),
         samplePosition.y() * m_invOutputSize.y(), 0.0f);
 
+        Vector3f d = nearP.normalized();
+
         // Check for lens distortion
         if(!m_distortion.isZero()) {
             #define F_EPSILON 1e-6
@@ -163,6 +165,7 @@ public:
             // Update the near plane position
             nearP.x() *= distortionFactor;
             nearP.y() *= distortionFactor;
+            d = nearP.normalized();
         }
 
         float w = 0.0f; // Weight of the current channel
@@ -180,17 +183,16 @@ public:
 
         /* Turn into a normalized ray direction, and
             adjust the ray interval accordingly */
-        Vector3f d = nearP.normalized();
         float invZ = 1.0f / d.z();
 
-        ray.o = m_cameraToWorld * Point3f();
-        ray.d = m_cameraToWorld * d;
+        ray.o = Point3f(0.0f);
+        ray.d = d;
         
         // Take into account DOF if needed with aberration sampling offset
         if(m_lensRadius > 0.0f || !m_chromaticStrength.isZero()) {
             // Sample point on lens
             Point2f pLens = m_lensRadius * 
-                Warp::squareToConcentricDisk(apertureSample);
+                Warp::squareToUniformDisk(apertureSample);
 
             // Compute point on plance of focus
             float ft = m_focalDistance / ray.d.z();
@@ -208,9 +210,9 @@ public:
 
             // Update ray for DOF effect given by the thin lens model
             ray.o = Point3f(pLens.x(), pLens.y(), 0.0f);
+            d = (pFocus - ray.o).normalized();
             ray.o = m_cameraToWorld * ray.o;
             
-            d = (pFocus - ray.o).normalized();
             ray.d = m_cameraToWorld * d;
         } else {
             ray.o = m_cameraToWorld * Point3f(0, 0, 0);
