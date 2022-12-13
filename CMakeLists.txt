@@ -89,6 +89,10 @@ SET(SOURCES_FILES
   src/spotlight.cpp
   src/imagetexture.cpp
   src/uvmapping.cpp
+  src/phasefunction.cpp
+  src/volumetric.cpp
+  src/medium.cpp
+  src/disney.cpp
 )
 
 add_executable(nori "${SOURCES_FILES}" src/main.cpp)
@@ -117,6 +121,8 @@ add_dependencies(nori OpenEXR_p)
 add_dependencies(nori nanogui_p)
 add_dependencies(nori tbb_p)
 add_dependencies(nori pugixml)
+add_dependencies(nori_euler OpenEXR_p)
+add_dependencies(nori_euler nanogui_p)
 add_dependencies(nori_euler tbb_p)
 add_dependencies(nori_euler pugixml)
 add_dependencies(warptest nori)

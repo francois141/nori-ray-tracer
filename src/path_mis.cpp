@@ -51,6 +51,7 @@ public:
 
                 BSDFQueryRecord bRec(its.toLocal(-currentRay.d), its.toLocal(eRec.wi), ESolidAngle);
                 bRec.uv = its.uv;
+
                 Color3f brdf = its.mesh->getBSDF()->eval(bRec);
                 float pdf_mat = its.mesh->getBSDF()->pdf(bRec);
 

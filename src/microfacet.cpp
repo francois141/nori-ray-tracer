@@ -97,17 +97,16 @@ public:
     virtual float pdf(const BSDFQueryRecord &bRec) const override {
 
     	float cosinus = Frame::cosTheta(bRec.wo);
-
         if(cosinus <= 0.0f) {
             return 0.0f;
         }
 
         Vector3f normal = (bRec.wi + bRec.wo).normalized();
 
-        float term1 = evalBeckmann(normal) * Frame::cosTheta(normal) / (4.0f*abs(normal.dot(bRec.wo)));
-        float term2 = cosinus*INV_PI;
+        float metallicTerm = evalBeckmann(normal) * Frame::cosTheta(normal) / (4.0f*abs(normal.dot(bRec.wo)));
+        float diffuseTerm = cosinus*INV_PI;
 
-        return m_ks * term1 + (1 - m_ks) * term2;
+        return m_ks * metallicTerm + (1 - m_ks) * diffuseTerm;
     }
 
     /// Sample the BRDF
