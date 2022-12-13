@@ -22,12 +22,12 @@ img_variance = cv2.cvtColor(img_variance, cv2.COLOR_BGR2GRAY)
 
 # Base parameters for the algorithm
 epsilon = 1e-6
-k = 0.02
+k = 0.01
 
-r = 3
+r = 5
 flt = 0
 wgtsum = 0
-f = 10
+f = 5
 
 # Implementation of d2
 def d2(ngb,img,img_variance,k):
@@ -75,9 +75,6 @@ if __name__ == "__main__":
     cv2.imshow("denoised_image",outputImage)
     cv2.imshow("base_image",img)
     cv2.imshow("base_image_variance",img_variance)
-
-    # Save the denoised image
-    cv2.imwrite("denoised_image.png", outputImage)
 
     # Wait until we are done
     cv2.waitKey(0)

@@ -31,7 +31,7 @@ public:
         float cosTheta = this->direction.dot(w.normalized());
         if(cosTheta < cosTotalWidth) return 0;
         if(cosTheta > cosFalloffStart) return 1;
-
+        // Linear interpolate between cosFallOffStart & cosTotalWidth
         return (std::acos(cosTotalWidth) - std::acos(cosTheta))/ (std::acos(cosTotalWidth) - std::acos(cosFalloffStart));
     }
 
@@ -67,8 +67,6 @@ protected:
 
     float cosFalloffStart;
     float cosTotalWidth;
-
-    const float PDF_VALUE = 1.0f;
 };
 
 NORI_REGISTER_CLASS(SpotLight, "spotlight");
