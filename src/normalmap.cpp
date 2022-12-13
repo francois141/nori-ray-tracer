@@ -44,14 +44,14 @@ private:
 };*/
 
 /**
- * \brief Image texture
+ * \brief Basically the same as an Image texture, but will be used differently
  */
-class ImageTexture : public Texture<Color3f> {
+class NormalMap : public Texture<Normal3f> {
 public:
 
-    ImageTexture(const PropertyList &props);
+    NormalMap(const PropertyList &props);
 
-    Color3f eval(const Point2f & uv) const override;
+    Normal3f eval(const Point2f & uv) const override;
 
     std::string toString() const override;
 
@@ -63,12 +63,12 @@ private:
     int m_height;
     int m_channels; // RGB or RGBA
 
-    Color3f getData(const Point2f & uv) const;
+    Normal3f getData(const Point2f & uv) const;
 };
 
-NORI_REGISTER_CLASS(ImageTexture, "ImageTexture");
+NORI_REGISTER_CLASS(NormalMap, "NormalMap");
 
-ImageTexture::ImageTexture(const PropertyList &props) {
+NormalMap::NormalMap(const PropertyList &props) {
     m_filename = props.getString("fileName", "textures/default.png");
     m_wrap = wrapTypeFromString(props.getString("wrap", "repeat"));
 
@@ -95,7 +95,7 @@ ImageTexture::ImageTexture(const PropertyList &props) {
 #define ALPHA_CHANNEL 3
 
 // Get data from texel coordinates
-Color3f ImageTexture::getData(const Point2f & xy) const  {
+Normal3f NormalMap::getData(const Point2f & xy) const  {
     // Clamp or mod the texel coordinates to be within the texture's range
     int x, y;
     if(m_wrap == ImageWrap::Repeat) {
@@ -111,15 +111,19 @@ Color3f ImageTexture::getData(const Point2f & xy) const  {
     float greenData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + GREEN_CHANNEL)]) / UCHAR_MAX;
     float blueData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + BLUE_CHANNEL)]) / UCHAR_MAX;
 
-    return Color3f(redData, greenData, blueData);
+    return Normal3f(
+        redData,
+        greenData, 
+        blueData
+    );
 }
 
-Color3f ImageTexture::eval(const Point2f & uv) const {
+Normal3f NormalMap::eval(const Point2f & uv) const {
     // Retrieve texel coordinates from uv coordinates
     float x(uv.x() * m_width), y(uv.y() * m_height);
 
     // Retrieve data values of neighboring pixels for bilinear interpolation
-    Color3f v00(getData(Point2f(x, y))),
+    Normal3f v00(getData(Point2f(x, y))),
             v01(getData(Point2f(x, y + 1.0f))),
             v10(getData(Point2f(x + 1.0f, y))),
             v11(getData(Point2f(x + 1.0f, y + 1.0f)));
@@ -134,9 +138,9 @@ Color3f ImageTexture::eval(const Point2f & uv) const {
             dstdx * dstdy * v11;
 }
 
-std::string ImageTexture::toString() const {
+std::string NormalMap::toString() const {
     return tfm::format(
-        "ImageTexture[\n"
+        "NormalMap[\n"
                 "  filename = %s,\n"
                 "  wrap = %s\n"
                 "]",

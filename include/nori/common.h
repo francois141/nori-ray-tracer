@@ -243,6 +243,33 @@ inline int mod(int a, int b) {
     return (r < 0) ? r+b : r;
 }
 
+/**
+ * @brief Enum to define how textures are repeated when mapped
+ * to a specific geometry
+ */
+enum class ImageWrap { Repeat, Clamp };
+inline ImageWrap wrapTypeFromString(std::string type_name) {
+    if(type_name == "repeat") {
+        return ImageWrap::Repeat;
+    }
+    if(type_name == "clamp") {
+        return ImageWrap::Clamp;
+    }
+    // Invalid name was given
+    throw NoriException("Invalid wrap type name %s", type_name);
+}
+inline std::string wrapToString(ImageWrap iw) {
+    switch (iw) {
+    case ImageWrap::Repeat:
+        return "repeat";
+    case ImageWrap::Clamp:
+        return "clamp";
+    
+    default:
+        return "no wrap";
+    }
+}
+
 /// Compute a direction for the given coordinates in spherical coordinates
 extern Vector3f sphericalDirection(float theta, float phi);
 
