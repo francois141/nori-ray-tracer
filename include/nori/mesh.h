@@ -20,6 +20,7 @@
 #define __NORI_MESH_H
 
 #include <nori/shape.h>
+#include <nori/texture.h>
 #include <nori/dpdf.h>
 
 NORI_NAMESPACE_BEGIN

@@ -44,6 +44,8 @@ SET(SOURCES_FILES
   include/nori/transform.h
   include/nori/vector.h
   include/nori/warp.h
+  include/nori/blockedarray.h
+  include/nori/texturemapping.h
 
   # Source code files
   src/bitmap.cpp
@@ -85,6 +87,8 @@ SET(SOURCES_FILES
   src/path_mats.cpp
   src/path_mis.cpp
   src/spotlight.cpp
+  src/imagetexture.cpp
+  src/uvmapping.cpp
   src/phasefunction.cpp
   src/volumetric.cpp
   src/medium.cpp
@@ -123,6 +127,9 @@ add_dependencies(nori_euler tbb_p)
 add_dependencies(nori_euler pugixml)
 add_dependencies(warptest nori)
 add_dependencies(tonemapper nori)
+
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 # Link to dependency libraries
 target_link_libraries(nori ${extra_libs})

@@ -19,6 +19,7 @@
 #include <nori/shape.h>
 #include <nori/bsdf.h>
 #include <nori/emitter.h>
+#include <nori/texture.h>
 //#include <nori/warp.h>
 //#include <Eigen/Geometry>
 
