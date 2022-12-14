@@ -86,6 +86,8 @@ SET(SOURCES_FILES
   src/direct_mis.cpp
   src/path_mats.cpp
   src/path_mis.cpp
+  src/advancedCamera.cpp
+  src/thinlens.cpp
   src/spotlight.cpp
   src/imagetexture.cpp
   src/uvmapping.cpp

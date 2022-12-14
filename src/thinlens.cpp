@@ -24,14 +24,14 @@
 NORI_NAMESPACE_BEGIN
 
 /**
- * \brief Perspective camera with depth of field
+ * \brief Perspective camera augmented with the thin lens model for depth of field
  *
- * This class implements a simple perspective camera model. It uses an
- * infinitesimally small aperture, creating an infinite depth of field.
+ * This class implements a simple perspective camera using the thin lens model. It uses an
+ * user defined aperture, creating a finite depth of field.
  */
-class PerspectiveCamera : public Camera {
+class ThinLensCamera : public Camera {
 public:
-    PerspectiveCamera(const PropertyList &propList) {
+    ThinLensCamera(const PropertyList &propList) {
         /* Width and height in pixels. Default: 720p */
         m_outputSize.x() = propList.getInteger("width", 1280);
         m_outputSize.y() = propList.getInteger("height", 720);
@@ -47,9 +47,23 @@ public:
         m_nearClip = propList.getFloat("nearClip", 1e-4f);
         m_farClip = propList.getFloat("farClip", 1e4f);
 
+        /* Get thin lens parameters: lens radius and focal distance */
+        m_focalDistance = propList.getFloat("focalDist", 1.0f);
+        m_lensRadius = propList.getFloat("lensRadius", 0.0f);
+
         m_rfilter = NULL;
     }
-
+    /**
+     * \brief Perform some action associated with the object
+     *
+     * The default implementation throws an exception. Certain objects
+     * may choose to override it, e.g. to implement initialization, 
+     * testing, or rendering functionality.
+     *
+     * This function is called by the XML parser once it has
+     * constructed an object and added all of its children
+     * using \ref addChild().
+     */
     virtual void activate() override {
         float aspect = m_outputSize.x() / (float) m_outputSize.y();
 
@@ -87,23 +101,68 @@ public:
         }
     }
 
+    /**
+     * \brief Importance sample a ray according to the camera's response function
+     *
+     * \param ray
+     *    A ray data structure to be filled with a position 
+     *    and direction value
+     *
+     * \param samplePosition (pFilm)
+     *    Denotes the desired sample position on the film
+     *    expressed in fractional pixel coordinates
+     *
+     * \param apertureSample (pLens)
+     *    A uniformly distributed 2D vector that is used to sample
+     *    a position on the aperture of the sensor if necessary.
+     *
+     * \param channel
+     *     The color channel currently being sampled (for chromatic aberation effects)
+     * \return
+     *    An importance weight associated with the sampled ray.
+     *    This accounts for the difference in the camera response
+     *    function and the sampling density.
+     */
     Color3f sampleRay(Ray3f &ray,
             const Point2f &samplePosition,
             const Point2f &apertureSample,
             int channel=-1) const {
+
         /* Compute the corresponding position on the 
-           near plane (in local camera space) */
+            near plane (in local camera space) */
         Point3f nearP = m_sampleToCamera * Point3f(
-            samplePosition.x() * m_invOutputSize.x(),
-            samplePosition.y() * m_invOutputSize.y(), 0.0f);
+        samplePosition.x() * m_invOutputSize.x(),
+        samplePosition.y() * m_invOutputSize.y(), 0.0f);
 
         /* Turn into a normalized ray direction, and
-           adjust the ray interval accordingly */
+            adjust the ray interval accordingly */
         Vector3f d = nearP.normalized();
         float invZ = 1.0f / d.z();
 
-        ray.o = m_cameraToWorld * Point3f(0, 0, 0);
-        ray.d = m_cameraToWorld * d;
+        ray = Ray3f(Point3f(0.f), d);
+        
+        // Take into account DOF if needed
+        if(m_lensRadius > 0.0f) {
+            // Sample point on lens
+            Point2f pLens = m_lensRadius * 
+                Warp::squareToConcentricDisk(apertureSample);
+
+            // Compute point on plance of focus
+            float ft = m_focalDistance / ray.d.z();
+            Point3f pFocus = ray(ft);
+
+            // Update ray for effect of lens
+            ray.o = Point3f(pLens.x(), pLens.y(), 0.0f);
+            ray.d = (pFocus - ray.o).normalized();
+
+            ray.o = m_cameraToWorld * ray.o;
+            ray.d = m_cameraToWorld * ray.d;
+        } else {
+            ray.o = m_cameraToWorld * Point3f(0, 0, 0);
+            ray.d = m_cameraToWorld * d;
+        }
+        
+        // Update mint and maxt
         ray.mint = m_nearClip * invZ;
         ray.maxt = m_farClip * invZ;
         ray.update();
@@ -128,7 +187,7 @@ public:
     /// Return a human-readable summary
     virtual std::string toString() const override {
         return tfm::format(
-            "PerspectiveCamera[\n"
+            "AdvancedCamera[\n"
             "  cameraToWorld = %s,\n"
             "  outputSize = %s,\n"
             "  fov = %f,\n"
@@ -150,7 +209,11 @@ private:
     float m_fov;
     float m_nearClip;
     float m_farClip;
+
+protected:
+    float m_lensRadius;
+    float m_focalDistance;
 };
 
-NORI_REGISTER_CLASS(PerspectiveCamera, "perspective");
+NORI_REGISTER_CLASS(ThinLensCamera, "thinlens");
 NORI_NAMESPACE_END

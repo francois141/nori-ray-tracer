@@ -34,6 +34,7 @@
 #include <stdint.h>
 #include <ImathPlatform.h>
 #include <tinyformat.h>
+#include <math.h>
 
 /* Convenience definitions */
 #define NORI_NAMESPACE_BEGIN namespace nori {
@@ -243,6 +244,27 @@ inline int mod(int a, int b) {
     return (r < 0) ? r+b : r;
 }
 
+#define NO_SOLUTION std::numeric_limits<float>::min()
+
+// Quadratic solver (taken from koyamaki https://github.com/Dobios/Koyamaki/blob/master/src/solver.cpp)
+inline size_t solve_quadratic(float a, float b, float c, float* t0, float* t1) {
+    float delta((b * b) - (4 * a * c));
+
+    if(delta < 0) {
+        return 0;
+    } else if(delta == 0) {
+        *t0 = (-b) / (2 * a);
+        return 1;
+    } else {
+        float sol_1(((-b) + sqrt(delta)) / (2 * a));
+        float sol_2(((-b) - sqrt(delta)) / (2 * a));
+
+        *t0 = sol_1;
+        *t1 = sol_2;
+
+        return 2;
+    }
+}
 /**
  * @brief Enum to define how textures are repeated when mapped
  * to a specific geometry

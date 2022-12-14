@@ -78,11 +78,14 @@ public:
     /// Probability density of \ref squareToBeckmann()
     static float squareToBeckmannPdf(const Vector3f &m, float alpha);
 
-
     static Vector3f squareToUniformTriangle(const Point2f &sample);
 
     // Custom added functions
     static Vector3f squareToUniformCylinder(const Point2f &sample);
+
+    // For thin lens model sampling
+    static Point2f squareToConcentricDisk(const Point2f& sample);
+    
 
     static Vector3f squareToGTR1(const Point2f &sample, float alpha);
     static Vector3f squareToGTR2(const Point2f &sample, float alpha);
