@@ -108,12 +108,12 @@ public:
         }
 
 
-        //returns the 2d coordinates of the pixel from 3d spherical coordinates
+        // Compute a UV point from a intersection point given in spherical coord
         Point2f mapIntersect(const Vector3f &vec) const {
-            //take the spherical coordinates phi and theta
+            // Extract theta and phi angles from coordinates
             Point2f thetaphi = sphericalCoordinates(vec);
 
-            //calculate u and v from spherical coordinates
+            // Compute U and V
             float u = thetaphi.x() * (m_width - 1) * INV_PI;
             float v = thetaphi.y()  * 0.5 * (m_height - 1) * INV_PI;
 
@@ -121,8 +121,7 @@ public:
             if(std::isnan(u) || std::isnan(v)) {
                 return Point2f(0,0);
             }
-
-            //return the indexes
+            
             return Point2f(u,v);
         }
 
