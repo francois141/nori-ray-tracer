@@ -23,7 +23,7 @@
         <float name="radius" value="30"/>
 
         <emitter type="envmap">
-            <string name="filename" value="textures/envmap.exr"/>   
+            <string name="filename" value="textures/envmaptext.exr"/>   
         </emitter>
     </mesh>
 
@@ -32,10 +32,7 @@
         <point name="center" value="0,0,1"/>
         <float name="radius" value="4"/>   
 
-        <bsdf type="conductor">
-            <float name="eta" value="0.24873"/>
-            <float name="k" value="3.0740"/>
-            <float name="specularReflectance" value="0.90962"/>
+        <bsdf type="mirror">
         </bsdf>
 
     </mesh>

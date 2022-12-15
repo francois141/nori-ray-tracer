@@ -6,25 +6,29 @@
 
 NORI_NAMESPACE_BEGIN
 
+#define T_FAR 100000
+
 class EnvironmentMap : public Emitter {
 public:
         EnvironmentMap(const PropertyList &propList) {
             m_weight = propList.getFloat("weight", 1.0f);
 
             // Get Filename and then generate bitmap from it
-            std::string filename = propList.getString("filename", "");
+            m_filename = propList.getString("filename", "textures/envmaptext.exr");
+
+            // Resolve file path
+            filesystem::path file_path = getFileResolver()->resolve(m_filename);
+            m_filename = file_path.str();
+
             // Sanity check
-            if(filename == "") {
+            if(m_filename == "") {
                 throw NoriException("EnvMap: No filename was given...");
             }
-            // Resolve file path
-            filesystem::path file_path = getFileResolver()->resolve(filename);
-            filename = file_path.str();
 
             // Scale down the light to make it feel more natural
             Vector3f lumScale = propList.getVector3("luminanceScale", Vector3f(0.3f, 0.6f, 0.1f));
 
-            m_imageMap = Bitmap(filename);
+            m_imageMap = Bitmap(m_filename);
             m_height = m_imageMap.cols();
             m_width = m_imageMap.rows();
 
@@ -53,61 +57,6 @@ public:
             precompute1D(0, sum, m_pmarginal, m_cmarginal); 
         }
 
-        virtual std::string toString() const override {
-            return tfm::format(
-                    "EnvironmentMap"
-            );
-        }
-
-
-        // Sample a single coordinate (from reference paper)
-        void sample1D(int rowNumber, const Matf &pf, const Matf &Pf , const float &sample , float &x, float &prob) const {
-            int i;
-            for (i = 0; i < Pf.cols(); i++) {
-                if ((Pf(rowNumber, i) <= sample) && (sample < Pf(rowNumber, i + 1))) {
-                    break;
-                }
-            }
-            float t = (Pf(rowNumber, i + 1) - sample) / (Pf(rowNumber, i + 1) - Pf(rowNumber, i));
-            x = (1 - t) * i + t * (i + 1);
-            prob = pf(rowNumber, i);
-        }
-
-        // Precompute a single coordinate's distributions (from reference paper)
-        float precompute1D(int row, const Matf &f, Matf &pf, Matf &Pf) const {
-            float res = 0;
-            int i;
-            for(i= 0; i < f.cols(); i++) {
-                res = i+f(row, i);
-            }
-            if (res == 0) {
-                return res;
-            }
-            for(int j = 0; j < f.cols(); j++) {
-                pf(row, j) = f(row, j) / res;
-            }
-            Pf(row, 0) = 0;
-            for(i = 1; i < f.cols(); i++) {
-                Pf(row, i) = Pf(row, i - 1) + pf(i - 1);
-            }
-            Pf(row,i) = 1;
-            return res;
-        }
-
-        // Computes the spherical coordinates from the uv coordinates of a texel
-        Vector3f invMapIntersect(const Point2f &uv) const{
-            // Compute spherical coordinate angles
-            float theta = uv.x() * M_PI /(m_width - 1);
-            float phi = uv.y() * 2 * M_PI / (m_height - 1);
-
-            return Vector3f(
-                sin(theta) * cos(phi),
-                sin(theta) * sin(phi), 
-                cos(theta)
-            ).normalized();
-        }
-
-
         // Compute a UV point from a intersection point given in spherical coord
         Point2f mapIntersect(const Vector3f &vec) const {
             // Extract theta and phi angles from coordinates
@@ -123,6 +72,53 @@ public:
             }
             
             return Point2f(u,v);
+        }
+
+        // Computes the spherical coordinates from the uv coordinates of a texel
+        Vector3f invMapIntersect(const Point2f &uv) const{
+            // Compute spherical coordinate angles
+            float theta = uv.x() * M_PI /(m_width - 1);
+            float phi = uv.y() * 2 * M_PI / (m_height - 1);
+
+            return Vector3f(
+                sin(theta) * cos(phi),
+                sin(theta) * sin(phi), 
+                cos(theta)
+            ).normalized();
+        }
+
+        // Precompute a single coordinate's distributions (from reference paper)
+        float precompute1D(int row, const Matf &f, Matf &pf, Matf &Pf) const {
+            float res = 0;
+            int i;
+            for(i= 0; i < f.cols(); i++) {
+                res = i + f(row, i);
+            }
+            if (res == 0) {
+                return res;
+            }
+            for(int j = 0; j < f.cols(); j++) {
+                pf(row, j) = f(row, j) / res;
+            }
+            Pf(row, 0) = 0;
+            for(i = 1; i < f.cols(); i++) {
+                Pf(row, i) = Pf(row, i - 1) + pf(i - 1);
+            }
+            Pf(row,i) = 1;
+            return res;
+        }
+
+        // Sample a single coordinate (from reference paper)
+        void sample1D(int rowNumber, const Matf &pf, const Matf &Pf , const float &sample , float &x, float &prob) const {
+            int i;
+            for (i = 0; i < Pf.cols(); i++) {
+                if ((Pf(rowNumber, i) <= sample) && (sample < Pf(rowNumber, i + 1))) {
+                    break;
+                }
+            }
+            float t = (Pf(rowNumber, i + 1) - sample) / (Pf(rowNumber, i + 1) - Pf(rowNumber, i));
+            x = (1 - t) * i + t * (i + 1);
+            prob = pf(rowNumber, i);
         }
 
         Color3f eval(const EmitterQueryRecord & lRec) const override {
@@ -164,24 +160,24 @@ public:
             float jacobian = (m_height - 1) * (m_width - 1) /
                 (2 * std::pow(M_PI, 2) * Frame::sinTheta(lRec.wi));
             float u, v;
-            float pdfu, pdfv;
+            float u_pdf, v_pdf;
 
             // Sample the texel
-            sample1D(0, m_pmarginal, m_cmarginal, sample.x(), u, pdfu);
-            sample1D(u, m_pdf, m_cdf, sample.y(), v, pdfv);
+            sample1D(0, m_pmarginal, m_cmarginal, sample.x(), u, u_pdf);
+            sample1D(u, m_pdf, m_cdf, sample.y(), v, v_pdf);
 
-            Point2f pixel = Point2f(u, v);
-            Vector3f w = invMapIntersect(pixel);
+            Point2f uv = Point2f(u, v);
+            Vector3f w = invMapIntersect(uv);
 
             // Update lRec
             lRec.wi = w;
-            lRec.shadowRay = Ray3f(lRec.ref, lRec.wi, Epsilon, 100000);
+            lRec.shadowRay = Ray3f(lRec.ref, lRec.wi, Epsilon, T_FAR);
 
             // Compute v's pdf
-            pdfv = pdf(lRec) * jacobian;
+            v_pdf = pdf(lRec) * jacobian;
             
             // Don't forget to scale color by pdf
-            return eval(lRec) / pdfv;
+            return eval(lRec) / v_pdf;
         }
 
 
@@ -195,11 +191,21 @@ public:
             return (m_pmarginal(0, i) * m_pdf(i, j));
         }
 
+        virtual std::string toString() const override {
+            return tfm::format(
+                    "EnvironmentMap: [\n"
+                    "   filename: %s\n]", 
+                    m_filename
+            );
+        }
+
 protected:
     // Image bitmap and metadata
     Bitmap m_imageMap;
     int m_height;
     int m_width;
+
+    std::string m_filename;
 
     //m_luminance Matf
     Matf m_luminance;
