@@ -144,6 +144,7 @@ using std::endl;
 
 typedef Eigen::Matrix<float,    Eigen::Dynamic, Eigen::Dynamic> MatrixXf;
 typedef Eigen::Matrix<uint32_t, Eigen::Dynamic, Eigen::Dynamic> MatrixXu;
+typedef Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Matf;
 
 /// Simple exception class, which stores a human-readable error description
 class NoriException : public std::runtime_error {
