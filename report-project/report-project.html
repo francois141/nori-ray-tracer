@@ -39,16 +39,26 @@
                 The second part is to implement a denoiser that reads first the noisy output image
                 and the variance per pixel. The implementation of this algorithm is in python and is located in a
                 separate folder folder that I named denoiser. The choice was made for the fast version with
-                convolutions. The
-                librairies numpy, scipy and opencv helped me to realize this denoiser. Some functions like
-                circular shift and d2 had to be written by hand. OpenCV is mainly used for the I/O part of the
-                part of the program. The program takes two mandatory arguments as input and displays three images,
-                before save the denoised image for comparison.
+                convolutions.
             </p>
 
             <h3> Technical details : </h3>
 
-            <p> </p>
+            <p> Before writing the actualy python code for the denoiser, we need to render output two images. To render
+                the image with variance per pixel, I modified the file render.cpp. Then I can compute the bitmap
+                pixelVarianceEstimates using the two bitmaps sumBitmap and sum2Bitmap. The last step is to save the
+                bitmap and we are done with this part.</p>
+
+            <p>
+                The second part is the python code. The denoiser can be splitted from the nori code, because it takes
+                only two images as input and return return a denoised images. This is post-processing step in the
+                rendering pipeline. The actual implementation was a copy paste of the pseudo code in the slides. The
+                missing functions were created inside of python. The librairies numpy, scipy and opencv helped me to
+                realize this denoiser. Some functions like
+                circular shift and d2 had to be written by hand. OpenCV is mainly used for the I/O part of the
+                part of the program. The program takes two mandatory arguments as input and displays three images,
+                before save the denoised image for comparison.
+            </p>
 
 
 
@@ -63,8 +73,8 @@
 
             <h3>Description</h3>
 
-            <p>When I told my cousin what I was doing, she had stars in her eyes. When I first read the
-                When I first read the Disney BRDF paper, I had a few tears instead. Joking aside, this
+            <p>When I told my small cousin what I was doing, she had stars in her eyes.
+                When I first read the Disney BRDF paper, I had a few tears in the eyes instead. Joking aside, this
                 function was a real challenge to implement even though the final code looks very much like an
                 microfacet function. For my part I implemented almost all the parameters except clearcoat and
                 anisotropic. The implementation of the disney BRDF function is similar to the microfacet function, a
@@ -78,20 +88,27 @@
                 <li>https://schuttejoe.github.io/post/disneybsdf/</li>
             </ul>
 
+            <h3> Technical details : </h3>
+
+            <p>For the implementation of the brdf I created the single file disney.cpp. It contains the whole
+                implementation. I also added GTR1 and GTR2 in the function warp.cpp.</p>
+
             <p>
                 The first function I implemented is the evaluate function. Given a BSDFQueryRecord, the function returns
                 a Color3f object. The first part of the function is a simple list of multiple easy dot computations to
                 retrive different values for the next parts. Then we need to evaluate different Colors, namely
-                Ctint,CtintMix, Cspec, Csheen. After we compute all values, we can compute the diffuse, specular and
-                sheen part. At the end, we combine every parts together and it returns the color.</p>
+                Ctint,CtintMix, Cspec, Csheen. After we compute all values, we can start computing the differents
+                components. At the end we combine the differentes components together.
+                The first component is the diffuse part. The second is the specular part and the last one is the sheen
+                part. For the specular part we need to sample the distribution function GTR2. I wrote the utility
+                function in the file warp.cpp.</p>
 
             <p>
                 The second function implemented is the sample function. The objective of this sample is to return a
                 the value evaluated by the eval function, divided by the pdf and the cosine and return a new line
                 in order to continue the recursive evaluation by means of this famous Russian roulette. In theory a
                 uniform sampling would work without too much trouble with enough samples because it is not biased. In
-                order
-                to make the rendering more realistic, we have to sample proportionally to the size of the BRDF.
+                order to make the rendering look like better, we have to sample proportionally to the size of the BRDF.
                 In my implementation I decided to divide the sampling in two parts. In the first part,
                 we look if sample.x() is smaller than the metal factor or if it is not the case. In the first
                 first case we do a CosineHemisphere sampling. In the second case, we sample the function
@@ -105,8 +122,6 @@
                 The last function to implement is the pdf. This function was not very difficult to
                 to implement. The implementation of the pdf can be done exactly as in the case of the
                 microfacet model. </p>
-
-            <h3> Technical details : </h3>
 
             <p> </p>
 
@@ -123,27 +138,24 @@
 
             <h3>Description</h3>
 
-            <p>The third and last 5-point feature from me is a light relatively similar to the point
-                light. The difference between a pointlight and a spotlight is that the second one does not illuminate
-                "all" the
+            <p>The third and last 5-point feature from me is a light relatively similar to the point light. The
+                difference between a pointlight and a spotlight is that the second one does not illuminate "all" the
                 sphere but only a specific part of it.
-
-                The starting code is the one of my point light. For the implementation of a spotlight, there are 3
-                additional parameters. First of all, a spotlight has a vector which serves as the main direction, i.e.
-                direction, which is the center of the spotlight. The next two parameters
-                determine in a way the "size of the spolight". The first parameter " DONNER NAME " is used
-                to determine the size of the first cone where the lighting is almost complete. The second
-                parameter, draws a second cone that starts from the angle of the first parameter and ends at the angle
-                of the second
-                second parameter and the brightness will decrease linearly.
-
-                The details of the implementation are again strongly inspired by the PBR book. The code is
-                similar to that of the pointlight.
             </p>
 
             <h3> Technical details : </h3>
 
-            <p> </p>
+            <p> The starting code is the one of my point light. I copied this code into the file spotlight.cpp. For the
+                implementation of a spotlight, there are 3
+                additional parameters. First of all, a spotlight has a vector which serves as the main direction, i.e.
+                direction, which is the center of the spotlight. The next two parameters determine in a way the "size of
+                the spolight". The first parameter cosFalloffStart is used to determine the size of the first cone where
+                the lighting is almost complete. The second parameter cosTotalWidth draws a second cone that starts from
+                the angle of the first parameter and ends at the angle of the second second parameter and the brightness
+                will decrease linearly. The difference with the point light is that we add the function fallOff. This
+                part of the functions attenuates the lights depending on the input angle.The details of the
+                implementation are
+                again strongly inspired by the PBR book. The code is similar to that of the pointlight. </p>
 
 
             <div class="twentytwenty-container">
@@ -159,108 +171,113 @@
             <p>
                 This feature is probably one of the most satisfying of the project to see once it works.
                 The implementation was particularly difficult, especially the part with the integrator which took me a
-                lot of time and energy.
-                a lot of time and energy. To implement a volumetric path tracer, I had to implement
-                three main components. In the first step, we have a medium. In a second step, there is a
-                a phase function. Once these two functions are implemented, we can move to the last function which is
-                the
-                function which is the integrator and therefore the main part of the subject. The integrator works
-                according to the
-                free-path sampling method.
+                lot of time and energy. </p>
 
-                In a first step, I started by implementing the phasefunction. Since I already had 60
-                pts of features, I implemented the isotropic phase function. It was in the end nothing really
-                complicated.
-                complicated. A toString function and a sample function that returns a pdf while filling a data structure
-                a data structure for rendering.
+            <h3> Technical details : </h3>
 
+            <p> To implement a volumetric path tracer, I had to implement three main components. In the first step, we
+                have a medium. In a second step, there is a a phase function. Once these two functions are implemented,
+                we can move to the last function which is the function which is the integrator and therefore the main
+                part of the subject. The integrator works according to the free-path sampling method. </p>
+
+            <p>
+                In a first step, I started by implementing the phasefunction. Since I already had 60 pts of features, I
+                implemented the isotropic phase function. It was in the end nothing really complicated. A toString
+                function and a sample function that returns a pdf while filling a data structure a data structure for
+                rendering. I created the file phasefunction.cpp for this. </p>
+
+            <p>
                 The second part implemented is the medium part. In my case I implement a homogeneous medium. The
-                homogeneous part is easier than the hereditary part. This has greatly facilitated the programming of
+                homogeneous part is easier than the heterogeneous part. This has greatly facilitated the programming of
                 the sample, tr and inv_tr methods. No need to use complicated methods. Just some
                 calculations with exponentials and logarithms. The equations are a reproduction of the
-                slides of the course.
+                slides of the course. </p>
 
+            <p>
                 The implementation of the integrator is quite similar to path mis. The difference is that you have to
                 attenuate the ray by the medium and on the other hand break the path of the ray in the middle of the
                 ray in order to give this scattering effect. For this we use the helpers functions of the medium and
                 phase function within the integrator. The rest of the logic is otherwise similar to the
-                path_mis.
-            </p>
+                path_mis. </p>
 
-            <h3> Technical details : </h3>
-
-            <p> </p>
-
-
-            <div class="twentytwenty-container">
+            < <div class="twentytwenty-container">
                 <img src="../scenes/pa4/cbox_disney/cbox_path_mis.png" alt="Basic reconstruction filter"
                     class="img-responsive">
                 <img src="../scenes/project/volumetric/cbox_path_mis.png" alt="Windowed reconstruction filter"
                     class="img-responsive">
-            </div> <br>
+        </div> <br>
 
-            <!-- ================================================================= -->
+        <!-- ================================================================= -->
 
-            <h2>Windowed sync filter</h2>
+        <h2>Windowed sync filter</h2>
 
-            <h3>Description</h3>
+        <h3>Description</h3>
 
-            <p>
-                The part with the reconstruction filter does not imply big modifications in the raytracer
-                nori. There is a file rfilter.cpp with different reconstruction filters. We see for example that
-                for example that there is an implementation of the box filter or the gaussian filter. In my case I have
-                decided to implement a windowed sync filter.</p>
-            <p>
-                As for the implementation itself, I chose to use the code given in PBR books.
-                The implementation is not very difficult. You just have to extend the reconstruction class filter
-                class and then add the corresponding code.
-            </p>
+        <p>
+            The part with the reconstruction filter does not imply big modifications in the raytracer
+            nori. There is a file rfilter.cpp with different reconstruction filters. We see for example that
+            for example that there is an implementation of the box filter or the gaussian filter. In my case I have
+            decided to implement a windowed sync filter.</p>
+        <p>
+            As for the implementation itself, I chose to use the code given in PBR books.
+            The implementation is not very difficult. You just have to extend the reconstruction class filter
+            class and then add the corresponding code.
+        </p>
 
-            <h3> Technical details : </h3>
+        <h3> Technical details : </h3>
 
-            <p> </p>
+        <p> I created the new class WindowedSyncFilter in the file rfilter.cpp. This class extends the class
+            ReconstructionFilter. We have in this class two parameters, namely radius and tau. For the eval
+            function, I created the sinc function and use it inside of the eval function.</p>
 
 
-            <div class="twentytwenty-container">
-                <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Basic reconstruction filter"
-                    class="img-responsive">
-                <img src="../scenes/project/windowed sync filter/cbox_path_mis.png" alt="Windowed reconstruction filter"
-                    class="img-responsive">
-            </div> <br>
+        <div class="twentytwenty-container">
+            <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Basic reconstruction filter" class="img-responsive">
+            <img src="../scenes/project/windowed sync filter/cbox_path_mis.png" alt="Windowed reconstruction filter"
+                class="img-responsive">
+        </div> <br>
 
-            <!-- ================================================================= -->
+        <!-- ================================================================= -->
 
-            <h2>Rendering on the euler cluster</h2>
+        <h2>Rendering on the euler cluster</h2>
 
-            <h3>Description</h3>
+        <h3>Description</h3>
 
-            <p>
-                To render on the euler cluster, the first step is to connect to the cluster, clone the project code and
-                compile it normally with cmake.
-                compile it normally with cmake. This is where the only difficulty of this part comes in. Nori is
-                compiled with a
-                graphical interface, namely the nanogui library. In order to be able to generate images on euler, you
-                have to compile nori without this library.
-                You have to compile nori without this graphical interface. </p>
-            <p>
-                To do this, I have generated a second program nori_euler which works without the graphical library.
-                There are
-                some difficulties though. The rendering is multi-threaded. The main thread does not wait for the
-                the end of the other threads. This implies that we had to find a mechanism to synchronize the threads
-                between them. My solution works as follows. In the main loop, we have a while loop that tests every
-                second and exits once the rendering is complete.
-                In the main loop, we have a while loop that tests every second and exits when the rendering is finished.
-                It is very important to use the sleep function.
-                Otherwise, the program will just loop and lose a lot of computing power to the other threads, which
-                really need it.
-                that really need computing power.
-            </p>
+        <p>
+            To render on the euler cluster, the first step is to connect to the cluster, clone the project code and
+            compile it normally with cmake.
+            compile it normally with cmake. This is where the only difficulty of this part comes in. Nori is
+            compiled with a
+            graphical interface, namely the nanogui library. In order to be able to generate images on euler, you
+            have to compile nori without this library.
+            You have to compile nori without this graphical interface. </p>
+        <p>
+            To do this, I have generated a second program nori_euler which works without the graphical library.
+            There are
+            some difficulties though. The rendering is multi-threaded. The main thread does not wait for the
+            the end of the other threads. This implies that we had to find a mechanism to synchronize the threads
+            between them. My solution works as follows. In the main loop, we have a while loop that tests every
+            second and exits once the rendering is complete.
+            In the main loop, we have a while loop that tests every second and exits when the rendering is finished.
+            It is very important to use the sleep function.
+            Otherwise, the program will just loop and lose a lot of computing power to the other threads, which
+            really need it.
+            that really need computing power.
+        </p>
 
-            <h3> Technical details : </h3>
+        <h3> Technical details : </h3>
 
-            <p> </p>
+        <p> I created for this features the file main_euler.cpp. In the main function I directly create a
+            renderThread and render into this renderThread. We must give the path to the xml file in the program
+            arguments. When the rendering starts, I wait until the rendering is done. We sleep one second and read
+            the status of the rendering again. When the rendering is done, we can print it and return 0. </p>
 
-        </div>
+        <p>
+            There is still another step to do. We need to modify the cmake file and create two programs. The first
+            one is the normal nori with a GUI. The second program is the nori for the render cluster without GUI.
+            There are two main files. The first is main.cpp. The second is main_euler.cpp.
+        </p>
+    </div>
     </div>
 
 
