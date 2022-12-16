@@ -23,6 +23,12 @@
 int main(int argc, char **argv) {
     using namespace nori;
 
+    // If we have no argument or more than one argument ==> We can print it and stop the program
+    if(argc != 2) {
+        cerr << "Error while parsing the program arguments. You should only have one argument." << endl;
+        return 0;
+    }
+
     // In this case we are rendering on the euler cluster and we have no path to it
     // Open the UI with a dummy image
     ImageBlock block(Vector2i(720, 720), nullptr);

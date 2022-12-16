@@ -60,7 +60,7 @@
                 before save the denoised image for comparison.
             </p>
 
-
+            <h3> Validation </h3>
 
             <div class="twentytwenty-container">
                 <img src="../scenes/project/denoiser/Base_Output_Image.png" alt="Noisy image" class="img-responsive">
@@ -82,10 +82,10 @@
             </p>
 
             <ul>
-                <li>https://media.disneyanimation.com/uploads/production/publication_asset/48/asset/s2012_pbs_disney_brdf_notes_v3.pdf
+                <li><a>https://media.disneyanimation.com/uploads/production/publication_asset/48/asset/s2012_pbs_disney_brdf_notes_v3.pdf</a>
                 </li>
-                <li>https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf</li>
-                <li>https://schuttejoe.github.io/post/disneybsdf/</li>
+                <li><a>https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf</a></li>
+                <li><a>https://schuttejoe.github.io/post/disneybsdf/</a></li>
             </ul>
 
             <h3> Technical details : </h3>
@@ -108,7 +108,7 @@
                 the value evaluated by the eval function, divided by the pdf and the cosine and return a new line
                 in order to continue the recursive evaluation by means of this famous Russian roulette. In theory a
                 uniform sampling would work without too much trouble with enough samples because it is not biased. In
-                order to make the rendering look like better, we have to sample proportionally to the size of the BRDF.
+                order to make the rendering look like better, importance sampling is a better choice.
                 In my implementation I decided to divide the sampling in two parts. In the first part,
                 we look if sample.x() is smaller than the metal factor or if it is not the case. In the first
                 first case we do a CosineHemisphere sampling. In the second case, we sample the function
@@ -123,14 +123,16 @@
                 to implement. The implementation of the pdf can be done exactly as in the case of the
                 microfacet model. </p>
 
-            <p> </p>
 
-            <img src="../scenes/project/disney/test_gtr1.png" alt="Test results" /> <br> <br> <br> <br>
-            <img src="../scenes/project/disney/test_gtr2.png" alt="Test results" /> <br> <br> <br> <br>
+            <h3> Validation </h3>
+
+            <div class="twentytwenty-container"><img src="../scenes/project/disney/test_gtr1.png" alt="Test results - GTR1" />
+            </div><br> <br> <br> <br>
+            <div class="twentytwenty-container"><img src="../scenes/project/disney/test_gtr2.png" alt="Test results - GTR2" />
+            </div> <br> <br> <br> <br>
 
             <div class="twentytwenty-container">
                 <img src="../scenes/project/disney/cbox_path_mis.png" alt="Disney BRDF" class="img-responsive">
-
             </div> <br>
             <!-- ================================================================= -->
 
@@ -138,9 +140,9 @@
 
             <h3>Description</h3>
 
-            <p>The third and last 5-point feature from me is a light relatively similar to the point light. The
+            <p>The third and last 5-point feature from me is a spotlight relatively similar to the point light. The
                 difference between a pointlight and a spotlight is that the second one does not illuminate "all" the
-                sphere but only a specific part of it.
+                sphere but only a specific part of it near a direction angle.
             </p>
 
             <h3> Technical details : </h3>
@@ -157,6 +159,7 @@
                 implementation are
                 again strongly inspired by the PBR book. The code is similar to that of the pointlight. </p>
 
+            <h3> Validation </h3>
 
             <div class="twentytwenty-container">
                 <img src="../scenes/project/spotlight/sphere-texture.png" alt="Spotlight" class="img-responsive">
@@ -200,84 +203,102 @@
                 phase function within the integrator. The rest of the logic is otherwise similar to the
                 path_mis. </p>
 
-            < <div class="twentytwenty-container">
-                <img src="../scenes/pa4/cbox_disney/cbox_path_mis.png" alt="Basic reconstruction filter"
+            <h3> Validation </h3>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/pa4/cbox_disney/cbox_path_mis.png" alt="Scene with path mis" class="img-responsive">
+                <img src="../scenes/project/volumetric/cbox_path_mis.png" alt="Scene with volumetric path"
                     class="img-responsive">
-                <img src="../scenes/project/volumetric/cbox_path_mis.png" alt="Windowed reconstruction filter"
+            </div> <br>
+
+            <!-- ================================================================= -->
+
+            <h2>Windowed sync filter</h2>
+
+            <h3>Description</h3>
+
+            <p>
+                The part with the reconstruction filter does not imply big modifications in the raytracer
+                nori. There is a file rfilter.cpp with different reconstruction filters. We see for example that
+                for example that there is an implementation of the box filter or the gaussian filter. In my case I have
+                decided to implement a windowed sync filter.</p>
+            <p>
+                As for the implementation itself, I chose to use the code given in PBR books.
+                The implementation is not very difficult. You just have to extend the reconstruction class filter
+                class and then add the corresponding code.
+            </p>
+
+            <h3> Technical details : </h3>
+
+            <p> I created the new class WindowedSyncFilter in the file rfilter.cpp. This class extends the class
+                ReconstructionFilter. We have in this class two parameters, namely radius and tau. For the eval
+                function, I created the sinc function and use it inside of the eval function.</p>
+
+            <h3> Validation </h3>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Basic reconstruction filter"
                     class="img-responsive">
-        </div> <br>
+                <img src="../scenes/project/windowed sync filter/cbox_path_mis.png" alt="Windowed reconstruction filter"
+                    class="img-responsive">
+            </div> <br>
 
-        <!-- ================================================================= -->
+            <!-- ================================================================= -->
 
-        <h2>Windowed sync filter</h2>
+            <h2>Rendering on the euler cluster</h2>
 
-        <h3>Description</h3>
+            <h3>Description</h3>
 
-        <p>
-            The part with the reconstruction filter does not imply big modifications in the raytracer
-            nori. There is a file rfilter.cpp with different reconstruction filters. We see for example that
-            for example that there is an implementation of the box filter or the gaussian filter. In my case I have
-            decided to implement a windowed sync filter.</p>
-        <p>
-            As for the implementation itself, I chose to use the code given in PBR books.
-            The implementation is not very difficult. You just have to extend the reconstruction class filter
-            class and then add the corresponding code.
-        </p>
+            <p>
+                To render on the euler cluster, the first step is to connect to the cluster, clone the project code and
+                compile it normally with cmake.
+                compile it normally with cmake. This is where the only difficulty of this part comes in. Nori is
+                compiled with a
+                graphical interface, namely the nanogui library. In order to be able to generate images on euler, you
+                have to compile nori without this library.
+                You have to compile nori without this graphical interface. </p>
+            <p>
+                To do this, I have generated a second program nori_euler which works without the graphical library.
+                There are
+                some difficulties though. The rendering is multi-threaded. The main thread does not wait for the
+                the end of the other threads. This implies that we had to find a mechanism to synchronize the threads
+                between them. My solution works as follows. In the main loop, we have a while loop that tests every
+                second and exits once the rendering is complete.
+                In the main loop, we have a while loop that tests every second and exits when the rendering is finished.
+                It is very important to use the sleep function.
+                Otherwise, the program will just loop and lose a lot of computing power to the other threads, which
+                really need it.
+                that really need computing power.
+            </p>
 
-        <h3> Technical details : </h3>
+            <h3> Technical details : </h3>
 
-        <p> I created the new class WindowedSyncFilter in the file rfilter.cpp. This class extends the class
-            ReconstructionFilter. We have in this class two parameters, namely radius and tau. For the eval
-            function, I created the sinc function and use it inside of the eval function.</p>
+            <p> I created for this features the file main_euler.cpp. In the main function I directly create a
+                renderThread and render into this renderThread. We must give the path to the xml file in the program
+                arguments. When the rendering starts, I wait until the rendering is done. We sleep one second and read
+                the status of the rendering again. When the rendering is done, we can print it and return 0. </p>
 
+            <p>
+                There is still another step to do. We need to modify the cmake file and create two programs. The first
+                one is the normal nori with a GUI. The second program is the nori for the render cluster without GUI.
+                There are two main files. The first is main.cpp. The second is main_euler.cpp.
+            </p>
 
-        <div class="twentytwenty-container">
-            <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Basic reconstruction filter" class="img-responsive">
-            <img src="../scenes/project/windowed sync filter/cbox_path_mis.png" alt="Windowed reconstruction filter"
-                class="img-responsive">
-        </div> <br>
+            <h3> Validation </h3>
 
-        <!-- ================================================================= -->
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/euler/euler.png" alt="Euler rendering"
+                    class="img-responsive">
+            </div> <br>
 
-        <h2>Rendering on the euler cluster</h2>
+            <div class="twentytwenty-container">
+                <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Generated with nori"
+                    class="img-responsive">
+                <img src="../scenes/project/euler/file.png" alt="Generated on the euler cluster"
+                    class="img-responsive">
+            </div> <br>
 
-        <h3>Description</h3>
-
-        <p>
-            To render on the euler cluster, the first step is to connect to the cluster, clone the project code and
-            compile it normally with cmake.
-            compile it normally with cmake. This is where the only difficulty of this part comes in. Nori is
-            compiled with a
-            graphical interface, namely the nanogui library. In order to be able to generate images on euler, you
-            have to compile nori without this library.
-            You have to compile nori without this graphical interface. </p>
-        <p>
-            To do this, I have generated a second program nori_euler which works without the graphical library.
-            There are
-            some difficulties though. The rendering is multi-threaded. The main thread does not wait for the
-            the end of the other threads. This implies that we had to find a mechanism to synchronize the threads
-            between them. My solution works as follows. In the main loop, we have a while loop that tests every
-            second and exits once the rendering is complete.
-            In the main loop, we have a while loop that tests every second and exits when the rendering is finished.
-            It is very important to use the sleep function.
-            Otherwise, the program will just loop and lose a lot of computing power to the other threads, which
-            really need it.
-            that really need computing power.
-        </p>
-
-        <h3> Technical details : </h3>
-
-        <p> I created for this features the file main_euler.cpp. In the main function I directly create a
-            renderThread and render into this renderThread. We must give the path to the xml file in the program
-            arguments. When the rendering starts, I wait until the rendering is done. We sleep one second and read
-            the status of the rendering again. When the rendering is done, we can print it and return 0. </p>
-
-        <p>
-            There is still another step to do. We need to modify the cmake file and create two programs. The first
-            one is the normal nori with a GUI. The second program is the nori for the render cluster without GUI.
-            There are two main files. The first is main.cpp. The second is main_euler.cpp.
-        </p>
-    </div>
+        </div>
     </div>
 
 
