@@ -18,7 +18,7 @@ For access to course information including slides and reading material, visit th
 - [x] Homogeneous Participating Media  
   
 #### Andrew  
-- [ ] Modeling Meshes  
+- [x] Modeling Meshes  
 - [ ] Procedural Volume (Perlin Noise)  
 - [x] Normal Mapping  
 - [x] Image Textures  
