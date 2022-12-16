@@ -1,0 +1,1225 @@
+# Blender 3.4.0 MTL File: 'tree.blend'
+# www.blender.org
+
+newmtl Bark_Tree
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.002
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.003
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.004
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.005
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.006
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.007
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.008
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.009
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.010
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl Bark_branch.011
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Bark02_4K_BaseColor.png
+map_Ns Bark02_4K_Roughness.png
+map_Bump -bm 1.000000 Bark02_4K_Normal.png
+
+newmtl TexturesCom_Branches0038_1_masked_S
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.001
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.002
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.003
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.004
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.005
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.006
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.007
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.009
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.011
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.012
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.013
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.014
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.015
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.016
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.017
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.018
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.019
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.020
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.021
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.022
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.023
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.024
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.025
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.026
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.027
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.028
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.029
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.030
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.031
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.032
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.033
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.034
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.035
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.036
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.037
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.038
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.039
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.040
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.041
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.042
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.043
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.044
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.045
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.046
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.047
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.048
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.049
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.050
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.051
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.052
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.053
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.054
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.055
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.056
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.057
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.058
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.059
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.060
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.061
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.062
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.063
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.064
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.065
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.066
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.067
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.068
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.069
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.070
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.071
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.072
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.073
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.074
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.075
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.076
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.077
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.078
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.079
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.080
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.081
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.082
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.083
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.084
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.085
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.086
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.087
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.088
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.089
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.090
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.091
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.092
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.093
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.094
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.095
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.096
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.097
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.098
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.099
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.100
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.101
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.102
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.103
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.104
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.105
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.106
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.107
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.108
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
+
+newmtl TexturesCom_Branches0038_1_masked_S.109
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd TexturesCom_Branches0038_1_masked_S.png
+map_d TexturesCom_Branches0038_1_masked_S.png
