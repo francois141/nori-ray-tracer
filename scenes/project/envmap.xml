@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Inspired from Mistuba -->
+<scene>
+    <integrator type="path_mis"/>
+
+    <camera type="perspective">
+        <transform name="toWorld">
+            <scale value="-1,1,1"/>
+            <lookat target="0,0,1" origin="5,5,1" up="0,0,1"/>
+        </transform>
+        <float name="fov" value="100"/>
+
+        <integer name="height" value="600"/>  
+        <integer name="width" value="800"/>
+    </camera>
+
+    <sampler type="independent">
+        <integer name="sampleCount" value="32"/>
+    </sampler>
+
+    <mesh type="sphere">
+        <point name="center" value="0,0,1"/>
+        <float name="radius" value="30"/>
+
+        <emitter type="envmap">
+            <string name="filename" value="textures/envmaptext.exr"/>   
+        </emitter>
+    </mesh>
+
+
+    <mesh type="sphere">
+        <point name="center" value="0,0,1"/>
+        <float name="radius" value="4"/>   
+
+        <bsdf type="mirror">
+        </bsdf>
+
+    </mesh>
+
+    <mesh type="sphere">
+        <point name="center" value="0,0,1"/>
+        <float name="radius" value="3"/>
+        <bsdf type="dielectric">
+            <float name="extIOR" value="1.0"/>
+            <float name="intIOR" value="1.0"/>
+        </bsdf>
+    </mesh>
+
+</scene>

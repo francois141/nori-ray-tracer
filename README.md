@@ -23,6 +23,6 @@ For access to course information including slides and reading material, visit th
 - [x] Normal Mapping  
 - [x] Image Textures  
 - [ ] Emissive Participating Media  
-- [ ] Environment Map Emitter  
+- [x] Environment Map Emitter  
 - [x] Advanced Camera Model  
   

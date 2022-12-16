@@ -96,6 +96,7 @@ SET(SOURCES_FILES
   src/volumetric.cpp
   src/medium.cpp
   src/disney.cpp
+  src/envmap.cpp
 )
 
 add_executable(nori "${SOURCES_FILES}" src/main.cpp)
