@@ -22,9 +22,7 @@ For access to course information including slides and reading material, visit th
 - [ ] Procedural Volume (Perlin Noise)  
 - [x] Normal Mapping  
 - [x] Image Textures  
-- [ ] <s>Emissive Participating Media</s>
-> - [ ] Textured Area Emitter  
-> - [ ] Procedural Textures  
+- [ ] Emissive Participating Media
 - [x] Environment Map Emitter  
 - [x] Advanced Camera Model  
   
