@@ -14,16 +14,16 @@ args = parser.parse_args()
 
 # Read base image
 img = cv2.imread(args.img_path, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype("float") / 255
 
 # Read pixel variance estimates
 img_variance = cv2.imread(args.var_path, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
-img_variance = cv2.cvtColor(img_variance, cv2.COLOR_BGR2GRAY)
+img_variance = cv2.cvtColor(img_variance, cv2.COLOR_BGR2GRAY).astype("float") / 255
 
 # Base parameters for the algorithm
 epsilon = 1e-3
-k = 1
-r = 5
+k = 0.2
+r = 3
 flt = 0
 wgtsum = 0
 f = 3
@@ -53,15 +53,16 @@ if __name__ == "__main__":
     # Creation of the base image
     outputImage = np.zeros(shape=img.shape)
 
+    # Make pixel variance more smooth
+    #img_variance = signal.convolve2d(img_variance,boxFilter(3),mode='same')
+
     # Run the fast algorithm given in the slides
     for dx in range(-r,r+1):
         for dy in range(-r,r+1):
-
+            # Keep track of progress
             print("{} : {}".format(dx,dy))
-
             ngb = shift(img,dx,dy)
             ngb_variance = shift(img_variance,dx,dy)
-
             d2pixel = d2(ngb,img,ngb_variance,k)
             d2patch = signal.convolve2d(d2pixel,boxFilter(f-1),mode='same')
             wgt = np.exp(-np.maximum(0,d2patch))
