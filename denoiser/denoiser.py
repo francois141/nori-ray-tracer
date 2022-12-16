@@ -17,17 +17,16 @@ img = cv2.imread(args.img_path, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 # Read pixel variance estimates
-img_variance = cv2.imread(args.var_path)
+img_variance = cv2.imread(args.var_path, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
 img_variance = cv2.cvtColor(img_variance, cv2.COLOR_BGR2GRAY)
 
 # Base parameters for the algorithm
-epsilon = 1e-6
-k = 0.01
-
+epsilon = 1e-3
+k = 1
 r = 5
 flt = 0
 wgtsum = 0
-f = 5
+f = 3
 
 # Implementation of d2
 def d2(ngb,img,img_variance,k):
@@ -50,7 +49,7 @@ def boxFilter(size):
 
 
 if __name__ == "__main__":
-
+    
     # Creation of the base image
     outputImage = np.zeros(shape=img.shape)
 
@@ -74,7 +73,6 @@ if __name__ == "__main__":
     # Display the images
     cv2.imshow("denoised_image",outputImage)
     cv2.imshow("base_image",img)
-    cv2.imshow("base_image_variance",img_variance)
 
     # Wait until we are done
     cv2.waitKey(0)
