@@ -298,6 +298,93 @@
                     class="img-responsive">
             </div> <br>
 
+            <!-- ================================================================= -->
+
+            <h2>Advanced Camera Model</h2>
+
+            <h3>Description</h3>
+
+            <p>
+                <strong>Files Changed:</strong>
+                <ul>
+                    <li><code>advancedCamera.cpp</code></li>
+                    <li><code>render.cpp</code></li>
+                    <li><code>common.h</code></li>
+                </ul>
+                
+                <strong>Idea:</strong> Augment the basic perspective camera model in order to achieve three additional effects:  
+                    <ol>
+                        <li>Depth of Field using the thin lens model.</li>
+                        <li>Barrel distortion using the same method as the mitsuba renderer.</li>
+                        <li>Chromatic Aberrations by sampling color channels individually.</li>
+                    </ol> </p>
+            <p>
+                All three of these effects were implemented onto a new camera class called <code>AdvancedCamera : Camera</code>.
+                We will now detail how the three different effects were achieved.
+            </p>
+
+            <h3> Depth of Field </h3>
+
+            <p> In order to achieve the depth of field effect, the initial perspective camera was extended to use the <strong>Thin Lens Model</strong>
+            as described in <a href="https://www.pbr-book.org/3ed-2018/Camera_Models/Projective_Camera_Models#TheThinLensModelandDepthofField">PBRT§6.2.3</a>. 
+            The idea behind this is to simulate an infinitely thin lens that is defined by:  
+            <ol>
+                <li><code>lensRadius</code>: The size of the lens. This will affect how shallow the depth of field is.</li>  
+                <li><code>focalDistance</code>: The distance between the lens and the sensor. This will affect which part of the scene is in focus.</li>
+            </ol> 
+            Using these two new attributes, we can modify our sampling method such that, if the lens radius is non-zero, the rays are resampled on the surface of the lens
+            creating a small circle of confusion that will depend on the radius of the lens and the focal distance.
+            </p>
+
+            <h4> Validation: DOF </h4>
+            <div class="twentytwenty-container">
+                <img src="images/cbox_adv_cam.png" alt="No DOF"
+                    class="img-responsive">
+                <img src="images/cbox_adv_cam.png" alt="focalDist=5.7, lensRadius=0.35"
+                    class="img-responsive">
+            </div> <br>
+
+            <h3> Barrel Distortion </h3>
+
+            <p> For this part, we based our implementation on a similar effect achieved in mitsuba. 
+                The main idea is simply to solve a distortion polynomial and move the near plane around accordingly for each sample.
+                This allows us to achieve a nice distortion effect, as our rays direction will be modified to fit the curve of said polynomial.
+                The polynomial can be controlled using the second and fourth order terms, which are passed as an argument through <code>m_distortion</code>.
+            </p>
+
+            <h4> Validation: Distortion </h4>
+            <div class="twentytwenty-container">
+                <img src="images/cbox_adv_cam.png" alt="No DOF"
+                    class="img-responsive">
+                <img src="images/cbox_adv_cam.png" alt="focalDist=5.7, lensRadius=0.35"
+                    class="img-responsive">
+            </div> <br>
+
+            <h3> Chromatic Abberation </h3>
+
+            <p> As our final camera effect, we chose to implement chromatic abberation. 
+                To do this, we need to split our rendering such that each color component is rendered individually.
+                Doing so enables a slight offset between each color. In order to seperate the color channels for the rendering, 
+                we needed to augment the code in <code>render.cpp</code> and add a channel parameter to the sampling method so that it sets all colors but the one color to 0 individually.
+            </p>
+
+            <h4> Validation: Abberation </h4>
+            <div class="twentytwenty-container">
+                <img src="images/cbox_adv_cam.png" alt="No DOF"
+                    class="img-responsive">
+                <img src="images/cbox_adv_cam.png" alt="focalDist=5.7, lensRadius=0.35"
+                    class="img-responsive">
+            </div> <br>
+
+            <h3> Validation </h3>
+
+            <div class="twentytwenty-container">
+                <img src="images/cbox_adv_cam.png" alt="Generated with nori"
+                    class="img-responsive">
+                <img src="../scenes/project/euler/file.png" alt="Generated on the euler cluster"
+                    class="img-responsive">
+            </div> <br>
+
         </div>
     </div>
 
