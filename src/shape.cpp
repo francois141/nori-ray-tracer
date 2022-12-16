@@ -57,11 +57,14 @@ void Shape::addChild(NoriObject *obj) {
             break;
 
         case ETexture:
-            /*if (m_normalMap) {
-                throw NoriException(
-                    "Shape: tried to register multiple Normal map instances!");
-            }*/
-            m_normalMap = static_cast<Texture<Normal3f>*>(obj);
+            if(obj->getIdName() == "normal") {
+                if (m_normalMap) {
+                    throw NoriException(
+                        "Shape: tried to register multiple Normal map instances!");
+                }
+            
+                m_normalMap = static_cast<Texture<Normal3f>*>(obj);
+            }
             break;
 
         default:

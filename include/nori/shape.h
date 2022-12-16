@@ -66,8 +66,6 @@ struct Intersection {
     std::string toString() const;
 };
 
-
-
 /**
  * \brief Data record for conveniently querying and sampling the
  * a point on a shape
@@ -90,7 +88,6 @@ struct ShapeQueryRecord {
     ShapeQueryRecord(const Point3f & ref_, const Point3f & p_) : ref(ref_), p(p_) {}
 
 };
-
 
 /**
  * \brief Superclass of all shapes
@@ -159,7 +156,7 @@ protected:
     Emitter *m_emitter = nullptr;     ///< Associated emitter, if any
     BoundingBox3f m_bbox;                ///< Bounding box of the mesh
 
-    Texture<Normal3f>* m_normalMap;        ///< Optional normal map
+    Texture<Normal3f>* m_normalMap = nullptr;        ///< Optional normal map
 
 };
 
