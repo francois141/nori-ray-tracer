@@ -24,7 +24,7 @@ For access to course information including slides and reading material, visit th
 - [x] Image Textures  
 - [ ] <s>Emissive Participating Media</s>
 > - [ ] Textured Area Emitter  
-> - [ ] Procedura Textures  
+> - [ ] Procedural Textures  
 - [x] Environment Map Emitter  
 - [x] Advanced Camera Model  
   
