@@ -112,9 +112,9 @@ Normal3f NormalMap::getData(const Point2f & xy) const  {
     float blueData = static_cast<float>(m_data[((x + m_width * y) * STBI_rgb + BLUE_CHANNEL)]) / UCHAR_MAX;
 
     return Normal3f(
-        redData,
-        greenData, 
-        blueData
+        2.0f * redData - 1.0f,
+        2.0f * greenData - 1.0f, 
+        2.0f * blueData - 1.0f
     );
 }
 
