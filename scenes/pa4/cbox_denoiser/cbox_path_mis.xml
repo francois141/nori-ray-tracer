@@ -15,14 +15,14 @@
 	</camera>
 
 	<sampler type="independent">
-		<integer name="sampleCount" value="256"/>
+		<integer name="sampleCount" value="1024"/>
 	</sampler>
 
 	<mesh type="obj">
 		<string name="filename" value="meshes/walls.obj"/>
 
 		<bsdf type="diffuse">
-			<color name="albedo" value="0.725 0.71 0.68"/>
+			<color name="albedo" value="0.68 0.68 0.68"/>
 		</bsdf>
 	</mesh>
 
@@ -38,7 +38,7 @@
 		<string name="filename" value="meshes/leftwall.obj"/>
 
 		<bsdf type="diffuse">
-			<color name="albedo" value="0.630 0.065 0.05"/>
+			<color name="albedo" value="0.133 0.427 0.133"/>
 		</bsdf>
 	</mesh>
 
