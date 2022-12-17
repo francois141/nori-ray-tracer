@@ -32,18 +32,13 @@
         <point name="center" value="0,0,1"/>
         <float name="radius" value="4"/>   
 
-        <bsdf type="mirror">
-        </bsdf>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="textures/texture.jpg"/>
+				<string name="wrap" value="clamp" />
+			</texture>
+		</bsdf>
 
-    </mesh>
-
-    <mesh type="sphere">
-        <point name="center" value="0,0,1"/>
-        <float name="radius" value="3"/>
-        <bsdf type="dielectric">
-            <float name="extIOR" value="1.0"/>
-            <float name="intIOR" value="1.0"/>
-        </bsdf>
     </mesh>
 
 </scene>

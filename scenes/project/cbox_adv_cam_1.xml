@@ -12,10 +12,10 @@
 
 		<integer name="height" value="600"/>
 		<integer name="width" value="800"/>
-		<!--<float name="focalDist" value="5.7"/>
+		<float name="focalDist" value="5"/>
 		<float name="lensRadius" value="0.35"/>
-		<vector name="chromaticAberation" value="4, 2, 3.3" />
-		<vector name="distortion" value="3, 3"/>-->
+		<!--<vector name="chromaticAberation" value="4, 2, 3.3" />-->
+		<!--<vector name="distortion" value="3, 3"/>-->
 	</camera>
 
 	<sampler type="independent">
