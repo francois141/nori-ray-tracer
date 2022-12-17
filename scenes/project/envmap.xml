@@ -30,15 +30,10 @@
 
     <mesh type="sphere">
         <point name="center" value="0,0,1"/>
-        <float name="radius" value="4"/>   
-
-		<bsdf type="diffuse">
-			<texture type="ImageTexture" name="albedo">
-				<string name="fileName" value="textures/texture.jpg"/>
-				<string name="wrap" value="clamp" />
-			</texture>
-		</bsdf>
-
+        <float name="radius" value="3"/>   
+        <float name="height" value="1.0"/>
+        <float name="scale" value="100.0"/>
+		<bsdf type="diffuse"/>
     </mesh>
 
 </scene>

@@ -45,7 +45,7 @@
                     <li>Normal Map</li>
                     <li>Modeling Meshes</li>
                     <li>Procedural Volumes (Perlin Noise)</li>
-                    <li>Emissive Participating Media</li>
+                    <li><s>Emissive Participating Media</s> (abandoned due to time constraints)</li>
                 </ul>
                 In the following paragraphs, we will detail how each feature was implemented, followed by a feature-specific validation for each case.
             </p>
@@ -562,6 +562,47 @@
                 <img src="images/tree_wip7.png" alt="Final tree"
                     class="img-responsive">
             </div> <br>
+
+             <!-- ================================================================= -->
+
+             <h2> Procedural Volumes </h2>
+
+             <h3>Description</h3>
+ 
+             <p>
+                 <strong>Files Changed:</strong>
+                 <ul>
+                     <li><code>perlinnoise.cpp</code></li>
+                 </ul>
+                 
+                 <strong>Idea:</strong> Create a procedural spherical shape by having a sphere whose radius is determined at every point by a 2D perlin noise function.
+             </p>
+             <p>
+                 To implement this feature, we creted a new volume called <code>PerlinSphere</code>. The implementation follows that of a regular sphere quite closely, with the added 
+                 detail that, when testing for intersection, we first intersect with a sphere of fixed radius, then we use that intersection point to compute the height value 
+                 from a perlin noise function and recompute the intersection using a radius that is scaled by the output of the noise function. 
+                 This yields a wavy rough surface whose amplitude can be tweaked using the <code>height</code> xml parameter.
+             </p>
+ 
+             <h3> Validation </h3>
+             <p>Unfortunately, our height difference is only manifesting itself in the form of different holes in our model. This was not fixed due to time constraints.
+             </p>
+             <div class="twentytwenty-container">
+                 <img src="images/nonoise.png" alt="Normal"
+                     class="img-responsive">
+                 <img src="images/noise.png" alt="With noise"
+                     class="img-responsive">
+             </div> <br>
+ 
+             <!-- ================================================================= -->
+
+            <h2> Emissive Participating Media </h2>
+
+            <h3>Description</h3>
+
+            <p>This feature was unfortunately not implemented due to time constraints created by dependencies between this feature and the volumetric path tracing feature.</p>
+
+            <!-- ================================================================= -->
 
         </div>
     </div>

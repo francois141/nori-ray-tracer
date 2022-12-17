@@ -1,11 +1,7 @@
-#include <nori/object.h>
-#include <nori/texture.h>
-#include <nori/sampler.h>
 #include <nori/shape.h>
+#include <nori/warp.h>
 #include <nori/bsdf.h>
 #include <nori/emitter.h>
-#include <nori/warp.h>
-#include "math.h"
 
 #define N_OCTAVES 9
 
@@ -16,7 +12,8 @@ public:
     PerlinSphere(const PropertyList &propList) {
         m_position = propList.getPoint3("center", Point3f());
         m_radius = propList.getFloat("radius", 1.f);
-        m_height = propList.getFloat("noiseHeight", 1.0f);
+        m_height = propList.getFloat("height", 1.0f);
+        m_scale = propList.getFloat("scale", 1.0f);
 
         m_bbox.expandBy(m_position - Vector3f(m_radius));
         m_bbox.expandBy(m_position + Vector3f(m_radius));
@@ -100,19 +97,14 @@ public:
             "PerlinSphere[\n"
             "  center = %s,\n"
             "  radius = %f,\n"
-            "  bsdf = %s,\n"
-            "  emitter = %s\n"
             "]",
             m_position.toString(),
-            m_radius,
-            m_bsdf ? indent(m_bsdf->toString()) : std::string("null"),
-            m_emitter ? indent(m_emitter->toString()) : std::string("null"));
+            m_radius);
     }
 
-private:
     // Given an intersection point, update the radius and check if ray still intersects
     bool perlinRayIntersect(const float a, const float b, const Ray3f &ray, float &t) const {
-        Point2f its_p = ray(t);
+        Point3f its_p = ray(t);
         Vector3f oc = ray.o - m_position;
         float r = getNoisedRadius(its_p); // Apply the noise to the radius
 
@@ -149,13 +141,13 @@ private:
 
     // The idea is we want a sphere with a variable radius
     // So we recompute the radius depending on the real intersection point
-    float getNoisedRadius(const Point2f &its_p) const {
+    float getNoisedRadius(const Point3f &its_p) const {
         float r_scale = computeRadiusNoise(its_p);
-        return m_radius * r_scale;
+        return m_radius + m_scale * std::min(std::max(0.0f, r_scale), 1.0f);
     }
 
     // Based off of the slides from my Intro to CG course at EPFL
-    float computeRadiusNoise(const Point2f &sample) const {
+    float computeRadiusNoise(const Point3f &sample) const {
         float res = 0.0f;
         float freq = 1.0f / m_height;
         float amp = 1.0f;
@@ -168,7 +160,7 @@ private:
             amp = pow(lac, static_cast<float>(i));
         }
 
-        return (res / 255);
+        return (res / 256.0f);
     }
 
     float interpolatedNoise(float x, float y) const {
@@ -214,6 +206,7 @@ protected:
     Point3f m_position;
     float m_radius;
     float m_height; // For Perlin Noise
+    float m_scale; 
 };
 
 NORI_REGISTER_CLASS(PerlinSphere, "perlinsphere");

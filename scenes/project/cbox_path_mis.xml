@@ -35,7 +35,7 @@
 		<bsdf type="diffuse">
 			<texture type="ImageTexture" name="albedo">
 				<string name="fileName" value="textures/texture.jpg"/>
-				<string name="wrap" value="clamp" />
+				<string name="wrap" value="repeat" />
 			</texture>
 		</bsdf>
 	</mesh>
@@ -66,7 +66,7 @@
 		<bsdf type="diffuse">
 			<texture type="ImageTexture" name="albedo">
 				<string name="fileName" value="textures/texture.jpg"/>
-				<string name="wrap" value="clamp" />
+				<string name="wrap" value="repeat" />
 			</texture>
 		</bsdf>
 	</mesh>
