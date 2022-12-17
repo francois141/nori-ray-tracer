@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 # Read base image
 img = cv2.imread(args.img_path, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype("float") / 255
+img =  img.astype("float") / 255
 
 # Read pixel variance estimates
 img_variance = cv2.imread(args.var_path, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
@@ -22,7 +22,7 @@ img_variance = cv2.cvtColor(img_variance, cv2.COLOR_BGR2GRAY).astype("float") / 
 
 # Base parameters for the algorithm
 epsilon = 1e-3
-k = 0.2
+k = 0.45
 r = 3
 flt = 0
 wgtsum = 0
