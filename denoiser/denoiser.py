@@ -18,11 +18,11 @@ img =  img.astype("float") / 255
 
 # Read pixel variance estimates
 img_variance = cv2.imread(args.var_path, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
-img_variance = cv2.cvtColor(img_variance, cv2.COLOR_BGR2GRAY).astype("float") / 255
+img_variance = cv2.cvtColor(img_variance, cv2.COLOR_RGB2GRAY).astype("float") / 255
 
 # Base parameters for the algorithm
 epsilon = 1e-3
-k = 0.45
+k = 0.002
 r = 3
 flt = 0
 wgtsum = 0
@@ -47,14 +47,10 @@ def boxFilter(size):
     size = 2*size+1
     return np.ones(shape=(size,size)) / pow(size,2)
 
-
 if __name__ == "__main__":
     
     # Creation of the base image
     outputImage = np.zeros(shape=img.shape)
-
-    # Make pixel variance more smooth
-    #img_variance = signal.convolve2d(img_variance,boxFilter(3),mode='same')
 
     # Run the fast algorithm given in the slides
     for dx in range(-r,r+1):
@@ -73,6 +69,7 @@ if __name__ == "__main__":
 
     # Display the images
     cv2.imshow("denoised_image",outputImage)
+    cv2.imshow("variance_image",img_variance)
     cv2.imshow("base_image",img)
 
     # Wait until we are done
