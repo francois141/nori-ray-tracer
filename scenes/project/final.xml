@@ -1,0 +1,162 @@
+<?xml version="1.0" ?>
+<scene>
+	<integrator type="path_mis"/>
+	<sampler type="independent">
+		<integer name="sampleCount" value="128"/>
+	</sampler>
+	
+	<camera type="advancedCamera">
+		<float name="fov" value="50"/>
+		<transform name="toWorld">
+			<scale value="1,1,1"/>
+			<lookat target="-30, 5, 0" origin="65, 10, 20" up="0, 1, 0"/>		</transform>
+		<float name="focalDist" value="100"/>
+		<float name="lensRadius" value="0.35"/>
+		<vector name="chromaticAberation" value="1.4, 1.2, 1.33" />
+		<vector name="distortion" value="1.5, 1.5"/>
+	</camera>
+
+	<!-- Env map -->
+	<mesh type="sphere">
+        <point name="center" value="0,0,0"/>
+        <float name="radius" value="150"/>
+
+        <emitter type="envmap">
+            <string name="filename" value="textures/sky.exr"/>   
+			<float name="weight" value="2.0"/>
+        </emitter>
+    </mesh>
+
+	<!-- Floor -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Plane.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/floor_normal.jpg"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/floor_albedo.jpg"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<!-- Aquarium walls -->
+	<!-- Front wall -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Cube.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.75,0.75,0.75"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Left Wall -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Cube.001.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.75,0.75,0.75"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Back wall -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Cube.002.obj"/>
+		<bsdf type="mirror"/>
+	</mesh>
+	<!-- Right Wall -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Cube.003.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.75,0.75,0.75"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Windows into the aquarium -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Cube.004.obj"/>
+		<bsdf type="dielectric"/>
+	</mesh>
+	<mesh type="obj">
+		<string name="filename" value="meshes/Cube.005.obj"/>
+		<bsdf type="dielectric"/>
+	</mesh>
+	<mesh type="obj">
+		<string name="filename" value="meshes/Cube.006.obj"/>
+		<bsdf type="dielectric"/>
+	</mesh>
+
+	<!-- Sphere containing the terain -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Sphere.obj"/>
+		<bsdf type="dielectric"/>
+	</mesh>
+	<mesh type="obj">
+		<string name="filename" value="meshes/Object001.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.75,0.75,0.75"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Terrain inside of the sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Terrain.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.75,0.75,0.75"/>
+		</bsdf>
+	</mesh>
+	<mesh type="obj">
+		<string name="filename" value="meshes/Landscape.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.5,0.75,0.0"/>
+		</bsdf>
+	</mesh>
+	
+	<!-- Cactuses -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/10436_Cactus_v1_max2010_it2.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.3,0.75,0.3"/>
+		</bsdf>
+	</mesh>
+	<mesh type="obj">
+		<string name="filename" value="meshes/10436_Cactus_v1_max2010_it2.001.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.3,0.75,0.3"/>
+		</bsdf>
+	</mesh>
+	<mesh type="obj">
+		<string name="filename" value="meshes/10436_Cactus_v1_max2010_it2.002.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.3,0.75,0.3"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Trees -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/Branch.009.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+	<mesh type="obj">
+		<string name="filename" value="meshes/Branch.001.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+</scene>

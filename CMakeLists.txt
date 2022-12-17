@@ -97,6 +97,7 @@ SET(SOURCES_FILES
   src/medium.cpp
   src/disney.cpp
   src/envmap.cpp
+  src/perlinnoise.cpp
 )
 
 add_executable(nori "${SOURCES_FILES}" src/main.cpp)
