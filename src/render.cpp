@@ -56,6 +56,10 @@ bool RenderThread::isRenderingDone() {
     return m_render_status == 3;
 }
 
+float RenderThread::getProgressForEuler() {
+    return m_progress;
+}
+
 void RenderThread::stopRendering() {
     if(isBusy()) {
         cout << "Requesting interruption of the current rendering" << endl;
