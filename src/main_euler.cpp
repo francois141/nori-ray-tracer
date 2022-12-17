@@ -19,6 +19,7 @@
 #include <nori/block.h>
 #include <nori/gui.h>
 #include <filesystem/path.h>
+#include <iomanip>
 
 int main(int argc, char **argv) {
     using namespace nori;
@@ -36,12 +37,19 @@ int main(int argc, char **argv) {
     std::string filename = argv[1];
     filesystem::path path(filename);
 
+    const unsigned int FLOAT_PRECISION_OUTPUT = 2;
+    const unsigned int SECONDS_SLEEP = 1;
+
     if (path.extension() == "xml") {
         // Render the XML scene file 
         m_renderThread.renderScene(filename);
         // Wait until the thread is done
+        sleep(SECONDS_SLEEP);
+        cout << std::setprecision(FLOAT_PRECISION_OUTPUT) << std::fixed << endl;
         while(!m_renderThread.isRenderingDone()) {
-            sleep(1);   
+            float progress = m_renderThread.getProgressForEuler() * 100 ; 
+            cout << "Progress of the rendering : " << progress << "%" << endl;
+            sleep(SECONDS_SLEEP);   
         }
         cout << "Rendering done" << endl;
     }

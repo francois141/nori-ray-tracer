@@ -40,6 +40,8 @@ public:
     float getProgress();
     bool isRenderingDone();
 
+    float getProgressForEuler();
+
 protected:
     Scene* m_scene = nullptr;
     ImageBlock & m_block;
