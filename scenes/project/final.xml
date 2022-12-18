@@ -6,14 +6,14 @@
 	</sampler>
 	
 	<camera type="advancedCamera">
-		<float name="fov" value="50"/>
+		<float name="fov" value="70"/>
 		<transform name="toWorld">
 			<scale value="1,1,1"/>
-			<lookat target="-30, 5, 0" origin="65, 10, 20" up="0, 1, 0"/>		</transform>
+			<lookat target="-30, 5, 0" origin="72, 15, 35" up="0, 1, 0"/>		</transform>
 		<float name="focalDist" value="100"/>
 		<float name="lensRadius" value="0.35"/>
-		<vector name="chromaticAberation" value="1.4, 1.2, 1.33" />
-		<vector name="distortion" value="1.5, 1.5"/>
+		<vector name="chromaticAberation" value="3.5, 2, 2.5" />
+		<vector name="distortion" value="1.7, 1.7"/>
 	</camera>
 
 	<!-- Env map -->
@@ -45,7 +45,7 @@
 	<!-- Aquarium walls -->
 	<!-- Front wall -->
 	<mesh type="obj">
-		<string name="filename" value="meshes/Cube.obj"/>
+		<string name="filename" value="meshes/centerwall.obj"/>
 		<bsdf type="diffuse">
 			<color name="albedo" value="0.75,0.75,0.75"/>
 		</bsdf>
@@ -53,7 +53,7 @@
 
 	<!-- Left Wall -->
 	<mesh type="obj">
-		<string name="filename" value="meshes/Cube.001.obj"/>
+		<string name="filename" value="meshes/leftwall.obj"/>
 		<bsdf type="diffuse">
 			<color name="albedo" value="0.75,0.75,0.75"/>
 		</bsdf>
@@ -61,12 +61,13 @@
 
 	<!-- Back wall -->
 	<mesh type="obj">
-		<string name="filename" value="meshes/Cube.002.obj"/>
+		<string name="filename" value="meshes/BackMirror.obj"/>
 		<bsdf type="mirror"/>
 	</mesh>
+
 	<!-- Right Wall -->
 	<mesh type="obj">
-		<string name="filename" value="meshes/Cube.003.obj"/>
+		<string name="filename" value="meshes/rightwall.obj"/>
 		<bsdf type="diffuse">
 			<color name="albedo" value="0.75,0.75,0.75"/>
 		</bsdf>
@@ -74,67 +75,34 @@
 
 	<!-- Windows into the aquarium -->
 	<mesh type="obj">
-		<string name="filename" value="meshes/Cube.004.obj"/>
+		<string name="filename" value="meshes/centerwindow.obj"/>
 		<bsdf type="dielectric"/>
 	</mesh>
 	<mesh type="obj">
-		<string name="filename" value="meshes/Cube.005.obj"/>
+		<string name="filename" value="meshes/rightwindow.obj"/>
 		<bsdf type="dielectric"/>
 	</mesh>
 	<mesh type="obj">
-		<string name="filename" value="meshes/Cube.006.obj"/>
+		<string name="filename" value="meshes/leftwindow.obj"/>
 		<bsdf type="dielectric"/>
 	</mesh>
 
-	<!-- Sphere containing the terain -->
-	<mesh type="obj">
-		<string name="filename" value="meshes/Sphere.obj"/>
-		<bsdf type="dielectric"/>
-	</mesh>
-	<mesh type="obj">
-		<string name="filename" value="meshes/Object001.obj"/>
-		<bsdf type="diffuse">
-			<color name="albedo" value="0.75,0.75,0.75"/>
-		</bsdf>
-	</mesh>
 
-	<!-- Terrain inside of the sphere -->
+	<!-- Center Sphere-->
 	<mesh type="obj">
-		<string name="filename" value="meshes/Terrain.obj"/>
-		<bsdf type="diffuse">
-			<color name="albedo" value="0.75,0.75,0.75"/>
-		</bsdf>
+		<string name="filename" value="meshes/SphereCenter.obj"/>
+		<bsdf type="dielectric" />
 	</mesh>
 	<mesh type="obj">
-		<string name="filename" value="meshes/Landscape.obj"/>
+		<string name="filename" value="meshes/TerrainCenter.obj"/>
 		<bsdf type="diffuse">
 			<color name="albedo" value="0.5,0.75,0.0"/>
 		</bsdf>
 	</mesh>
-	
-	<!-- Cactuses -->
-	<mesh type="obj">
-		<string name="filename" value="meshes/10436_Cactus_v1_max2010_it2.obj"/>
-		<bsdf type="diffuse">
-			<color name="albedo" value="0.3,0.75,0.3"/>
-		</bsdf>
-	</mesh>
-	<mesh type="obj">
-		<string name="filename" value="meshes/10436_Cactus_v1_max2010_it2.001.obj"/>
-		<bsdf type="diffuse">
-			<color name="albedo" value="0.3,0.75,0.3"/>
-		</bsdf>
-	</mesh>
-	<mesh type="obj">
-		<string name="filename" value="meshes/10436_Cactus_v1_max2010_it2.002.obj"/>
-		<bsdf type="diffuse">
-			<color name="albedo" value="0.3,0.75,0.3"/>
-		</bsdf>
-	</mesh>
 
-	<!-- Trees -->
+	<!-- Trees in Center Sphere -->
 	<mesh type="obj">
-		<string name="filename" value="meshes/Branch.009.obj"/>
+		<string name="filename" value="meshes/TreeLeftTerrainCenter.obj"/>
 		<texture type="NormalMap" name="normal">
 			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
 			<string name="wrap" value="repeat" />
@@ -146,8 +114,246 @@
 			</texture>
 		</bsdf>
 	</mesh>
+
 	<mesh type="obj">
-		<string name="filename" value="meshes/Branch.001.obj"/>
+		<string name="filename" value="meshes/TreeCenterTerrainCenter.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeRightTerrainCenter.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<!-- Back Left Sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/SphereBackLeft.obj"/>
+		<bsdf type="dielectric" />
+	</mesh>
+	<mesh type="obj">
+		<string name="filename" value="meshes/TerrainBackLeft.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.5,0.75,0.0"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Trees in back left sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeRightTerrainBackLeft.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeLeftTerrainBackLeft.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeCenterTerrainBackLeft.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<!-- Back Right Sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/SphereBackRight.obj"/>
+		<bsdf type="dielectric" />
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TerrainBackRight.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.5,0.75,0.0"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Trees in back right Sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeRightTerrainBackRight.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeLeftTerrainBackRight.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeCenterTerrainBackRight.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<!-- Front Left Sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/SphereFrontLeft.obj"/>
+		<bsdf type="dielectric" />
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TerrainFrontLeft.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.5,0.75,0.0"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Trees in Front Left Sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeRightTerrainFrontLeft.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeLeftTerrainFrontLeft.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeCenterTerrainFrontLeft.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<!-- Front Right Sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/SphereFrontRight.obj"/>
+		<bsdf type="dielectric" />
+	</mesh>
+	
+	<mesh type="obj">
+		<string name="filename" value="meshes/TerrainFrontRight.obj"/>
+		<bsdf type="diffuse">
+			<color name="albedo" value="0.5,0.75,0.0"/>
+		</bsdf>
+	</mesh>
+
+	<!-- Trees in front right sphere -->
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeRightTerrainFrontRight.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeLeftTerrainFrontRight.obj"/>
+		<texture type="NormalMap" name="normal">
+			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
+			<string name="wrap" value="repeat" />
+		</texture>
+		<bsdf type="diffuse">
+			<texture type="ImageTexture" name="albedo">
+				<string name="fileName" value="blender/Bark02_4K_BaseColor.png"/>
+				<string name="wrap" value="repeat" />
+			</texture>
+		</bsdf>
+	</mesh>
+
+	<mesh type="obj">
+		<string name="filename" value="meshes/TreeCenterTerrainFrontRight.obj"/>
 		<texture type="NormalMap" name="normal">
 			<string name="fileName" value="blender/Bark02_4K_Normal.png"/>
 			<string name="wrap" value="repeat" />
