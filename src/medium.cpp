@@ -105,7 +105,7 @@ void Medium::addChild(NoriObject *child) {
     switch (child->getClassType()) {
         case EPhaseFunction:
             if (m_phaseFunction) {
-                throw NoriException("Already registered");
+                throw NoriException("Phase function already registered");
             }
             m_phaseFunction = static_cast<PhaseFunction*>(child);
             break;
