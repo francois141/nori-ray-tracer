@@ -24,7 +24,6 @@ SET(SOURCES_FILES
   include/nori/common.h
   include/nori/dpdf.h
   include/nori/frame.h
-  include/nori/gui.h
   include/nori/integrator.h
   include/nori/emitter.h
   include/nori/kdtree.h
@@ -56,7 +55,6 @@ SET(SOURCES_FILES
   src/consttexture.cpp
   src/checkerboard.cpp
   src/diffuse.cpp
-  src/gui.cpp
   src/independent.cpp
   src/mesh.cpp
   src/obj.cpp
@@ -100,7 +98,7 @@ SET(SOURCES_FILES
   src/perlinnoise.cpp
 )
 
-add_executable(nori "${SOURCES_FILES}" src/main.cpp)
+add_executable(nori "${SOURCES_FILES}" src/main.cpp src/gui.cpp include/nori/gui.h)
 add_executable(nori_euler "${SOURCES_FILES}" src/main_euler.cpp)
 
 # The following lines build the warping test application
@@ -127,7 +125,6 @@ add_dependencies(nori nanogui_p)
 add_dependencies(nori tbb_p)
 add_dependencies(nori pugixml)
 add_dependencies(nori_euler OpenEXR_p)
-add_dependencies(nori_euler nanogui_p)
 add_dependencies(nori_euler tbb_p)
 add_dependencies(nori_euler pugixml)
 add_dependencies(warptest nori)
