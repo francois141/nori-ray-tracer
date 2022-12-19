@@ -2,7 +2,7 @@
 <scene>
 	<integrator type="path_mis"/>
 	<sampler type="independent">
-		<integer name="sampleCount" value="128"/>
+		<integer name="sampleCount" value="256"/>
 	</sampler>
 	
 	<camera type="advancedCamera">
@@ -48,7 +48,7 @@
 		<string name="filename" value="meshes/centerwall.obj"/>
 		<bsdf type="diffuse">
 			<color name="albedo" value="0.75,0.75,0.75"/>
-		</bsdf>
+        </bsdf>
 	</mesh>
 
 	<!-- Left Wall -->
@@ -56,7 +56,7 @@
 		<string name="filename" value="meshes/leftwall.obj"/>
 		<bsdf type="diffuse">
 			<color name="albedo" value="0.75,0.75,0.75"/>
-		</bsdf>
+        </bsdf>
 	</mesh>
 
 	<!-- Back wall -->
@@ -70,7 +70,7 @@
 		<string name="filename" value="meshes/rightwall.obj"/>
 		<bsdf type="diffuse">
 			<color name="albedo" value="0.75,0.75,0.75"/>
-		</bsdf>
+        </bsdf>
 	</mesh>
 
 	<!-- Windows into the aquarium -->
@@ -88,7 +88,7 @@
 	</mesh>
 
 
-	<!-- Center Sphere-->
+	<!-- Center Sphere EUROPE -->
 	<mesh type="obj">
 		<string name="filename" value="meshes/SphereCenter.obj"/>
 		<bsdf type="dielectric" />
@@ -143,7 +143,7 @@
 		</bsdf>
 	</mesh>
 
-	<!-- Back Left Sphere -->
+	<!-- Back Left Sphere AMERICA -->
 	<mesh type="obj">
 		<string name="filename" value="meshes/SphereBackLeft.obj"/>
 		<bsdf type="dielectric" />
@@ -151,7 +151,7 @@
 	<mesh type="obj">
 		<string name="filename" value="meshes/TerrainBackLeft.obj"/>
 		<bsdf type="diffuse">
-			<color name="albedo" value="0.5,0.75,0.0"/>
+			<color name="albedo" value="1,0.8,0.0"/>
 		</bsdf>
 	</mesh>
 
@@ -198,7 +198,7 @@
 		</bsdf>
 	</mesh>
 
-	<!-- Back Right Sphere -->
+	<!-- Back Right Sphere ASIA -->
 	<mesh type="obj">
 		<string name="filename" value="meshes/SphereBackRight.obj"/>
 		<bsdf type="dielectric" />
@@ -207,7 +207,7 @@
 	<mesh type="obj">
 		<string name="filename" value="meshes/TerrainBackRight.obj"/>
 		<bsdf type="diffuse">
-			<color name="albedo" value="0.5,0.75,0.0"/>
+			<color name="albedo" value="0.5,1.0,0.25"/>
 		</bsdf>
 	</mesh>
 
@@ -254,7 +254,7 @@
 		</bsdf>
 	</mesh>
 
-	<!-- Front Left Sphere -->
+	<!-- Front Left Sphere SOUTH AMERICA -->
 	<mesh type="obj">
 		<string name="filename" value="meshes/SphereFrontLeft.obj"/>
 		<bsdf type="dielectric" />
@@ -263,7 +263,7 @@
 	<mesh type="obj">
 		<string name="filename" value="meshes/TerrainFrontLeft.obj"/>
 		<bsdf type="diffuse">
-			<color name="albedo" value="0.5,0.75,0.0"/>
+			<color name="albedo" value="0.0,0.75,0.75"/>
 		</bsdf>
 	</mesh>
 
@@ -310,7 +310,7 @@
 		</bsdf>
 	</mesh>
 
-	<!-- Front Right Sphere -->
+	<!-- Front Right Sphere AFRICA-->
 	<mesh type="obj">
 		<string name="filename" value="meshes/SphereFrontRight.obj"/>
 		<bsdf type="dielectric" />
@@ -319,7 +319,7 @@
 	<mesh type="obj">
 		<string name="filename" value="meshes/TerrainFrontRight.obj"/>
 		<bsdf type="diffuse">
-			<color name="albedo" value="0.5,0.75,0.0"/>
+			<color name="albedo" value="1.0,1.0,0.0"/>
 		</bsdf>
 	</mesh>
 

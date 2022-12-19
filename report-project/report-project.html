@@ -28,30 +28,39 @@
         <div class="pageContent">
             <h1>Features</h1>
             <p>
-                <strong>François:</strong> 
-                <ul>
-                    <li>NL-means Denoising with Pixel Variance Estimates</li>
-                    <li>Disney DSDF</li>
-                    <li>Spotlight Emitter</li>
-                    <li>Homogeneous Participating Media (Volumetric Path Tracing)</li>
-                    <li>Windowed Synch Reconstruction Filter</li>
-                    <li>Rendering on the Euler Cluster</li>
-                </ul>
-                <strong>Andrew:</strong>
-                <ul>
-                    <li>Advanced Camera Model</li>
-                    <li>Environment Map Emitter</li>
-                    <li>Image Texture</li>
-                    <li>Normal Map</li>
-                    <li>Modeling Meshes</li>
-                    <li>Procedural Volumes (Perlin Noise)</li>
-                    <li><s>Emissive Participating Media</s> (abandoned due to time constraints)</li>
-                </ul>
-                In the following paragraphs, we will detail how each feature was implemented, followed by a feature-specific validation for each case.
+                <strong>François:</strong>
+            <ul>
+                <li>NL-means Denoising with Pixel Variance Estimates</li>
+                <li>Disney DSDF</li>
+                <li>Spotlight Emitter</li>
+                <li>Homogeneous Participating Media (Volumetric Path Tracing)</li>
+                <li>Windowed Synch Reconstruction Filter</li>
+                <li>Rendering on the Euler Cluster</li>
+            </ul>
+            <strong>Andrew:</strong>
+            <ul>
+                <li>Advanced Camera Model</li>
+                <li>Environment Map Emitter</li>
+                <li>Image Texture</li>
+                <li>Normal Map</li>
+                <li>Modeling Meshes</li>
+                <li>Procedural Volumes (Perlin Noise)</li>
+                <li><s>Emissive Participating Media</s> (abandoned due to time constraints)</li>
+            </ul>
+            In the following paragraphs, we will detail how each feature was implemented, followed by a feature-specific
+            validation for each case.
             </p>
             <!-- ================================================================= -->
 
             <h2>Denoiser</h2>
+
+            
+            <p>
+                <strong>Files Changed:</strong>
+            <ul>
+                <li><code>denoiser.py</code></li>
+                <li><code>render.cpp</code></li>
+            </ul>
 
             <h3>Description</h3>
 
@@ -90,17 +99,22 @@
 
             <div class="twentytwenty-container">
                 <img src="../scenes/project/denoiser/image.png" alt="Noisy image" class="img-responsive">
-                <img src="../scenes/project/denoiser/denoised.png" alt="Denoised image"
-                    class="img-responsive">
+                <img src="../scenes/project/denoiser/denoised.png" alt="Denoised image" class="img-responsive">
             </div> <br>
             <div class="twentytwenty-container">
                 <img src="../scenes/project/denoiser/image2.png" alt="Noisy image" class="img-responsive">
-                <img src="../scenes/project/denoiser/denoised2.png" alt="Denoised image"
-                    class="img-responsive">
+                <img src="../scenes/project/denoiser/denoised2.png" alt="Denoised image" class="img-responsive">
             </div> <br>
             <!-- ================================================================= -->
 
             <h2>Disney BRDF</h2>
+
+            <p>
+                <strong>Files Changed:</strong>
+            <ul>
+                <li><code>disney.cpp</code></li>
+                <li><code>warp.cpp</code></li>
+            </ul>
 
             <h3>Description</h3>
 
@@ -157,9 +171,11 @@
 
             <h3> Validation </h3>
 
-            <div class="twentytwenty-container"><img src="../scenes/project/disney/test_gtr1.png" alt="Test results - GTR1" />
+            <div class="twentytwenty-container"><img src="../scenes/project/disney/test_gtr1.png"
+                    alt="Test results - GTR1" />
             </div><br> <br> <br> <br>
-            <div class="twentytwenty-container"><img src="../scenes/project/disney/test_gtr2.png" alt="Test results - GTR2" />
+            <div class="twentytwenty-container"><img src="../scenes/project/disney/test_gtr2.png"
+                    alt="Test results - GTR2" />
             </div> <br> <br> <br> <br>
 
             <div class="twentytwenty-container">
@@ -168,6 +184,13 @@
             <!-- ================================================================= -->
 
             <h2>Spotlight</h2>
+
+            <p>
+                <strong>Files Changed:</strong>
+            <ul>
+                <li><code>spotlight.cpp</code></li>
+            </ul>
+
 
             <h3>Description</h3>
 
@@ -199,6 +222,16 @@
             <!-- ================================================================= -->
 
             <h2>Volumetric path tracing</h2>
+
+            
+            <p>
+                <strong>Files Changed:</strong>
+            <ul>
+                <li><code>volumetric.cpp</code></li>
+                <li><code>phasefunction.cpp</code></li>
+                <li><code>medium.cpp</code></li>
+            </ul>
+
 
             <h3>Description</h3>
 
@@ -236,15 +269,28 @@
 
             <h3> Validation </h3>
 
+
             <div class="twentytwenty-container">
                 <img src="../scenes/pa4/cbox_disney/cbox_path_mis.png" alt="Scene with path mis" class="img-responsive">
-                <img src="../scenes/project/volumetric/cbox_path_mis.png" alt="Scene with volumetric path"
+                <img src="../scenes/project/volumetric/cbox_path_mis_no_scatter.png"
+                    alt="Scene with volumetric and no scattering" class="img-responsive">
+            </div> <br>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/pa4/cbox_disney/cbox_path_mis.png" alt="Scene with path mis" class="img-responsive">
+                <img src="../scenes/project/volumetric/cbox_path_mis.png" alt="Scene with volumetric path (0.15 attenuation, 0.15 scattering)"
                     class="img-responsive">
             </div> <br>
 
             <!-- ================================================================= -->
 
             <h2>Windowed sync filter</h2>
+
+            <p>
+                <strong>Files Changed:</strong>
+            <ul>
+                <li><code>rfilter.cpp</code></li>
+            </ul>
 
             <h3>Description</h3>
 
@@ -277,6 +323,13 @@
             <!-- ================================================================= -->
 
             <h2>Rendering on the euler cluster</h2>
+
+            <p>
+                <strong>Files Changed:</strong>
+            <ul>
+                <li><code>main_euler.cpp</code></li>
+                <li><code>render.cpp</code></li>
+            </ul>
 
             <h3>Description</h3>
 
@@ -318,15 +371,12 @@
             <h3> Validation </h3>
 
             <div class="twentytwenty-container">
-                <img src="../scenes/project/euler/euler.png" alt="Euler rendering"
-                    class="img-responsive">
+                <img src="../scenes/project/euler/euler.png" alt="Euler rendering" class="img-responsive">
             </div> <br>
 
             <div class="twentytwenty-container">
-                <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Generated with nori"
-                    class="img-responsive">
-                <img src="../scenes/project/euler/file.png" alt="Generated on the euler cluster"
-                    class="img-responsive">
+                <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Generated with nori" class="img-responsive">
+                <img src="../scenes/project/euler/file.png" alt="Generated on the euler cluster" class="img-responsive">
             </div> <br>
 
             <!-- ================================================================= -->
@@ -337,89 +387,93 @@
 
             <p>
                 <strong>Files Changed:</strong>
-                <ul>
-                    <li><code>advancedCamera.cpp</code></li>
-                    <li><code>render.cpp</code></li>
-                    <li><code>common.h</code></li>
-                </ul>
-                
-                <strong>Idea:</strong> Augment the basic perspective camera model in order to achieve three additional effects:  
-                    <ol>
-                        <li>Depth of Field using the thin lens model.</li>
-                        <li>Barrel distortion using the same method as the mitsuba renderer.</li>
-                        <li>Chromatic Aberrations by sampling color channels individually.</li>
-                    </ol> </p>
+            <ul>
+                <li><code>advancedCamera.cpp</code></li>
+                <li><code>render.cpp</code></li>
+                <li><code>common.h</code></li>
+            </ul>
+
+            <strong>Idea:</strong> Augment the basic perspective camera model in order to achieve three additional
+            effects:
+            <ol>
+                <li>Depth of Field using the thin lens model.</li>
+                <li>Barrel distortion using the same method as the mitsuba renderer.</li>
+                <li>Chromatic Aberrations by sampling color channels individually.</li>
+            </ol>
+            </p>
             <p>
-                All three of these effects were implemented onto a new camera class called <code>AdvancedCamera : Camera</code>.
+                All three of these effects were implemented onto a new camera class called
+                <code>AdvancedCamera : Camera</code>.
                 We will now detail how the three different effects were achieved.
             </p>
 
             <h3> Depth of Field </h3>
 
-            <p> In order to achieve the depth of field effect, the initial perspective camera was extended to use the <strong>Thin Lens Model</strong>
-            as described in <a href="https://www.pbr-book.org/3ed-2018/Camera_Models/Projective_Camera_Models#TheThinLensModelandDepthofField">PBRT§6.2.3</a>. 
-            The idea behind this is to simulate an infinitely thin lens that is defined by:  
+            <p> In order to achieve the depth of field effect, the initial perspective camera was extended to use the
+                <strong>Thin Lens Model</strong>
+                as described in <a
+                    href="https://www.pbr-book.org/3ed-2018/Camera_Models/Projective_Camera_Models#TheThinLensModelandDepthofField">PBRT§6.2.3</a>.
+                The idea behind this is to simulate an infinitely thin lens that is defined by:
             <ol>
-                <li><code>lensRadius</code>: The size of the lens. This will affect how shallow the depth of field is.</li>  
-                <li><code>focalDistance</code>: The distance between the lens and the sensor. This will affect which part of the scene is in focus.</li>
-            </ol> 
-            Using these two new attributes, we can modify our sampling method such that, if the lens radius is non-zero, the rays are resampled on the surface of the lens
+                <li><code>lensRadius</code>: The size of the lens. This will affect how shallow the depth of field is.
+                </li>
+                <li><code>focalDistance</code>: The distance between the lens and the sensor. This will affect which
+                    part of the scene is in focus.</li>
+            </ol>
+            Using these two new attributes, we can modify our sampling method such that, if the lens radius is non-zero,
+            the rays are resampled on the surface of the lens
             creating a small circle of confusion that will depend on the radius of the lens and the focal distance.
             </p>
 
             <h4> Validation: DOF </h4>
 
             <p>
-                In order to validate the depth of field effect, we start by comparing how the different parameters affect the image, followed by an on/off comparison of the effect.
+                In order to validate the depth of field effect, we start by comparing how the different parameters
+                affect the image, followed by an on/off comparison of the effect.
             </p>
             <div class="twentytwenty-container">
-                <img src="images/dof_only.png" alt="focalDist=5.7, lensRadius=0.35"
-                    class="img-responsive">
-                <img src="images/dof_fd5_7_lr0_1.png" alt="focalDist=5.7, lensRadius=0.1"
-                    class="img-responsive">
-                <img src="images/dof_fd5_7_lr0_9.png" alt="focalDist=5.7, lensRadius=0.9"
-                    class="img-responsive">
-                <img src="images/dof_fd5_lr0_35.png" alt="focalDist=5, lensRadius=0.35"
-                    class="img-responsive">
+                <img src="images/dof_only.png" alt="focalDist=5.7, lensRadius=0.35" class="img-responsive">
+                <img src="images/dof_fd5_7_lr0_1.png" alt="focalDist=5.7, lensRadius=0.1" class="img-responsive">
+                <img src="images/dof_fd5_7_lr0_9.png" alt="focalDist=5.7, lensRadius=0.9" class="img-responsive">
+                <img src="images/dof_fd5_lr0_35.png" alt="focalDist=5, lensRadius=0.35" class="img-responsive">
             </div> <br>
             <div class="twentytwenty-container">
-                <img src="images/cbox_ref.png" alt="No DOF"
-                    class="img-responsive">
-                <img src="images/dof_only.png" alt="focalDist=5.7, lensRadius=0.35"
-                    class="img-responsive">
+                <img src="images/cbox_ref.png" alt="No DOF" class="img-responsive">
+                <img src="images/dof_only.png" alt="focalDist=5.7, lensRadius=0.35" class="img-responsive">
             </div> <br>
 
             <h3> Barrel Distortion </h3>
 
-            <p> For this part, we based our implementation on a similar effect achieved in mitsuba. 
-                The main idea is simply to solve a distortion polynomial and move the near plane around accordingly for each sample.
-                This allows us to achieve a nice distortion effect, as our rays direction will be modified to fit the curve of said polynomial.
-                The polynomial can be controlled using the second and fourth order terms, which are passed as an argument through <code>m_distortion</code>.
+            <p> For this part, we based our implementation on a similar effect achieved in mitsuba.
+                The main idea is simply to solve a distortion polynomial and move the near plane around accordingly for
+                each sample.
+                This allows us to achieve a nice distortion effect, as our rays direction will be modified to fit the
+                curve of said polynomial.
+                The polynomial can be controlled using the second and fourth order terms, which are passed as an
+                argument through <code>m_distortion</code>.
             </p>
 
             <h4> Validation: Distortion </h4>
             <div class="twentytwenty-container">
-                <img src="images/cbox_ref.png" alt="No distortion"
-                    class="img-responsive">
-                <img src="images/distortion_only.png" alt="m_distortion = (3, 3)"
-                    class="img-responsive">
+                <img src="images/cbox_ref.png" alt="No distortion" class="img-responsive">
+                <img src="images/distortion_only.png" alt="m_distortion = (3, 3)" class="img-responsive">
             </div> <br>
 
             <h3> Chromatic Abberation </h3>
 
-            <p> As our final camera effect, we chose to implement chromatic abberation. 
+            <p> As our final camera effect, we chose to implement chromatic abberation.
                 To do this, we need to split our rendering such that each color component is rendered individually.
-                Doing so enables a slight offset between each color. In order to seperate the color channels for the rendering, 
-                we needed to augment the code in <code>render.cpp</code> and add a channel parameter to the sampling method so that it sets all colors but the one color to 0 individually.
+                Doing so enables a slight offset between each color. In order to seperate the color channels for the
+                rendering,
+                we needed to augment the code in <code>render.cpp</code> and add a channel parameter to the sampling
+                method so that it sets all colors but the one color to 0 individually.
             </p>
 
             <h3> Validation </h3>
 
             <div class="twentytwenty-container">
-                <img src="images/cbox_ref.png" alt="Perspective Camera"
-                    class="img-responsive">
-                <img src="images/cbox_adv_cam.png" alt="Advanced Camera"
-                    class="img-responsive">
+                <img src="images/cbox_ref.png" alt="Perspective Camera" class="img-responsive">
+                <img src="images/cbox_adv_cam.png" alt="Advanced Camera" class="img-responsive">
             </div> <br>
 
             <p> Note that all of the images where only rendered to about 15% due to time constraints. </p>
@@ -432,36 +486,40 @@
 
             <p>
                 <strong>Files Changed:</strong>
-                <ul>
-                    <li><code>envmap.cpp</code></li>
-                    <li><code>common.h</code></li>
-                </ul>
-                
-                <strong>Idea:</strong> Have a high dynamic range spherical image placed in the back of your scene (at t = inf) and consider is as a giant textured
-                area emitter which is sampled when no object is hit before <code>t == ray.max_t</code>.
+            <ul>
+                <li><code>envmap.cpp</code></li>
+                <li><code>common.h</code></li>
+            </ul>
+
+            <strong>Idea:</strong> Have a high dynamic range spherical image placed in the back of your scene (at t =
+            inf) and consider is as a giant textured
+            area emitter which is sampled when no object is hit before <code>t == ray.max_t</code>.
             </p>
             <p>
-                Most of the environment map emitter was implemented based off of the following <a href="https://web.cs.wpi.edu/~emmanuel/courses/cs563/S07/projects/envsample.pdf" >reference paper</a>.
-                This contained pseudo code for the more technical aspects of the implementation, such as the <code>sample1D</code>, and <code>precompute1D</code> methods, and were thus followed quite closely.
-                The remainder of the implementation also follows the paper quite closely, with additional parameters added for artistic control.
+                Most of the environment map emitter was implemented based off of the following <a
+                    href="https://web.cs.wpi.edu/~emmanuel/courses/cs563/S07/projects/envsample.pdf">reference
+                    paper</a>.
+                This contained pseudo code for the more technical aspects of the implementation, such as the
+                <code>sample1D</code>, and <code>precompute1D</code> methods, and were thus followed quite closely.
+                The remainder of the implementation also follows the paper quite closely, with additional parameters
+                added for artistic control.
             </p>
 
             <h3> Validation </h3>
 
             <p>
-                Our validation is done by first showing a scene with a really high resolution environment map, followed by a comparison with mitsuba using the same scene and a lower resolution environment map.
-                The environment maps are both from the following <a href="https://polyhaven.com/a/chinese_garden">website</a>.
+                Our validation is done by first showing a scene with a really high resolution environment map, followed
+                by a comparison with mitsuba using the same scene and a lower resolution environment map.
+                The environment maps are both from the following <a
+                    href="https://polyhaven.com/a/chinese_garden">website</a>.
             </p>
             <div class="twentytwenty-container">
-                <img src="images/envmap_chin.png" alt="High Resolution EnvMap"
-                    class="img-responsive">
+                <img src="images/envmap_chin.png" alt="High Resolution EnvMap" class="img-responsive">
             </div> <br>
 
             <div class="twentytwenty-container">
-                <img src="images/envmap_nori.png" alt="Environment Map Nori"
-                    class="img-responsive">
-                <img src="images/envmap_mitsuba.png" alt="Environment Map Mitsuba"
-                    class="img-responsive">
+                <img src="images/envmap_nori.png" alt="Environment Map Nori" class="img-responsive">
+                <img src="images/envmap_mitsuba.png" alt="Environment Map Mitsuba" class="img-responsive">
             </div> <br>
 
             <!-- ================================================================= -->
@@ -472,38 +530,41 @@
 
             <p>
                 <strong>Files Changed:</strong>
-                <ul>
-                    <li><code>imagetexture.cpp</code></li>
-                    <li><code>common.h</code></li>
-                </ul>
-                
-                <strong>Idea:</strong> Use a <code>.png</code> or <code>.jpg</code> file for a texture. Thus, given a uv coordinate pair, sample the related point on the image, while using billinear interpolation to reduce aliasing.
+            <ul>
+                <li><code>imagetexture.cpp</code></li>
+                <li><code>common.h</code></li>
+            </ul>
+
+            <strong>Idea:</strong> Use a <code>.png</code> or <code>.jpg</code> file for a texture. Thus, given a uv
+            coordinate pair, sample the related point on the image, while using billinear interpolation to reduce
+            aliasing.
             </p>
             <p>
-                To implement this feature, a new type of texture was created named <code>ImageTexture : Texture&#60;Color3f&#62;</code>. 
-                This texture type contains a set of parameters used to handle image file loading:  
-                <ul>
-                    <li><code>m_filename</code>: A relative path to the file, from the location of the scene xml.</li>
-                    <li><code>m_wrap</code>: How the texture will be handled at the image's edges (repeat or clamp).</li>
-                    <li><code>m_data</code>: The loaded-in bytes from the image file.</li>
-                    <li><code>m_width</code>: The width of the image.</li>
-                    <li><code>m_height</code>: The height of the image.</li>
-                    <li><code>m_channels</code>: The number of color channels the image contains (3 for rgb, 4 for rgba).</li>
-                </ul>
-                The image is first loaded into the <code>m_data</code> field using the <code>stbi_load</code> function.
-                During evaluation, the uv coordinates are converted into byte indexes for the data map, which are then used to retrieve the color channels individually.
-                Finally, the neighboring pixels are sample and billinear interpolation is performed, in order to reduce the texture aliasing. 
+                To implement this feature, a new type of texture was created named
+                <code>ImageTexture : Texture&#60;Color3f&#62;</code>.
+                This texture type contains a set of parameters used to handle image file loading:
+            <ul>
+                <li><code>m_filename</code>: A relative path to the file, from the location of the scene xml.</li>
+                <li><code>m_wrap</code>: How the texture will be handled at the image's edges (repeat or clamp).</li>
+                <li><code>m_data</code>: The loaded-in bytes from the image file.</li>
+                <li><code>m_width</code>: The width of the image.</li>
+                <li><code>m_height</code>: The height of the image.</li>
+                <li><code>m_channels</code>: The number of color channels the image contains (3 for rgb, 4 for rgba).
+                </li>
+            </ul>
+            The image is first loaded into the <code>m_data</code> field using the <code>stbi_load</code> function.
+            During evaluation, the uv coordinates are converted into byte indexes for the data map, which are then used
+            to retrieve the color channels individually.
+            Finally, the neighboring pixels are sample and billinear interpolation is performed, in order to reduce the
+            texture aliasing.
             </p>
 
             <h3> Validation </h3>
 
             <div class="twentytwenty-container">
-                <img src="images/cbox_ref.png" alt="No Textures"
-                    class="img-responsive">
-                <img src="images/texture.png" alt="With Textures (wrap = Repeat)"
-                    class="img-responsive">
-                <img src="images/texture_clamp.png" alt="With Textures (wrap = Clamp)"
-                    class="img-responsive">
+                <img src="images/cbox_ref.png" alt="No Textures" class="img-responsive">
+                <img src="images/texture.png" alt="With Textures (wrap = Repeat)" class="img-responsive">
+                <img src="images/texture_clamp.png" alt="With Textures (wrap = Clamp)" class="img-responsive">
             </div> <br>
 
             <!-- ================================================================= -->
@@ -514,32 +575,38 @@
 
             <p>
                 <strong>Files Changed:</strong>
-                <ul>
-                    <li><code>normalmap.cpp</code></li>
-                    <li><code>mesh.cpp</code></li>
-                    <li><code>shape.h</code></li>
-                    <li><code>shape.cpp</code></li>
-                </ul>
-                
-                <strong>Idea:</strong> Same idea as Image Textures, but this time use the rgb values of the sampled pixel to set the shading frame's normals.
+            <ul>
+                <li><code>normalmap.cpp</code></li>
+                <li><code>mesh.cpp</code></li>
+                <li><code>shape.h</code></li>
+                <li><code>shape.cpp</code></li>
+            </ul>
+
+            <strong>Idea:</strong> Same idea as Image Textures, but this time use the rgb values of the sampled pixel to
+            set the shading frame's normals.
             </p>
             <p>
-                To implement this feature, a new type of texture was created named <code>NormalMap : Texture&#60;Normal3f&#62;</code>. 
-                A new <code>m_normalMap</code> field was added to the Shape class, and the <code>Shape::addChild</code> method was updated accordingly.
-                The code for this part is almost identical to the code for the <code>ImageTexture</code> class, with the only difference being in when the <code>eval</code> method is called.
-                For this feature, we need to check, inside of <code>Mesh::setHitInformation</code> if a normal map was loaded-in for the mesh. 
-                If so, then, using the intersection point's uv coordinates, we set <code>its.shFrame.n</code> to the sampled rgb value of the texture.
+                To implement this feature, a new type of texture was created named
+                <code>NormalMap : Texture&#60;Normal3f&#62;</code>.
+                A new <code>m_normalMap</code> field was added to the Shape class, and the <code>Shape::addChild</code>
+                method was updated accordingly.
+                The code for this part is almost identical to the code for the <code>ImageTexture</code> class, with the
+                only difference being in when the <code>eval</code> method is called.
+                For this feature, we need to check, inside of <code>Mesh::setHitInformation</code> if a normal map was
+                loaded-in for the mesh.
+                If so, then, using the intersection point's uv coordinates, we set <code>its.shFrame.n</code> to the
+                sampled rgb value of the texture.
             </p>
 
             <h3> Validation </h3>
-            <p>To validate our normal maps, we will compare our cbox scene without normal maps, with one that has normal maps. 
-                Normal maps will be more visible on flat surfaces, so the effect is more present on the right wall than on the sphere.
+            <p>To validate our normal maps, we will compare our cbox scene without normal maps, with one that has normal
+                maps.
+                Normal maps will be more visible on flat surfaces, so the effect is more present on the right wall than
+                on the sphere.
             </p>
             <div class="twentytwenty-container">
-                <img src="images/texture.png" alt="Only Textures"
-                    class="img-responsive">
-                <img src="images/texture_normal.png" alt="With Normal Map"
-                    class="img-responsive">
+                <img src="images/texture.png" alt="Only Textures" class="img-responsive">
+                <img src="images/texture_normal.png" alt="With Normal Map" class="img-responsive">
             </div> <br>
 
             <!-- ================================================================= -->
@@ -548,66 +615,84 @@
 
             <h3>Description</h3>
             <p>
-                In order to achieve our final scene, we decided to model some custom meshes. 
+                In order to achieve our final scene, we decided to model some custom meshes.
                 One of the models in question is a tree model, which was sculped and modeled from scratch using blender.
-                Here are some screen shots from the modeling process, starting with some basic sculpting, followed by some texturing and branch creation, before achieving our final model.
+                Here are some screen shots from the modeling process, starting with some basic sculpting, followed by
+                some texturing and branch creation, before achieving our final model.
             </p>
 
             <div class="container">
-                <img src="images/tree_wip1.png" alt="Early Tree trunk"
-                    class="img-responsive">
-                <img src="images/tree_wip2.png" alt="Tree trunk with additional branches"
-                    class="img-responsive">
+                <img src="images/tree_wip1.png" alt="Early Tree trunk" class="img-responsive">
+                <img src="images/tree_wip2.png" alt="Tree trunk with additional branches" class="img-responsive">
                 <img src="images/tree_wip3.png" alt="Tree trunk with additional branches and roots"
                     class="img-responsive">
-                <img src="images/tree_wip4.png" alt="Modeling a branch"
-                    class="img-responsive">
-                <img src="images/tree_wip5.png" alt="Texturing"
-                    class="img-responsive">
-                <img src="images/tree_wip7.png" alt="Final tree"
-                    class="img-responsive">
+                <img src="images/tree_wip4.png" alt="Modeling a branch" class="img-responsive">
+                <img src="images/tree_wip5.png" alt="Texturing" class="img-responsive">
+                <img src="images/tree_wip7.png" alt="Final tree" class="img-responsive">
             </div> <br>
 
-             <!-- ================================================================= -->
+            <!-- ================================================================= -->
 
-             <h2> Procedural Volumes </h2>
+            <h2> Procedural Volumes </h2>
 
-             <h3>Description</h3>
- 
-             <p>
-                 <strong>Files Changed:</strong>
-                 <ul>
-                     <li><code>perlinnoise.cpp</code></li>
-                 </ul>
-                 
-                 <strong>Idea:</strong> Create a procedural spherical shape by having a sphere whose radius is determined at every point by a 2D perlin noise function.
-             </p>
-             <p>
-                 To implement this feature, we creted a new volume called <code>PerlinSphere</code>. The implementation follows that of a regular sphere quite closely, with the added 
-                 detail that, when testing for intersection, we first intersect with a sphere of fixed radius, then we use that intersection point to compute the height value 
-                 from a perlin noise function and recompute the intersection using a radius that is scaled by the output of the noise function. 
-                 This yields a wavy rough surface whose amplitude can be tweaked using the <code>height</code> xml parameter.
-             </p>
- 
-             <h3> Validation </h3>
-             <p>
-             </p>
-             <div class="twentytwenty-container">
-                 <img src="images/nonoise.png" alt="Normal"
-                     class="img-responsive">
-                 <img src="images/noise.png" alt="With noise"
-                     class="img-responsive">
-             </div> <br>
- 
-             <!-- ================================================================= -->
+            <h3>Description</h3>
+
+            <p>
+                <strong>Files Changed:</strong>
+            <ul>
+                <li><code>perlinnoise.cpp</code></li>
+            </ul>
+
+            <strong>Idea:</strong> Create a procedural spherical shape by having a sphere whose radius is determined at
+            every point by a 2D perlin noise function.
+            </p>
+            <p>
+                To implement this feature, we creted a new volume called <code>PerlinSphere</code>. The implementation
+                follows that of a regular sphere quite closely, with the added
+                detail that, when testing for intersection, we first intersect with a sphere of fixed radius, then we
+                use that intersection point to compute the height value
+                from a perlin noise function and recompute the intersection using a radius that is scaled by the output
+                of the noise function.
+                This yields a wavy rough surface whose amplitude can be tweaked using the <code>height</code> xml
+                parameter.
+            </p>
+
+            <h3> Validation </h3>
+            <p>
+            </p>
+            <div class="twentytwenty-container">
+                <img src="images/nonoise.png" alt="Normal" class="img-responsive">
+                <img src="images/noise.png" alt="With noise" class="img-responsive">
+            </div> <br>
+
+            <!-- ================================================================= -->
 
             <h2> Emissive Participating Media </h2>
 
             <h3>Description</h3>
 
-            <p>This feature was unfortunately not implemented due to time constraints created by dependencies between this feature and the volumetric path tracing feature.</p>
+            <p>This feature was unfortunately not implemented due to time constraints.</p>
 
             <!-- ================================================================= -->
+
+        </div>
+    </div>
+
+    <div class="container headerBar">
+        <h1>Our scene</h1>
+    </div>
+
+    <div class="container contentWrapper">
+        <div class="pageContent">
+            <h1>The scene</h1>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/final_image/final.png" alt="Scene" class="img-responsive">
+            </div> <br>
+
+            <p>
+
+            </p>
 
         </div>
     </div>

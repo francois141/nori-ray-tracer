@@ -66,7 +66,9 @@ public:
         float NdotV = Frame::cosTheta(bRec.wi);
         float NdotL = Frame::cosTheta(bRec.wo);
 
-        if(NdotV < 0 || NdotL < 0) return BLACK;
+        if(NdotV < 0 || NdotL < 0) 
+            return BLACK;
+
         Vector3f wh = (bRec.wi + bRec.wo).normalized();
 
         float LdotH = bRec.wo.dot(wh);
@@ -77,7 +79,7 @@ public:
         float luminance = m_baseColor.getLuminance();
         Color3f Ctint = (luminance > 0.f) ? Color3f(m_baseColor.r() / luminance, m_baseColor.g() / luminance, m_baseColor.b() / luminance) : Color3f(1.0f);
         Color3f CtintMix = 0.08 * m_specular * lerp(m_specularTint, WHITE, Ctint);
-        Color3f Cspec = lerp(m_metallic, m_baseColor, CtintMix);
+        Color3f Cspec = lerp(m_metallic, CtintMix, m_baseColor);
         Color3f Csheen = lerp(m_sheenTint, WHITE , Ctint);
 
         // Diffuse part
