@@ -2,13 +2,22 @@
 
 NORI_NAMESPACE_BEGIN
 
-float IsotropicPhaseFunction::sample(Vector3f &wo, Vector3f &wi, const Point2f &sample){
+PhaseFunction::PhaseFunction() {
+    return;
+}
+
+PhaseFunction::PhaseFunction(const PropertyList &props) {
+    return;
+}
+
+float PhaseFunction::sample(Vector3f &wo, Vector3f &wi, const Point2f &sample){
     wi = Warp::squareToUniformSphere(sample);
     return INV_FOURPI;
 }
 
-std::string IsotropicPhaseFunction::toString() const {
+std::string PhaseFunction::toString() const {
     return tfm::format("[Isotropic phase function ]");
 }
 
+NORI_REGISTER_CLASS(PhaseFunction, "isotropic");
 NORI_NAMESPACE_END

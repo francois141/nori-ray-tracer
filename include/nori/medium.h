@@ -1,6 +1,7 @@
 #include <nori/object.h>
 #include <nori/sampler.h>
 #include <nori/phasefunction.h>
+#include <nori/bbox.h>
 
 #if !defined(__NORI_MEDIUM_H)
 #define __NORI_MEDIUM_H
@@ -35,7 +36,8 @@ class Medium : public NoriObject {
     // Given coefficients
     Color3f m_absorbtion;
     Color3f m_scattering;
-    PhaseFunction *m_phaseFunction;
+    PhaseFunction *m_phaseFunction = nullptr;
+    BoundingBox3f bounds;
 
     // Derived coefficients
     Color3f m_extenction;

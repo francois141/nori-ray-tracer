@@ -18,14 +18,43 @@
 <body>
 
     <div class="container headerBar">
-        <h1>Computer Graphics 2022 - Project Report</h1>
-    </div>
-    <div class="container headerBar">
-        <h1>François Costa & Andrew Dobis</h1>
+        <h1>Computer Graphics 2022 - Project Report - François Costa & Andrew Dobis</h1>
     </div>
 
     <div class="container contentWrapper">
         <div class="pageContent">
+
+            <h1>The scene</h1>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/final_image/final.png" alt="Scene" class="img-responsive">
+            </div> <br>
+
+            <h3>Images used as inspiration</h3>
+
+            <div id="img-container">
+                <img src="images/image.jpg" height="200">
+                <img src="images/image2.jpeg" height="200">
+                <img src="images/africa.jpg" height="200">
+                <img src="images/asia.jpg" height="200">
+                <img src="images/europe.jpeg" height="200">
+                <img src="images/southamerica.jpeg" height="200">
+                <img src="images/us.jpg" height="200">
+            </div>
+
+            <h3>Description of our image</h3>
+
+            <p>
+                The goal of our scene is to represent several landscapes within various spheres encased in a zoo-like
+                presentative box. Each sphere contains the same terrain, shaded with a different bsdf. We chose not to
+                include all of our features in this final scene, as we felt that it ended up being visually overwhelming
+                for the viewer. Our sole light-source in this scene is a relatively simply hdri of the sky implemented
+                using a strengthened environment map. We rendered our scene using 256 samples per pixel. As a
+                post-processing effect, we used our denoiser in order to reduce the artifacts caused by the moderate
+                sample count. We must note however that some artifacts still remain due to the chromatic aberration
+                effect added by our advanced camera model.
+            </p>
+
             <h1>Features</h1>
             <p>
                 <strong>François:</strong>
@@ -54,7 +83,7 @@
 
             <h2>Denoiser</h2>
 
-            
+
             <p>
                 <strong>Files Changed:</strong>
             <ul>
@@ -97,6 +126,11 @@
 
             <h3> Validation </h3>
 
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/denoiser/final.png" alt="Noisy image" class="img-responsive">
+                <img src="../scenes/project/denoiser/final_denoised.png" alt="Denoised image" class="img-responsive">
+            </div> <br>
             <div class="twentytwenty-container">
                 <img src="../scenes/project/denoiser/image.png" alt="Noisy image" class="img-responsive">
                 <img src="../scenes/project/denoiser/denoised.png" alt="Denoised image" class="img-responsive">
@@ -171,6 +205,8 @@
 
             <h3> Validation </h3>
 
+            <p>You have also other image available in the folder scenes/project/disney/images</p>
+
             <div class="twentytwenty-container"><img src="../scenes/project/disney/test_gtr1.png"
                     alt="Test results - GTR1" />
             </div><br> <br> <br> <br>
@@ -180,6 +216,18 @@
 
             <div class="twentytwenty-container">
                 <img src="../scenes/project/disney/cbox_path_mis.png" alt="Disney BRDF" class="img-responsive">
+            </div> <br>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/disney/cbox_path_mis_specular_no_rough.png" alt="Specular but not rough"
+                    class="img-responsive">
+                <img src="../scenes/project/disney/cbox_specular_10.png" alt="Specular & rough" class="img-responsive">
+            </div> <br>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/disney/metal_03.png" alt="Metallic 0.3"
+                    class="img-responsive">
+                <img src="../scenes/project/disney/metal_10.png" alt="Metallic 1.0" class="img-responsive">
             </div> <br>
             <!-- ================================================================= -->
 
@@ -223,7 +271,7 @@
 
             <h2>Volumetric path tracing</h2>
 
-            
+
             <p>
                 <strong>Files Changed:</strong>
             <ul>
@@ -271,15 +319,21 @@
 
 
             <div class="twentytwenty-container">
-                <img src="../scenes/pa4/cbox_disney/cbox_path_mis.png" alt="Scene with path mis" class="img-responsive">
-                <img src="../scenes/project/volumetric/cbox_path_mis_no_scatter.png"
+                <img src="../scenes/project/disney/cbox_path_mis_specular_no_rough.png" alt="Scene with path mis" class="img-responsive">
+                <img src="../scenes/project/volumetric/volumetric_no_scatter.png"
                     alt="Scene with volumetric and no scattering" class="img-responsive">
             </div> <br>
 
             <div class="twentytwenty-container">
-                <img src="../scenes/pa4/cbox_disney/cbox_path_mis.png" alt="Scene with path mis" class="img-responsive">
-                <img src="../scenes/project/volumetric/cbox_path_mis.png" alt="Scene with volumetric path (0.15 attenuation, 0.15 scattering)"
-                    class="img-responsive">
+                <img src="../scenes/project/disney/cbox_path_mis_specular_no_rough.png" alt="Scene with path mis" class="img-responsive">
+                <img src="../scenes/project/volumetric/volumetric.png"
+                    alt="Scene with volumetric path (0.15 attenuation, 0.15 scattering)" class="img-responsive">
+            </div> <br>
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/disney/cbox_path_mis_specular_no_rough.png" alt="Scene with path mis" class="img-responsive">
+                <img src="../scenes/project/volumetric/volumetric_with_bb.png"
+                    alt="Scene with volumetric and bounding box" class="img-responsive">
             </div> <br>
 
             <!-- ================================================================= -->
@@ -317,6 +371,14 @@
                 <img src="../scenes/pa4/cbox/cbox_path_mis.png" alt="Basic reconstruction filter"
                     class="img-responsive">
                 <img src="../scenes/project/windowed sync filter/cbox_path_mis.png" alt="Windowed reconstruction filter"
+                    class="img-responsive">
+            </div> <br>
+
+
+            <div class="twentytwenty-container">
+                <img src="../scenes/project/windowed sync filter/base_filter.png" alt="Base reconstruction filter"
+                    class="img-responsive">
+                <img src="../scenes/project/windowed sync filter/windowed.png" alt="Windowed reconstruction filter"
                     class="img-responsive">
             </div> <br>
 
@@ -678,24 +740,6 @@
         </div>
     </div>
 
-    <div class="container headerBar">
-        <h1>Our scene</h1>
-    </div>
-
-    <div class="container contentWrapper">
-        <div class="pageContent">
-            <h1>The scene</h1>
-
-            <div class="twentytwenty-container">
-                <img src="../scenes/project/final_image/final.png" alt="Scene" class="img-responsive">
-            </div> <br>
-
-            <p>
-
-            </p>
-
-        </div>
-    </div>
 
 
     <!-- Bootstrap core JavaScript -->

@@ -22,7 +22,7 @@ img_variance = cv2.cvtColor(img_variance, cv2.COLOR_RGB2GRAY).astype("float") / 
 
 # Base parameters for the algorithm
 epsilon = 1e-3
-k = 0.002
+k = 0.02
 r = 3
 flt = 0
 wgtsum = 0

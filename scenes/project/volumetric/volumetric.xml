@@ -21,6 +21,9 @@
 	<medium type="medium">
         <color name="sigma_a" value="0.15,0.15,0.15"/>
         <color name="sigma_s" value="0.15,0.15,0.15"/>
+		<vector name="box_size" value="3,3,3" />
+		<vector name="box_origin" value="0,0,0" />
+		<phase type="isotropic"/>
     </medium>
 
 

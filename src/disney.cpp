@@ -78,7 +78,7 @@ public:
         // Base color part
         float luminance = m_baseColor.getLuminance();
         Color3f Ctint = (luminance > 0.f) ? Color3f(m_baseColor.r() / luminance, m_baseColor.g() / luminance, m_baseColor.b() / luminance) : Color3f(1.0f);
-        Color3f CtintMix = 0.08 * m_specular * lerp(m_specularTint, WHITE, Ctint);
+        Color3f CtintMix =  m_specular * 0.08  * lerp(m_specularTint, WHITE, Ctint);
         Color3f Cspec = lerp(m_metallic, CtintMix, m_baseColor);
         Color3f Csheen = lerp(m_sheenTint, WHITE , Ctint);
 
