@@ -19,7 +19,7 @@ For access to course information including slides and reading material, visit th
   
 #### Andrew  
 - [x] Modeling Meshes  
-- [ ] Procedural Volume (Perlin Noise)  
+- [x] Procedural Volume (Perlin Noise)  
 - [x] Normal Mapping  
 - [x] Image Textures  
 - [ ] Emissive Participating Media
